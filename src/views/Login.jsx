@@ -60,13 +60,13 @@ const Login = ({ mode }) => {
     setLoading(true)
 
     const payload = {
-      username: email,
+      email,
       password,
     }
 
     try {
       // 1. Make API Call
-      const { data } = await api.post('/api/login', payload)
+      const { data } = await api.post('/user/login', payload)
 
       // 2. Extract token
       const token = data?.accessToken || data?.access_token || data?.token
