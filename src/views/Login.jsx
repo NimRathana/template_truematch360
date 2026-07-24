@@ -29,8 +29,8 @@ import themeConfig from '@configs/themeConfig'
 
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
-import { apiClient } from '@core/api'
-import { routes } from '@/configs/routes'
+import api from '@/services/api'
+import { saveAuthSession } from '@/libs/auth'
 
 const Login = ({ mode }) => {
   // States
@@ -61,26 +61,20 @@ const Login = ({ mode }) => {
         email,
         password,
       }
-
-      const { data } = await apiClient.post('/user/login', payload)
-
+      debugger
+      const { data } = await api.post('/auth/login', payload)
       const token = data?.accessToken || data?.access_token || data?.token
 
       if (!token) {
         throw new Error('No access token returned from server')
       }
 
-      // Set cookie (not HttpOnly here because client-side). For production, set HttpOnly cookie from server-side for security.
-      const maxAge = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24 // 30 days vs 1 day
-      const expires = new Date(Date.now() + maxAge * 1000).toUTCString()
-      document.cookie = `authToken=${token}; Path=/; Expires=${expires};` + (location.protocol === 'https:' ? ' Secure;' : '')
-
-      // Optionally set refresh token if returned
-      const refresh = data?.refreshToken || data?.refresh_token
-      if (refresh) {
-        const refreshExpires = new Date(Date.now() + 60 * 60 * 24 * 30 * 1000).toUTCString()
-        document.cookie = `refresh_token=${refresh}; Path=/; Expires=${refreshExpires};` + (location.protocol === 'https:' ? ' Secure;' : '')
-      }
+      saveAuthSession({
+        accessToken: token,
+        refreshToken: data?.refreshToken || data?.refresh_token,
+        userData: data?.user || data?.userData,
+        userType: data?.userType || data?.user_type,
+      })
 
       const search = typeof window !== 'undefined' ? window.location.search : ''
       const params = new URLSearchParams(search)
