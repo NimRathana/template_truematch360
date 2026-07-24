@@ -41,9 +41,14 @@ api.interceptors.response.use(
   response => response,
   error => {
     const message = error?.response?.data?.message || error?.response?.data?.detail || error?.message || 'Request failed'
+    
+    // Create custom error while preserving full response data for debugging
+    const customError = new Error(message)
+    customError.response = error.response
+    customError.status = error?.response?.status
 
-    return Promise.reject(new Error(message))
-  },
+    return Promise.reject(customError)
+  }
 )
 
 export default api

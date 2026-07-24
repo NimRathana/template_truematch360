@@ -59,19 +59,23 @@ const Login = ({ mode }) => {
     setError(null)
     setLoading(true)
 
-    try {
-      const payload = {
-        username: email,
-        password,
-      }
+    const payload = {
+      username: email,
+      password,
+    }
 
+    try {
+      // 1. Make API Call
       const { data } = await api.post('/api/login', payload)
+
+      // 2. Extract token
       const token = data?.accessToken || data?.access_token || data?.token
 
       if (!token) {
         throw new Error('No access token returned from server')
       }
 
+      // 3. Save auth session (Only reached if token exists)
       saveAuthSession({
         accessToken: token,
         refreshToken: data?.refreshToken || data?.refresh_token,
@@ -79,13 +83,16 @@ const Login = ({ mode }) => {
         userType: data?.userType || data?.user_type,
       })
 
+      // 4. Redirect user
       const search = typeof window !== 'undefined' ? window.location.search : ''
       const params = new URLSearchParams(search)
       const fallbackPath = params.get('from') || routes.dashboard
+
       router.replace(fallbackPath)
-    } catch (error) {
-      console.error('Login error', error)
-      setError(error.message || 'Login failed')
+    } catch (err) {
+      // This catches API errors, missing token errors, or connection failures
+      console.error('Login Error:', err.status, err.code, err.message)
+      setError(err.message || 'Login failed')
     } finally {
       setLoading(false)
     }
