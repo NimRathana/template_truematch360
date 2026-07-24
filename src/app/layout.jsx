@@ -2,6 +2,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './globals.css'
 import 'remixicon/fonts/remixicon.css';
 import AuthGuard from '@/components/AuthGuard'
+import Providers from '@/components/Providers'
 
 export const metadata = {
   title: 'Rathana Template',
@@ -10,10 +11,13 @@ export const metadata = {
 
 const RootLayout = async ({ children }) => {
   const direction = 'ltr'
+
   return (
     <html id='__next' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
-        <AuthGuard>{children}</AuthGuard>
+        <Providers>
+          <AuthGuard>{children}</AuthGuard>
+        </Providers>
       </body>
     </html>
   )
