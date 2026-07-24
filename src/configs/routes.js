@@ -4,10 +4,20 @@ export const routes = {
   register: '/register',
   forgotPassword: '/forgot-password',
   dashboard: '/dashboard',
+  dashboardHome: '/dashboard',
 };
+
+const PUBLIC_ROUTE_PREFIXES = ['/', '/login', '/register', '/forgot-password'];
+const PROTECTED_ROUTE_PREFIXES = ['/dashboard'];
 
 export const isPublicRoute = (pathname = '/') => {
-  const publicRoutes = [routes.home, routes.login, routes.register, routes.forgotPassword];
+  if (!pathname) return true
 
-  return publicRoutes.includes(pathname);
-};
+  return PUBLIC_ROUTE_PREFIXES.some(route => pathname === route || pathname.startsWith(`${route}/`))
+}
+
+export const isProtectedRoute = (pathname = '/') => {
+  if (!pathname) return false
+
+  return PROTECTED_ROUTE_PREFIXES.some(route => pathname === route || pathname.startsWith(`${route}/`))
+}

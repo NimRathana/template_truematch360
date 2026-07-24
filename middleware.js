@@ -8,6 +8,7 @@ export function middleware(req) {
 
   // Public paths that should bypass auth
   const PUBLIC_PATHS = [
+    '/',
     '/login',
     '/register',
     '/forgot-password',

@@ -82,7 +82,10 @@ const Login = ({ mode }) => {
         document.cookie = `refresh_token=${refresh}; Path=/; Expires=${refreshExpires};` + (location.protocol === 'https:' ? ' Secure;' : '')
       }
 
-      router.push(routes.dashboard)
+      const search = typeof window !== 'undefined' ? window.location.search : ''
+      const params = new URLSearchParams(search)
+      const fallbackPath = params.get('from') || routes.dashboard
+      router.replace(fallbackPath)
     } catch (err) {
       console.error('Login error', err)
       setError(err.message || 'Login failed')
