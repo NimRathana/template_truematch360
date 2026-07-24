@@ -1,0 +1,14 @@
+{
+  "cSpell.enabled": true,
+  "cSpell.language": "en",
+  "cSpell.ignorePaths": [
+    "**/*.ts",
+    "**/*.js",
+    "**/*.tsx",
+    "**/*.jsx"
+  ],
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.tsx": "typescriptreact"
+  }
+}
