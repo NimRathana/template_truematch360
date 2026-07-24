@@ -26,10 +26,13 @@ import Illustrations from '@components/Illustrations'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
+import { routes } from '@configs/routes'
 
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
-import api from '@/services/api'
+
+// Service & Auth Imports (Import `api` directly if calling api.post)
+import api from '@/services/api' // <-- Added missing import
 import { saveAuthSession } from '@/libs/auth'
 
 const Login = ({ mode }) => {
@@ -50,7 +53,7 @@ const Login = ({ mode }) => {
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
-  // Submit handler: POST credentials to backend login endpoint, set authToken cookie, then redirect to the dashboard
+  // Submit handler
   const handleSubmit = async e => {
     e.preventDefault()
     setError(null)
@@ -58,11 +61,11 @@ const Login = ({ mode }) => {
 
     try {
       const payload = {
-        email,
+        username: email,
         password,
       }
-      debugger
-      const { data } = await api.post('/auth/login', payload)
+
+      const { data } = await api.post('/api/login', payload)
       const token = data?.accessToken || data?.access_token || data?.token
 
       if (!token) {
@@ -80,9 +83,9 @@ const Login = ({ mode }) => {
       const params = new URLSearchParams(search)
       const fallbackPath = params.get('from') || routes.dashboard
       router.replace(fallbackPath)
-    } catch (err) {
-      console.error('Login error', err)
-      setError(err.message || 'Login failed')
+    } catch (error) {
+      console.error('Login error', error)
+      setError(error.message || 'Login failed')
     } finally {
       setLoading(false)
     }
@@ -148,7 +151,7 @@ const Login = ({ mode }) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justify: 'space-between',
                   alignItems: 'center',
                   gap: 1,
                   flexWrap: 'wrap',
@@ -177,7 +180,7 @@ const Login = ({ mode }) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'center',
+                  justify: 'center',
                   alignItems: 'center',
                   flexWrap: 'wrap',
                   gap: 2,

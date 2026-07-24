@@ -1,15 +1,23 @@
 import useAuthStore from '@/store/useAuthStore'
 
+const ONE_WEEK_SECONDS = 60 * 60 * 24 * 7
+
+const setCookie = (name, value, maxAge = ONE_WEEK_SECONDS) => {
+  if (typeof document === 'undefined') return
+
+  document.cookie = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=Lax`
+}
+
 export const saveAuthSession = ({ accessToken, refreshToken, userData, userType }) => {
-    debugger
   const store = useAuthStore.getState()
 
   if (accessToken) {
+    setCookie('authToken', accessToken)
     store.setAccessToken(accessToken)
   }
 
   if (refreshToken) {
-    document.cookie = `refresh_token=${refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 30}`
+    setCookie('refresh_token', refreshToken, 60 * 60 * 24 * 30)
   }
 
   if (userData) {

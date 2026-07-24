@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.18.11:8000'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
+const AUTH_COOKIE_NAME = 'authToken'
 
 const api = axios.create({
   baseURL: API_URL,
@@ -8,18 +9,29 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 15000,
+  withCredentials: true,
 })
 
-api.interceptors.request.use(config => {
-  if (typeof window !== 'undefined') {
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('authToken='))
-      ?.split('=')[1]
+const getBearerToken = () => {
+  if (typeof window === 'undefined') return ''
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+  const cookieToken = document.cookie
+    .split('; ')
+    .find(row => row.startsWith(`${AUTH_COOKIE_NAME}=`))
+    ?.split('=')[1]
+
+  if (cookieToken) {
+    return decodeURIComponent(cookieToken)
+  }
+
+  return window.localStorage.getItem('access_token') || ''
+}
+
+api.interceptors.request.use(config => {
+  const token = getBearerToken()
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
 
   return config
