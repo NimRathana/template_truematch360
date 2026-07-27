@@ -1,7 +1,10 @@
-import { Navigate } from 'react-router-dom'
+'use client';
+
+import { useRouter } from 'next/navigation';
 import useAuthStore from '../store/useAuthStore'
 
 export default function ProtectedRoute({ children }) {
+  const router = useRouter();
   const { access_token, hydrated } = useAuthStore()
 
   // ⏳ Wait until hydration finishes
@@ -11,7 +14,8 @@ export default function ProtectedRoute({ children }) {
 
   // ❌ No token → login
   if (!access_token) {
-    return <Navigate to="/" replace />
+    router.replace("/");
+    return null;
   }
 
   // ✅ Token exists

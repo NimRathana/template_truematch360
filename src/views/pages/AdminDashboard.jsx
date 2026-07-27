@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from "react-router-dom";
+import { useRouter } from 'next/navigation';
 import api from "../services/api";
 
 /* ================= STAT CARD ================= */
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
   const { t } = useTranslation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const fetchDashboardStats = async () => {
     try {
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
         mb={3}
       >
         <Card
-          onClick={() => navigate("/admin/user")}
+          onClick={() => router.push("/admin/user")}
           sx={{
             cursor: "pointer",
             "&:hover": { boxShadow: 6 },
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
         </Card>
 
         <Card
-          onClick={() => navigate("/admin/employer")}
+          onClick={() => router.push("/admin/employer")}
           sx={{
             cursor: "pointer",
             "&:hover": { boxShadow: 6 },
@@ -152,7 +152,7 @@ const AdminDashboard = () => {
         </Card>
 
         <Card
-          onClick={() => navigate("/admin/jobs")}
+          onClick={() => router.push("/admin/jobs")}
           sx={{
             cursor: "pointer",
             "&:hover": { boxShadow: 6 },
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
         </Card>
 
         <Card
-          onClick={() => navigate("/admin/candidate")}
+          onClick={() => router.push("/admin/candidate")}
           sx={{
             cursor: "pointer",
             "&:hover": { boxShadow: 6 },

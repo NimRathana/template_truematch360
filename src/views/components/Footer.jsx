@@ -1,9 +1,8 @@
 // In your existing Footer.jsx
 import { useTranslation } from 'react-i18next';
 import { AboutDialog, PrivacyPolicyDialog, TermOfUseDialog, useDialogs } from '../pages/dialog_privacy/DialogComponents';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Link, Stack, Typography } from '@mui/material';
 import { Copyright } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const { t } = useTranslation();

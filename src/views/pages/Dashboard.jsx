@@ -83,7 +83,7 @@ import "quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import ReactQuill from "react-quill-new";
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import api from "../services/api";
 import useAuthStore from "../store/useAuthStore";
 import Draggable from "react-draggable";

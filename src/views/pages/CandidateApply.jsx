@@ -42,7 +42,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { isValidElement, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import api from "../services/api";
 import { useTranslation } from 'react-i18next';
 
@@ -87,7 +87,7 @@ function InfoRow({ icon, label, value, color = 'inherit', fontWeight = 600 }) {
 }
 
 export default function MyApplicationsToCompanies() {
-    const navigate = useNavigate();
+    const router = useRouter();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { t } = useTranslation();
@@ -487,7 +487,7 @@ export default function MyApplicationsToCompanies() {
                         variant="contained"
                         size="medium"
                         endIcon={<ArrowIcon />}
-                        onClick={() => navigate('/')}
+                        onClick={() => router.push('/')}
                         sx={{
                             px: 5,
                             py: 1.2,
@@ -693,7 +693,7 @@ export default function MyApplicationsToCompanies() {
                                         variant="contained"
                                         size="medium"
                                         disableElevation
-                                        onClick={() => searchText.trim() ? setSearchText('') : navigate('/')}
+                                        onClick={() => searchText.trim() ? setSearchText('') : router.push('/')}
                                         sx={{ mt: 2, borderRadius: 50, px: 5 }}
                                     >
                                         {searchText.trim() ? t('clear_search') : t('find_jobs')}
@@ -823,7 +823,7 @@ export default function MyApplicationsToCompanies() {
                                         variant="outlined"
                                         size="small"
                                         startIcon={<Visibility fontSize="small" />}
-                                        onClick={() => job.pk_id && navigate(`/job/${job.pk_id}`)}
+                                        onClick={() => job.pk_id && router.push(`/job/${job.pk_id}`)}
                                         sx={{
                                             borderRadius: 20,
                                             borderColor: alpha(accent, 0.5),

@@ -47,7 +47,7 @@ import { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { FaFacebookMessenger } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useRouter, useSearchParams } from "next/navigation";
 import api from "../services/api";
 
 // ────────────────────────────────────────────────
@@ -89,9 +89,20 @@ export default function AppliedCandidates() {
   const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const selectedJobFromUrl = searchParams.get("job");
-  const navigate = useNavigate();
+  const router = useRouter();
+
+  const updateSelectedJobQuery = (jobId, replace = false) => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("job", jobId);
+    if (replace) {
+      router.replace(url.toString());
+    } else {
+      router.push(url.toString());
+    }
+  };
 
   const [myJobs, setMyJobs] = useState([]);
   const [selectedJobId, setSelectedJobId] = useState(null);
@@ -227,7 +238,7 @@ export default function AppliedCandidates() {
         setSelectedJobId(initialJobId);
 
         if (!selectedJobFromUrl) {
-          setSearchParams({ job: initialJobId.toString() }, { replace: true });
+          updateSelectedJobQuery(initialJobId.toString(), true);
         }
       }
     } catch (err) {
@@ -431,7 +442,7 @@ export default function AppliedCandidates() {
         other_user_id: userId,
       });
       const room = res.data;
-      navigate("/chat", { state: { roomId: room.room_id } });
+      router.push(`/chat?roomId=${encodeURIComponent(room.room_id)}`);
     } catch (err) {
       console.error("Chat room creation failed:", err);
       setSnackbar({
@@ -444,7 +455,7 @@ export default function AppliedCandidates() {
 
   const handleSelectJob = (job) => {
     setSelectedJobId(job.pk_id);
-    setSearchParams({ job: job.pk_id.toString() }, { replace: true });
+    updateSelectedJobQuery(job.pk_id.toString(), true);
     if (isMobile) setShowDetailMobile(true);
   };
 

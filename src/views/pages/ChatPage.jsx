@@ -16,7 +16,7 @@ import { useGlobalWebSocket } from './../hooks/useGlobalWebSocket';
 import { useUnreadStore } from '../store/unreadStore';
 import useAuthStore from '../store/useAuthStore';
 import { FormatTime } from '../components/chat/FormatTime';
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
 const ringtone = '/vite_app/assets/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
@@ -41,8 +41,8 @@ function getLastMessagePreview(chat, currentUserId, t) {
 
 function ChatPage() {
     const { t } = useTranslation();
-    const location = useLocation();
-    const initialRoomId = location.state?.roomId;
+    const searchParams = useSearchParams();
+    const initialRoomId = searchParams.get('roomId');
     const token = useAuthStore(s => s.access_token);
     const currentUserId = useAuthStore(s => s.user_data?.pk_id);
     const BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''));

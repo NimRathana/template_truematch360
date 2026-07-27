@@ -54,7 +54,7 @@ import html2pdf from "html2pdf.js";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from "react-router-dom";
+import { usePathname, useRouter } from 'next/navigation';
 import BlueSidebarModern from '../pages/cv_template/BlueSidebarModern';
 import ClassicSoftwareCV from "../pages/cv_template/ClassicCV";
 import SidebarTechTemplate from '../pages/cv_template/SidebarTechTemplate';
@@ -66,7 +66,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 export default function Topbar() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const globalUnread = useUnreadStore(state => state.globalCount);
@@ -120,7 +121,7 @@ export default function Topbar() {
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    navigate('/forgot_password');
+    router.push('/forgot_password');
     handleCloseLoginForm();
   };
 
@@ -138,13 +139,12 @@ export default function Topbar() {
 
   const [settingsAnchor, setSettingsAnchor] = useState(null);
   const openSettings = Boolean(settingsAnchor);
-  const location = useLocation();
   const [openDrawerSettings, setOpenDrawerSettings] = useState(false);
 
   const toggleDrawerSettings = () =>
     setOpenDrawerSettings((prev) => !prev);
 
-  const isSettingsActive = location.pathname.startsWith("/system_parameter");
+  const isSettingsActive = pathname?.startsWith("/system_parameter");
 
   const [managementAnchor, setManagementAnchor] = useState(null);
   const openManagement = Boolean(managementAnchor);
@@ -154,11 +154,11 @@ export default function Topbar() {
     setOpenDrawerManagement((prev) => !prev);
 
   const isManagementActive =
-    location.pathname.startsWith("/admin/user") ||
-    location.pathname.startsWith("/admin/jobs") ||
-    location.pathname.startsWith("/admin/employer") ||
-    location.pathname.startsWith("/admin/candidate") ||
-    location.pathname.startsWith("/audit");
+    pathname?.startsWith("/admin/user") ||
+    pathname?.startsWith("/admin/jobs") ||
+    pathname?.startsWith("/admin/employer") ||
+    pathname?.startsWith("/admin/candidate") ||
+    pathname?.startsWith("/audit");
 
   const handleOpenManagement = (event) => {
     setManagementAnchor(event.currentTarget);
@@ -255,7 +255,7 @@ export default function Topbar() {
   const menuItems = access_token ? MENU_BY_ROLE[user_type] || [] : MENU_BY_ROLE.guest;
 
   const goTo = (path) => {
-    navigate(path);
+    router.push(path);
     setDrawerOpen(false);
   };
 
@@ -336,7 +336,7 @@ export default function Topbar() {
       const resp = await api.post("/user/verify_token");
       if(!resp.data){
         clearAccessToken();
-        navigate("/");
+        router.push("/");
       }
     } catch {
       console.log("Token expired");
@@ -392,16 +392,16 @@ export default function Topbar() {
 
       switch (res.data.user_type) {
         case 1:
-          navigate("/admin/dashboard", { replace: true });
+          router.replace("/admin/dashboard");
           break;
         case 2:
-          navigate("/employer", { replace: true });
+          router.replace("/employer");
           break;
         case 3:
-          navigate("/update_profile", { replace: true });
+          router.replace("/update_profile");
           break;
         default:
-          navigate("/", { replace: true });
+          router.replace("/");
       }
 
     } catch (err) {
@@ -454,7 +454,7 @@ export default function Topbar() {
     } finally {
       clearAccessToken();
       setProfileAnchor(null);
-      navigate("/");
+      router.push("/");
     }
   };
 
@@ -713,7 +713,7 @@ export default function Topbar() {
             <ListItemButton
               key={item.label}
               onClick={() => goTo(item.path)}
-              selected={location.pathname === item.path}
+              selected={pathname === item.path}
               sx={{
                 borderRadius: 2,
                 mb: 0.75,
@@ -740,7 +740,7 @@ export default function Topbar() {
               <ListItemIcon
                 sx={{
                   minWidth: 44,
-                  color: location.pathname === item.path ? "white" : "#3b82f6",
+                  color: pathname === item.path ? "white" : "#3b82f6",
                 }}
               >
                 {item.icon}
@@ -806,7 +806,7 @@ export default function Topbar() {
                         goTo(item.path);
                         setOpenDrawerManagement(false);
                       }}
-                      selected={location.pathname.startsWith(item.path)}
+                      selected={pathname.startsWith(item.path)}
                       sx={{
                         borderRadius: 2,
                         py: 1.2,
@@ -886,7 +886,7 @@ export default function Topbar() {
                       goTo("/system_parameter");
                       setOpenDrawerSettings(false);
                     }}
-                    selected={location.pathname === "/system_parameter"}
+                    selected={pathname === "/system_parameter"}
                     sx={{
                       borderRadius: 2,
                       py: 1.2,
@@ -1096,7 +1096,7 @@ export default function Topbar() {
                 p: 0.5,
                 filter: "drop-shadow(0 2px 8px rgba(30, 58, 138, 0.15))",
               }}
-              onClick={() => navigate("/")}
+              onClick={() => router.push("/")}
             />
           </Box>
 
@@ -1107,7 +1107,7 @@ export default function Topbar() {
             <>
               {/* Profile Avatar & Menu */}
               <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                <IconButton onClick={() => navigate("/chat")} sx={{ p: 0, ml: 1 }}>
+                <IconButton onClick={() => router.push("/chat")} sx={{ p: 0, ml: 1 }}>
                   <ChatBubbleIcon sx={{ color: "#3b82f6" }} />
                 </IconButton>
 
@@ -1227,7 +1227,7 @@ export default function Topbar() {
                 <Box sx={{ py: 1 }}>
                   <MenuItem
                     onClick={() => {
-                      navigate("/update_profile");
+                      router.push("/update_profile");
                       handleProfileClose();
                     }}
                     sx={{
@@ -1344,7 +1344,7 @@ export default function Topbar() {
                     "&::after": {
                       content: '""',
                       position: "absolute",
-                      width: location.pathname === item.path ? "100%" : "0%",
+                      width: pathname === item.path ? "100%" : "0%",
                       height: "2px",
                       bottom: 0,
                       left: 0,
@@ -1569,7 +1569,7 @@ export default function Topbar() {
                     {/* Menu Items */}
                     <Box sx={{ py: 1 }}>
                       <MenuItem
-                        onClick={() => { navigate("/update_profile"); handleProfileClose(); }}
+                        onClick={() => { router.push("/update_profile"); handleProfileClose(); }}
                         sx={{
                           py: 1.6,
                           px: 4,
@@ -1728,14 +1728,14 @@ export default function Topbar() {
           <Divider sx={{ borderColor: "rgba(59, 130, 246, 0.15)" }} />
 
           {MANAGEMENT_ITEMS.map((item) => {
-            const isActive = location.pathname.startsWith(item.path);
+            const isActive = pathname.startsWith(item.path);
 
             return (
               <MenuItem
                 key={item.path}
                 selected={isActive}
                 onClick={() => {
-                  navigate(item.path);
+                  router.push(item.path);
                   handleCloseManagement();
                 }}
                 sx={{
@@ -1792,7 +1792,7 @@ export default function Topbar() {
 
           <MenuItem
             onClick={() => {
-              navigate("/system_parameter");
+              router.push("/system_parameter");
               handleCloseSettings();
             }}
             sx={{

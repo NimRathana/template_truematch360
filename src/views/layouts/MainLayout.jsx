@@ -1,11 +1,13 @@
+'use client';
+
 import { Box } from '@mui/material';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 
 function InnerLayout({ children }) {
-  const location = useLocation();
-  const isChatPage = location?.pathname === '/chat';
+  const pathname = usePathname();
+  const isChatPage = pathname === '/chat';
 
   return (
     <Box
@@ -30,9 +32,7 @@ function InnerLayout({ children }) {
 
 export default function MainLayout({ children }) {
   return (
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <InnerLayout>{children}</InnerLayout>
-    </BrowserRouter>
+    <InnerLayout>{children}</InnerLayout>
   );
 }
 
