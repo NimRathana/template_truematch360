@@ -1,8 +1,18 @@
 import axios from 'axios'
 import useAuthStore from '../store/useAuthStore'
 
+const resolveApiBaseUrl = () => {
+  const configured = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.VITE_API_BASE_URL
+
+  if (configured) {
+    return configured.replace(/\/$/, '')
+  }
+
+  return 'http://localhost:8000'
+}
+
 const api = axios.create({
-  baseURL: (process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '')),
+  baseURL: resolveApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
