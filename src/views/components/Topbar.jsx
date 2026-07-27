@@ -135,6 +135,16 @@ export default function Topbar() {
     user_data,
   } = useAuthStore();
 
+  // Restore auth state from localStorage on first client render
+  // This ensures access_token, user_type and user_data persist across page refreshes
+  useEffect(() => {
+    try {
+      useAuthStore.getState().hydrate();
+    } catch (err) {
+      console.warn('Auth hydrate failed', err);
+    }
+  }, []);
+
   const profileUrl = `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/user/profile/${user_data?.user_data?.profile_image}`
 
   const [settingsAnchor, setSettingsAnchor] = useState(null);
