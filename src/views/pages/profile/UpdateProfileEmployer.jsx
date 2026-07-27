@@ -25,7 +25,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useTranslation } from 'react-i18next';
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import UploadIcon from "@mui/icons-material/Upload";
-import useAuthStore from '../../store/useAuthStore';
+import useAuthStore from '@views/store/useAuthStore';
 import ViewProfileDialog from "./dialog/ViewProfileDialog";
 import DeleteProfileDialog from "./dialog/DeleteProfileDialog";
 

@@ -85,7 +85,7 @@ import { useTranslation } from 'react-i18next';
 import ReactQuill from "react-quill-new";
 import { useParams } from 'next/navigation';
 import api from "../services/api";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from '@views/store/useAuthStore';
 import Draggable from "react-draggable";
 
 export default function Dashboard() {

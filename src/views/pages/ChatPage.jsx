@@ -14,7 +14,7 @@ import api from '../services/api';
 import { useWebSocket } from './../hooks/useWebSocket';
 import { useGlobalWebSocket } from './../hooks/useGlobalWebSocket';
 import { useUnreadStore } from '../store/unreadStore';
-import useAuthStore from '../store/useAuthStore';
+import useAuthStore from '@views/store/useAuthStore';
 import { FormatTime } from '../components/chat/FormatTime';
 import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';

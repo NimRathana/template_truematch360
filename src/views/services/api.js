@@ -1,5 +1,5 @@
 import axios from 'axios'
-import useAuthStore from '../store/useAuthStore'
+import useAuthStore from '@views/store/useAuthStore'
 
 const resolveApiBaseUrl = () => {
   const configured = process.env.VITE_API_BASE_URL

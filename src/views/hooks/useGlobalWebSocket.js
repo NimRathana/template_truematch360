@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from '@views/store/useAuthStore';
 import { useUnreadStore } from "../store/unreadStore";
 
 export function useGlobalWebSocket(onGlobalEvent) {

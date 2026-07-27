@@ -15,23 +15,24 @@ const api = axios.create({
 const getBearerToken = () => {
   if (typeof window === 'undefined') return ''
 
+  // Prefer token stored in localStorage (single-source-of-truth in this app)
+  const localToken = window.localStorage.getItem('access_token')
+  if (localToken) return localToken
+
+  // Fallback to cookie if present
   const cookieToken = document.cookie
     .split('; ')
     .find(row => row.startsWith(`${AUTH_COOKIE_NAME}=`))
     ?.split('=')[1]
 
-  if (cookieToken) {
-    return decodeURIComponent(cookieToken)
-  }
-
-  return window.localStorage.getItem('access_token') || ''
+  return cookieToken ? decodeURIComponent(cookieToken) : ''
 }
 
 api.interceptors.request.use(config => {
   const token = getBearerToken()
 
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = 'Bearer ' + token
   }
 
   return config

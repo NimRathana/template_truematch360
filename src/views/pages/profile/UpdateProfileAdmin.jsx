@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import useAuthStore from "../../store/useAuthStore";
+import useAuthStore from '@views/store/useAuthStore';
 import { useRef } from "react";
 import { useTranslation } from 'react-i18next';
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";

@@ -1,4 +1,4 @@
-import useAuthStore from '../../store/useAuthStore'
+import useAuthStore from '@views/store/useAuthStore'
 import UpdateProfileCandidate from './UpdateProfileCandidate'
 import UpdateProfileAdmin from './UpdateProfileAdmin'
 import UpdateProfileEmployer from './UpdateProfileEmployer'

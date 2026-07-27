@@ -1,4 +1,4 @@
-import useAuthStore from '@/store/useAuthStore'
+import useAuthStore from '@views/store/useAuthStore'
 
 const ONE_WEEK_SECONDS = 60 * 60 * 24 * 7
 

@@ -3,6 +3,7 @@ import './globals.css'
 import 'remixicon/fonts/remixicon.css';
 import Providers from '@/components/Providers'
 import LocalizationProviderWrapper from '@/components/LocalizationProviderWrapper'
+import AuthLayoutSwitcher from '@components/AuthLayoutSwitcher'
 
 export const metadata = {
   title: 'Rathana Template',
@@ -16,7 +17,9 @@ const RootLayout = async ({ children }) => {
     <html id='__next' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         <LocalizationProviderWrapper>
-          <Providers>{children}</Providers>
+        <Providers>
+          <AuthLayoutSwitcher>{children}</AuthLayoutSwitcher>
+        </Providers>
         </LocalizationProviderWrapper>
       </body>
     </html>

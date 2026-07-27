@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import useAuthStore from '../store/useAuthStore'
+import useAuthStore from '@views/store/useAuthStore'
 
 export default function ProtectedRoute({ children }) {
   const router = useRouter();

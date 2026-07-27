@@ -47,7 +47,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactQuill from "react-quill-new"
 import api from '../../services/api'
-import useAuthStore from '../../store/useAuthStore'
+import useAuthStore from '@views/store/useAuthStore'
 import DeleteProfileDialog from "./dialog/DeleteProfileDialog"
 import ViewProfileDialog from './dialog/ViewProfileDialog'
 

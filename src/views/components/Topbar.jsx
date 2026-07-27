@@ -60,7 +60,7 @@ import ClassicSoftwareCV from "../pages/cv_template/ClassicCV";
 import SidebarTechTemplate from '../pages/cv_template/SidebarTechTemplate';
 import api from "../services/api";
 import { useUnreadStore } from "../store/unreadStore";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from '@views/store/useAuthStore';
 import LanguageSwitcher from './LanguageSwitcher';
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
@@ -135,15 +135,6 @@ export default function Topbar() {
     user_data,
   } = useAuthStore();
 
-  // Restore auth state from localStorage on first client render
-  // This ensures access_token, user_type and user_data persist across page refreshes
-  useEffect(() => {
-    try {
-      useAuthStore.getState().hydrate();
-    } catch (err) {
-      console.warn('Auth hydrate failed', err);
-    }
-  }, []);
 
   const profileUrl = `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/user/profile/${user_data?.user_data?.profile_image}`
 
