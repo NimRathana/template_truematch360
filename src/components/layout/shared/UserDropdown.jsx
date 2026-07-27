@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import useAuthStore from '@views/store/useAuthStore'
 
 // MUI Imports
 import {
@@ -49,6 +50,7 @@ const UserDropdown = () => {
   const anchorRef = useRef(null);
   const router = useRouter();
 
+  const clearAccessToken = useAuthStore(state => state.clearAccessToken)
   const handleToggle = () => setOpen((prev) => !prev);
 
   const handleClose = (event, url) => {
@@ -57,6 +59,28 @@ const UserDropdown = () => {
     if (anchorRef.current && anchorRef.current.contains(event?.target)) return;
     setOpen(false);
   };
+
+  const handleDropdownClose = async (event, url) => {
+    event?.preventDefault();
+
+    // capture token for server logout
+    const token = useAuthStore.getState().access_token || (typeof window !== 'undefined' ? window.localStorage.getItem('access_token') : null)
+
+    // Clear local session & close dropdown
+    try { clearAccessToken(); } catch (err) { console.warn('clearAccessToken failed', err) }
+    setOpen(false);
+
+    // Navigate immediately
+    router.replace(url || '/login');
+
+    // Call server logout in background (best-effort)
+    try {
+      await api.post('/user/logout', null, { headers: token ? { Authorization: 'Bearer ' + token } : {} });
+    } catch (err) {
+      console.warn('Logout API failed (ignored):', err?.message || err);
+    }
+  };
+
 
   return (
     <>
