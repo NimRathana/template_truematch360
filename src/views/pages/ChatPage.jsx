@@ -18,7 +18,7 @@ import useAuthStore from '../store/useAuthStore';
 import { FormatTime } from '../components/chat/FormatTime';
 import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
-const ringtone = '/vite_app/assets/outgoing_sound.mp3';
+const ringtone = '@assets/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
 
 function getLastMessagePreview(chat, currentUserId, t) {
