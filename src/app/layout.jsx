@@ -2,6 +2,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import './globals.css'
 import 'remixicon/fonts/remixicon.css';
 import Providers from '@/components/Providers'
+import LocalizationProviderWrapper from '@/components/LocalizationProviderWrapper'
 
 export const metadata = {
   title: 'Rathana Template',
@@ -14,7 +15,9 @@ const RootLayout = async ({ children }) => {
   return (
     <html id='__next' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
-        <Providers>{children}</Providers>
+        <LocalizationProviderWrapper>
+          <Providers>{children}</Providers>
+        </LocalizationProviderWrapper>
       </body>
     </html>
   )

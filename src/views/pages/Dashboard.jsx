@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 // src/pages/Dashboard.jsx

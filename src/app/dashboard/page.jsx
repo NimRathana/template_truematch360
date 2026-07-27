@@ -1,8 +1,8 @@
 // Components Imports
-import AllComponent from '@views/dashboard'
+import DashboardPageView from '@/views/pages/Dashboard'
 
 const Dashboard = () => {
-  return <AllComponent />
+  return <DashboardPageView />
 }
 
 export default Dashboard
