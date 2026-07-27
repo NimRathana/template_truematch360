@@ -3555,7 +3555,7 @@ export default function Dashboard() {
                   />
                   <Box
                     component="img"
-                    src="/logo.png"
+                    src="/images/settings/logo.png"
                     alt="TrueMatch360 Logo"
                     sx={{
                       maxWidth: { xs: 300, sm: 400, md: 500, lg: 600 },
