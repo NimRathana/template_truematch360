@@ -1,7 +1,15 @@
-'use client'
+import useAuthStore from '../../store/useAuthStore'
+import UpdateProfileCandidate from './UpdateProfileCandidate'
+import UpdateProfileAdmin from './UpdateProfileAdmin'
+import UpdateProfileEmployer from './UpdateProfileEmployer'
 
-import Dashboard from '@/components/app-shell/Dashboard'
+export default function UpdateProfile() {
+  const { user_type } = useAuthStore()
 
-export default function UpdateProfile(){
-  return <Dashboard />
+  if (user_type === 1) return <UpdateProfileAdmin />
+  if (user_type === 2) return <UpdateProfileEmployer />
+  if (user_type === 3) return <UpdateProfileCandidate />
+
+  return null
 }
+

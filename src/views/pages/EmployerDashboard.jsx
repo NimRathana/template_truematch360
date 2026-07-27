@@ -1,4 +1,7 @@
-'use client'
+import React from "react";
 
-import Dashboard from '@/components/app-shell/Dashboard'
-export default Dashboard
+const EmployerDashboard = () => {
+    return <div>EmployerDashboard</div>;
+};
+
+export default EmployerDashboard;
