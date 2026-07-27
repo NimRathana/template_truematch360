@@ -6,9 +6,7 @@ import AdminJobs from '@views/pages/AdminJobs';
 export default function AdminJobsPage() {
   return (
     <ProtectedRoute>
-      
-        <AdminJobs />
-      
+      <AdminJobs />
     </ProtectedRoute>
   );
 }

@@ -6,7 +6,7 @@ import Dashboard from '@views/pages/Dashboard';
 export default function JobPage() {
   return (
     <ProtectedRoute>
-        <Dashboard />
+      <Dashboard />
     </ProtectedRoute>
   );
 }

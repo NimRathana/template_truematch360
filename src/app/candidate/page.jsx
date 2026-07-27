@@ -6,9 +6,7 @@ import CandidateDashboard from '@views/pages/CandidateDashboard';
 export default function CandidateDashboardPage() {
   return (
     <ProtectedRoute>
-      
-        <CandidateDashboard />
-      
+      <CandidateDashboard />
     </ProtectedRoute>
   );
 }

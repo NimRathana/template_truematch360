@@ -59,7 +59,7 @@ const AdminJobs = () => {
   };
 
   return (
-    <Box sx={{ p: 1 }}>
+    <Box>
       {/* SUMMARY CARDS */}
       <Box
         display="grid"

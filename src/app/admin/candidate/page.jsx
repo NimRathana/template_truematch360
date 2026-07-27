@@ -6,9 +6,7 @@ import AdminCandidate from '@views/pages/AdminCandidate';
 export default function AdminCandidatePage() {
   return (
     <ProtectedRoute>
-      
-        <AdminCandidate />
-      
+      <AdminCandidate />
     </ProtectedRoute>
   );
 }

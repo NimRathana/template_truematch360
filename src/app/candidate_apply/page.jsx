@@ -6,9 +6,7 @@ import CandidateApply from '@views/pages/CandidateApply';
 export default function CandidateApplyPage() {
   return (
     <ProtectedRoute>
-      
-        <CandidateApply />
-      
+      <CandidateApply />
     </ProtectedRoute>
   );
 }

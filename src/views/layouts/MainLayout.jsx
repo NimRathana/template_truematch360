@@ -3,7 +3,7 @@
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import Topbar from '../components/Topbar';
-import Footer from '../components/Footer';
+import Footer from '@components/layout/vertical/Footer';
 
 function InnerLayout({ children }) {
   const pathname = usePathname();

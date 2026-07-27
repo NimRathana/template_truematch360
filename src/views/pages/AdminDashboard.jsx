@@ -100,13 +100,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <Box 
-      sx={{ 
-        p: 3, 
-        minHeight: "100vh",
-        background: 'linear-gradient(180deg, rgba(239, 246, 255, 0.4) 0%, rgba(255, 255, 255, 0.9) 100%)',
-      }}
-    >
+    <Box>
       
       {/* TOP STATS */}
       <Box

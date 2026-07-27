@@ -6,9 +6,7 @@ import EmployerDashboard from '@views/pages/EmployerDashboard';
 export default function EmployerDashboardPage() {
   return (
     <ProtectedRoute>
-      
-        <EmployerDashboard />
-      
+      <EmployerDashboard />
     </ProtectedRoute>
   );
 }

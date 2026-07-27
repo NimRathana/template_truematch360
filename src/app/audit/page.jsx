@@ -6,9 +6,7 @@ import Audit from '@views/pages/Audit';
 export default function AuditPage() {
   return (
     <ProtectedRoute>
-      
-        <Audit />
-      
+      <Audit /> 
     </ProtectedRoute>
   );
 }

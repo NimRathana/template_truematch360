@@ -6,9 +6,7 @@ import AdminUsers from '@views/pages/AdminUser';
 export default function AdminUsersPage() {
   return (
     <ProtectedRoute>
-      
-        <AdminUsers />
-      
+      <AdminUsers />
     </ProtectedRoute>
   );
 }

@@ -5,10 +5,8 @@ import AdminEmployer from '@views/pages/AdminEmployer';
 
 export default function AdminEmployerPage() {
   return (
-    <ProtectedRoute>
-      
-        <AdminEmployer />
-      
+    <ProtectedRoute> 
+      <AdminEmployer />  
     </ProtectedRoute>
   );
 }

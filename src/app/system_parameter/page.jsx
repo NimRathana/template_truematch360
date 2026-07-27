@@ -6,9 +6,7 @@ import SystemParameter from '@views/pages/SystemParameter';
 export default function SystemParameterPage() {
   return (
     <ProtectedRoute>
-      
-        <SystemParameter />
-      
+      <SystemParameter />
     </ProtectedRoute>
   );
 }

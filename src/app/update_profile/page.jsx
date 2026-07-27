@@ -6,9 +6,7 @@ import UpdateProfile from '@views/pages/profile/UpdateProfile';
 export default function UpdateProfilePage() {
   return (
     <ProtectedRoute>
-      
-        <UpdateProfile />
-      
+      <UpdateProfile />
     </ProtectedRoute>
   );
 }
