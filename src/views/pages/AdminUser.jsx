@@ -117,70 +117,9 @@ const AdminUsers = () => {
     }
   };
 
-  const OnOffSwitch = styled(Switch)(({ theme }) => ({
-    width: 42, // ⬅ smaller width
-    height: 20, // ⬅ smaller height
-    padding: 0,
-    display: "flex",
+  const OnOffSwitch = styled(Switch)(({ theme }) => ({}));
 
-    "& .MuiSwitch-switchBase": {
-      padding: 2,
-      marginLeft: -1,
-      "&.Mui-checked": {
-        transform: "translateX(22px)", // ⬅ adjusted for smaller width
-        color: "#1976d2",
-        "& + .MuiSwitch-track": {
-          backgroundColor: "#1976d2",
-          opacity: 1,
-        },
-      },
-    },
-
-    "& .MuiSwitch-thumb": {
-      width: 16, // ⬅ smaller thumb
-      height: 16,
-      backgroundColor: "#fff",
-    },
-
-    "& .MuiSwitch-track": {
-      borderRadius: 10,
-      backgroundColor: "#000",
-      opacity: 1,
-    },
-  }));
-
-  const ApproveSwitch = styled(Switch)(({ theme }) => ({
-    width: 42,
-    height: 20,
-    padding: 0,
-    display: "flex",
-
-    "& .MuiSwitch-switchBase": {
-      padding: 2,
-      marginLeft: -1,
-      "&.Mui-checked": {
-        transform: "translateX(22px)",
-        color: "#2e7d32", // ✅ green thumb when checked
-        "& + .MuiSwitch-track": {
-          backgroundColor: "#2e7d32", // ✅ green track
-          opacity: 1,
-        },
-      },
-    },
-
-    "& .MuiSwitch-thumb": {
-      width: 16,
-      height: 16,
-      backgroundColor: "#fff",
-    },
-
-    "& .MuiSwitch-track": {
-      borderRadius: 10,
-      backgroundColor: "#ef6c00", // 🟠 orange for pending
-      opacity: 0.5,
-    },
-  }));
-
+  const ApproveSwitch = styled(Switch)(({ theme }) => ({}));
 
   /* ================= Columns ================= */
   const columns = [
@@ -455,9 +394,6 @@ const AdminUsers = () => {
         <Box
           sx={{
             flex: 1,
-            border: "3px solid",
-            borderColor: "divider",
-            borderRadius: 4,
             overflow: "hidden",
           }}
         >
@@ -472,22 +408,6 @@ const AdminUsers = () => {
             disableRowSelectionOnClick
             rowHeight={52}
             density="compact"
-            sx={{
-              bgcolor: "#fff",
-              borderRadius: 3,
-              border: "1px solid",
-              borderColor: "divider",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-              "& .MuiDataGrid-columnHeaders": {
-                background: "linear-gradient(180deg, #f9fafb, #f1f5f9)",
-                fontWeight: 700,
-                fontSize: 13,
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-              },
-              "& .MuiDataGrid-row:hover": {
-                backgroundColor: "rgba(25,118,210,0.06)",
-              },
-            }}
           />
         </Box>
 

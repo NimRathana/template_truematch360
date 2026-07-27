@@ -202,9 +202,6 @@ const SystemParameters = () => {
             <Box
                 sx={{
                     flex: 1,
-                    borderRadius: 3,
-                    border: "1px solid",
-                    borderColor: "divider",
                     overflow: "hidden",
                 }}
             >
@@ -222,16 +219,6 @@ const SystemParameters = () => {
                     onCellEditStop={handleCellEditStop}
                     rowHeight={52}
                     density="compact"
-                    sx={{
-                        bgcolor: "#fff",
-                        "& .MuiDataGrid-columnHeaders": {
-                            background: "linear-gradient(180deg, #f9fafb, #f1f5f9)",
-                            fontWeight: 700,
-                        },
-                        "& .MuiDataGrid-row:hover": {
-                            backgroundColor: "rgba(25,118,210,0.06)",
-                        },
-                    }}
                 />
             </Box>
         </Box>

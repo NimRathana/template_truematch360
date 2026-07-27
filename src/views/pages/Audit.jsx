@@ -75,9 +75,6 @@ const Audit = () => {
       <Box
         sx={{
           flex: 1,
-          border: "3px solid",
-          borderColor: "divider",
-          borderRadius: 4,
           overflow: "hidden",
         }}
       >
@@ -93,28 +90,6 @@ const Audit = () => {
           rowHeight={52}
           density="compact"
           getRowHeight={() => "auto"}
-          sx={{
-            bgcolor: "#fff",
-            borderRadius: 3,
-            border: "1px solid",
-            borderColor: "divider",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-
-            "& .MuiDataGrid-columnHeaders": {
-              background: "linear-gradient(180deg, #f9fafb, #f1f5f9)",
-              fontWeight: 700,
-              fontSize: 13,
-              borderBottom: "1px solid rgba(0,0,0,0.08)",
-            },
-
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: "rgba(25,118,210,0.06)",
-            },
-
-            "& .MuiDataGrid-cell": {
-              borderBottom: "1px solid #f0f0f0",
-            },
-          }}
         />
       </Box>
     </Box>

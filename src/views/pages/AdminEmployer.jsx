@@ -149,7 +149,7 @@ const AdminEmployers = () => {
             mb: 3,
             borderRadius: 3,
             overflow: "hidden",
-            background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)",
+            // background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)",
             boxShadow: "0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
             border: "1px solid",
             borderColor: "divider",
@@ -159,7 +159,7 @@ const AdminEmployers = () => {
             "& .MuiTabs-indicator": {
               height: 4,
               borderRadius: 4,
-              background: "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)",
+              // background: "linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)",
               bottom: 0,
             },
             "& .MuiTab-root": {
@@ -176,14 +176,14 @@ const AdminEmployers = () => {
 
               "&:hover": {
                 opacity: 1,
-                backgroundColor: alpha("#e2e8f0", 0.4),
+                // backgroundColor: alpha("#e2e8f0", 0.4),
               },
 
               "&.Mui-selected": {
                 color: "#1e40af",
                 fontWeight: 700,
                 opacity: 1,
-                backgroundColor: alpha("#eff6ff", 0.6),
+                // backgroundColor: alpha("#eff6ff", 0.6),
               },
             },
           }}
@@ -243,10 +243,10 @@ const AdminEmployers = () => {
             width: { xs: "100%", sm: 360 },
             "& .MuiOutlinedInput-root": {
               borderRadius: 12,
-              bgcolor: alpha("#f8f9fa", 0.85),
+              // bgcolor: alpha("#f8f9fa", 0.85),
               transition: "all 0.2s",
-              "&:hover": { bgcolor: "#f1f3f5" },
-              "&.Mui-focused": { bgcolor: "white" },
+              // "&:hover": { bgcolor: "#f1f3f5" },
+              // "&.Mui-focused": { bgcolor: "white" },
             },
           }}
         />
@@ -449,7 +449,7 @@ const AdminEmployers = () => {
                       fontWeight: 600,
                       borderRadius: 20,
                       px: 2.5,
-                      background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
+                      // background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
                       boxShadow: "0 4px 12px rgba(16,185,129,0.4)",
                       "&:hover": {
                         background: "linear-gradient(135deg, #059669 0%, #10b981 100%)",
