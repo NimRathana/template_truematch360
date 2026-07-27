@@ -16,7 +16,6 @@ function InnerLayout({ children }) {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        bgcolor: '#F4F1F1',
       }}
     >
       <Topbar />
