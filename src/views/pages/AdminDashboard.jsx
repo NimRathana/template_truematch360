@@ -348,46 +348,46 @@ const AdminDashboard = () => {
               <Chip
                 label={`${t('pending')}: ${stats.applications.pending}`}
                 sx={{
+                  width: '100%',
                   bgcolor: '#f97316',
                   color: '#fff',
                   fontWeight: 600,
                   fontSize: 11,
                   py: 0.3,
                 }}
-                fullWidth
               />
               <Chip
                 label={`${t('shortlisted')}: ${stats.applications.shortlisted}`}
                 sx={{
+                  width: '100%',
                   bgcolor: '#3b82f6',
                   color: '#fff',
                   fontWeight: 600,
                   fontSize: 11,
                   py: 0.3,
                 }}
-                fullWidth
               />
               <Chip
                 label={`${t('rejected')}: ${stats.applications.rejected}`}
                 sx={{
+                  width: '100%',
                   bgcolor: '#ef4444',
                   color: '#fff',
                   fontWeight: 600,
                   fontSize: 11,
                   py: 0.3,
                 }}
-                fullWidth
               />
               <Chip
                 label={`${t('accepted')}: ${stats.applications.accepted}`}
                 sx={{
+                  width: '100%',
                   bgcolor: '#10b981',
                   color: '#fff',
                   fontWeight: 600,
                   fontSize: 11,
                   py: 0.3,
                 }}
-                fullWidth
               />
             </Box>
           )}

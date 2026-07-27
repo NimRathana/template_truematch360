@@ -2,7 +2,7 @@ import axios from 'axios'
 import useAuthStore from '../store/useAuthStore'
 
 const resolveApiBaseUrl = () => {
-  const configured = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.VITE_API_BASE_URL
+  const configured = process.env.VITE_API_BASE_URL
 
   if (configured) {
     return configured.replace(/\/$/, '')

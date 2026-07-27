@@ -30,7 +30,7 @@ function InnerLayout({ children }) {
 
 export default function MainLayout({ children }) {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <InnerLayout>{children}</InnerLayout>
     </BrowserRouter>
   );
