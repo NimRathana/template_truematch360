@@ -16,7 +16,7 @@ const iconStyles = theme => ({
   fontSize: '1.25rem',
   position: 'absolute',
   right: '1rem',
-  top: 'calc(50% - 0.5em)',
+  // top: 'calc(50% - 0.5em)',
   pointerEvents: 'none'
 })
 
