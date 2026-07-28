@@ -1,12 +1,12 @@
 'use client';
 
 import ProtectedRoute from '@/components/AuthGuard';
-import EmployerDashboard from '@views/pages/EmployerDashboard';
+import Jobposts from '@views/pages/MyJobs';
 
-export default function EmployerDashboardPage() {
+export default function JobPostsPage() {
   return (
     <ProtectedRoute>
-      <EmployerDashboard />
+      <Jobposts />
     </ProtectedRoute>
   );
 }
