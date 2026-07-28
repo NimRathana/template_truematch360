@@ -1,6 +1,5 @@
-import Chip from '@mui/material/Chip'
-import i18n from '@/configs/i18n'
 import useAuthStore from '@views/store/useAuthStore'
+import i18n from '@/configs/i18n'
 
 const getStoredUserType = () => {
   if (typeof window === 'undefined') return null
@@ -34,7 +33,7 @@ const translateMenuLabels = (items = []) =>
     }
 
     return translatedItem
-  })
+})
 
 const filterMenuByUserType = (items, userType) => {
   const isAllowed = (item) => {
@@ -71,24 +70,21 @@ const filterMenuByUserType = (items, userType) => {
 const baseMenuData = [
   {
     type: 'item',
-    label: 'Home',
-    translationKey: 'home',
+    label: 'home',
     icon: <i className='ri-home-smile-line' />,
     href: '/',
     allowedUserTypes: [1, 2, 3],
   },
   {
     type: 'item',
-    label: 'Dashboard',
-    translationKey: 'dashboard',
+    label: 'dashboard',
     icon: <i className='ri-dashboard-line' />,
     href: '/admin/dashboard',
     allowedUserTypes: [1],
   },
   {
     type: 'item',
-    label: 'Chat',
-    translationKey: 'chat',
+    label: 'chat',
     icon: <i className='ri-message-3-line' />,
     href: '/chat',
     allowedUserTypes: [1, 2, 3],
@@ -97,61 +93,54 @@ const baseMenuData = [
   // ── Admin: Management ──
   {
     type: 'submenu',
-    label: 'Management',
-    translationKey: 'management',
+    label: 'management',
     icon: <i className='ri-admin-line' />,
     allowedUserTypes: [1],
     children: [
       {
         type: 'item',
-        label: 'Users',
-        translationKey: 'users',
+        label: 'users',
         href: '/admin/user',
         icon: <i className='ri-group-line' />
       },
       {
         type: 'item',
-        label: 'Jobs',
-        translationKey: 'jobs',
+        label: 'jobs',
         href: '/admin/jobs',
         icon: <i className='ri-briefcase-line' />
       },
       {
         type: 'item',
-        label: 'Companies',
-        translationKey: 'companies',
+        label: 'companies',
         href: '/admin/employer',
         icon: <i className='ri-building-line' />
       },
       {
         type: 'item',
-        label: 'Candidates',
-        translationKey: 'candidates',
+        label: 'candidates',
         href: '/admin/candidate',
         icon: <i className='ri-user-line' />
       },
       {
         type: 'item',
-        label: 'Audit',
-        translationKey: 'audit',
+        label: 'audit',
         href: '/audit',
         icon: <i className='ri-file-list-3-line' />
       }
     ]
   },
 
+
   // ── Admin: Settings ──
   {
     type: 'submenu',
-    label: 'Settings',
-    translationKey: 'settings',
+    label: 'settings',
     icon: <i className='ri-settings-3-line' />,
     allowedUserTypes: [1],
     children: [
       {
         type: 'item',
-        label: 'System Parameter',
-        translationKey: 'system_parameter',
+        label: 'system_parameter',
         href: '/system_parameter',
         icon: <i className='ri-settings-4-line' />
       }
@@ -161,72 +150,63 @@ const baseMenuData = [
   // ── Employer ──
   {
     type: 'section',
-    label: 'Employer',
-    translationKey: 'employer',
+    label: 'employer',
     allowedUserTypes: [2],
     children: [
       {
         type: 'item',
-        label: 'Applied Candidates',
-        translationKey: 'applied_candidates',
+        label: 'applied_candidates',
         href: '/applied_candidates',
         icon: <i className='ri-user-search-line' />
       },
       {
         type: 'item',
-        label: 'Job Posts',
-        translationKey: 'job_posts',
+        label: 'job_posts',
         href: '/employer',
         icon: <i className='ri-building-4-line' />
       }
     ]
   },
 
+
   // ── Candidate ──
   {
     type: 'section',
-    label: 'Candidate',
-    translationKey: 'candidate',
+    label: 'candidate',
     allowedUserTypes: [3],
     children: [
       {
         type: 'item',
-        label: 'Update Profile',
-        translationKey: 'update_profile',
+        label: 'update_profile',
         href: '/update_profile',
         icon: <i className='ri-user-settings-line' />
       },
       {
         type: 'item',
-        label: 'Candidate Apply',
-        translationKey: 'candidate_apply',
+        label: 'candidate_apply',
         href: '/candidate_apply',
         icon: <i className='ri-file-user-line' />
       },
       {
         type: 'submenu',
-        label: 'CV Templates',
-        translationKey: 'cv_templates',
+        label: 'cv_templates',
         icon: <i className='ri-download-line' />,
         children: [
           {
             type: 'item',
-            label: 'Blue Sidebar Modern',
-            translationKey: 'blue_sidebar_modern',
+            label: 'blue_sidebar_modern',
             href: '#',
             icon: <i className='ri-file-paper-2-line' />
           },
           {
             type: 'item',
-            label: 'Sidebar Tech Template',
-            translationKey: 'sidebar_tech_template',
+            label: 'sidebar_tech_template',
             href: '#',
             icon: <i className='ri-file-code-line' />
           },
           {
             type: 'item',
-            label: 'Classic Software CV',
-            translationKey: 'classic_software_cv',
+            label: 'classic_software_cv',
             href: '#',
             icon: <i className='ri-file-text-line' />
           }
