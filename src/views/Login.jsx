@@ -2,6 +2,7 @@
 
 // React Imports
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // Next Imports
 import Link from '@/components/Link'
@@ -26,16 +27,19 @@ import Illustrations from '@components/Illustrations'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
-import { routes } from '@configs/routes'
 
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
 
 // Service & Auth Imports (Import `api` directly if calling api.post)
-import api from '@/services/api' // <-- Added missing import
-import { saveAuthSession } from '@/libs/auth'
+import api from '@/services/api'
+import useAuthStore from '@views/store/useAuthStore'
 
 const Login = ({ mode }) => {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const { setAccessToken, setUserType, setUserData } = useAuthStore()
+
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [email, setEmail] = useState('')
@@ -49,7 +53,6 @@ const Login = ({ mode }) => {
   const lightImg = '/images/pages/auth-v1-mask-light.png'
 
   // Hooks
-  const router = useRouter()
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
@@ -59,40 +62,48 @@ const Login = ({ mode }) => {
     setError(null)
     setLoading(true)
 
-    const payload = {
-      email,
-      password,
-    }
-
     try {
-      // 1. Make API Call
-      const { data } = await api.post('/user/login', payload)
-
-      // 2. Extract token
-      const token = data?.accessToken || data?.access_token || data?.token
-
-      if (!token) {
-        throw new Error('No access token returned from server')
-      }
-
-      // 3. Save auth session (Only reached if token exists)
-      saveAuthSession({
-        accessToken: token,
-        refreshToken: data?.refreshToken || data?.refresh_token,
-        userData: data?.user || data?.userData,
-        userType: data?.userType || data?.user_type,
+      const { data } = await api.post('/user/login', {
+        email: email.trim(),
+        password,
       })
 
-      // 4. Redirect user
-      const search = typeof window !== 'undefined' ? window.location.search : ''
-      const params = new URLSearchParams(search)
-      const fallbackPath = params.get('from') || routes.dashboard
+      const token = data?.accessToken || data?.access_token || data?.token
+      if (!token) {
+        throw new Error(t ? t('login_failed') : 'Login failed')
+      }
 
-      router.replace(fallbackPath)
+      setAccessToken(token)
+      setUserType(data?.userType || data?.user_type)
+      setUserData(data)
+
+      setEmail('')
+      setPassword('')
+      setRemember(false)
+
+      switch (data?.user_type || data?.userType) {
+        case 1:
+          router.replace('/admin/dashboard')
+          break
+        case 2:
+          router.replace('/employer')
+          break
+        case 3:
+          router.replace('/update_profile')
+          break
+        default:
+          router.replace('/')
+      }
     } catch (err) {
-      // This catches API errors, missing token errors, or connection failures
-      console.error('Login Error:', err.status, err.code, err.message)
-      setError(err.message || 'Login failed')
+      if (err.response?.status === 429) {
+        setError(err.response.data.detail || (t ? t('complete_security_check') : 'Please complete the security check'))
+      } else if (err.response?.status === 404 && err.response.data?.detail === 'Email not found') {
+        setError(t ? t('email_not_found') : 'Email not found')
+      } else if (err.response?.status === 400 && err.response.data?.detail === 'Invalid password') {
+        setError(t ? t('invalid_password') : 'Invalid password')
+      } else {
+        setError(err.response?.data?.detail || err.message || (t ? t('login_failed') : 'Login failed'))
+      }
     } finally {
       setLoading(false)
     }
