@@ -4,16 +4,19 @@
 import classnames from 'classnames'
 
 // MUI Imports
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, Stack } from '@mui/material'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
-import NavSearch from '@components/layout/shared/search'
 import ModeDropdown from '@components/layout/shared/ModeDropdown'
 import UserDropdown from '@components/layout/shared/UserDropdown'
 import TranslateDropdown from '@components/layout/shared/TranslateDropdown'
 import NavToggle from '../horizontal/NavToggle'
 import useHorizontalNav from "@menu/hooks/useHorizontalNav";
+import useAuthStore from '@views/store/useAuthStore'
+import Button from '@mui/material/Button'
+import { useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 
 // Util Imports
 import { horizontalLayoutClasses } from '@layouts/utils/layoutClasses'
@@ -21,12 +24,13 @@ import themeConfig from '@configs/themeConfig'
 
 const NavbarContent = () => {
   const { isBreakpointReached } = useHorizontalNav();
+  const access_token = useAuthStore(state => state.access_token);
+  const router = useRouter();
+  const { t } = useTranslation();
+
   return (
     <Box
-      className={classnames(
-        horizontalLayoutClasses.navbarContent,
-        'flex items-center justify-between gap-4 is-full'
-      )}
+      className={classnames(horizontalLayoutClasses.navbarContent, 'flex items-center justify-between gap-4 is-full')}
       sx={{
         paddingInline: `${themeConfig.layoutPadding}px`,
         transition: 'padding 0.3s ease',
@@ -54,7 +58,19 @@ const NavbarContent = () => {
           <i className='ri-notification-2-line' />
         </IconButton>
         
-        <UserDropdown />
+        {/* Show login/register when not authenticated, else show user dropdown */}
+        {!access_token ? (
+          <Stack direction="row" spacing={1.5} sx={{ ml: 1.5 }}>
+            <Button size='small' variant='outlined' onClick={() => router.push('/login')}>
+              {t ? t('login') : 'Login'}
+            </Button>
+            <Button size='small' variant='contained' onClick={() => router.push('/register')}>
+              {t ? t('register') : 'Register'}
+            </Button>
+          </Stack>
+        ) : (
+          <UserDropdown />
+        )}
       </div>
     </Box>
   )

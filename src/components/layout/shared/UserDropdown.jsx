@@ -70,9 +70,6 @@ const UserDropdown = () => {
     try { clearAccessToken(); } catch (err) { console.warn('clearAccessToken failed', err) }
     setOpen(false);
 
-    // Navigate immediately
-    router.replace(url || '/login');
-
     // Call server logout in background (best-effort)
     try {
       await api.post('/user/logout', null, { headers: token ? { Authorization: 'Bearer ' + token } : {} });
