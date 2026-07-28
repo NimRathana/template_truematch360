@@ -169,7 +169,7 @@ const Login = ({ mode }) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
                   gap: 1,
                   flexWrap: 'wrap',
@@ -198,7 +198,7 @@ const Login = ({ mode }) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justify: 'center',
+                  justifyContent: 'center',
                   alignItems: 'center',
                   flexWrap: 'wrap',
                   gap: 2,
