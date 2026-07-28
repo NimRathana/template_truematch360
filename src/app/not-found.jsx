@@ -1,10 +1,23 @@
-import { redirect } from 'next/navigation'
+// Component Imports
+import Providers from '@components/Providers'
+import BlankLayout from '@layouts/BlankLayout'
+import NotFound from '@views/NotFound'
 
-const NotFoundPage = () => {
-  redirect('/not-found')
+// Util Imports
+import { getServerMode } from '@core/utils/serverHelpers'
+
+const NotFoundPage = async () => {
+  // Vars
+  const direction = 'ltr'
+  const mode = await getServerMode()
+
+  return (
+    <Providers>
+      <BlankLayout>
+        <NotFound mode={mode} />
+      </BlankLayout>
+    </Providers>
+  )
 }
 
 export default NotFoundPage
-
-
-
