@@ -1,7 +1,8 @@
 import React from "react";
+import MyJobs from "@views/pages/MyJobs"
 
 const EmployerDashboard = () => {
-    return <div>EmployerDashboard</div>;
+    return <MyJobs />;
 };
 
 export default EmployerDashboard;
