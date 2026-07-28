@@ -7,8 +7,6 @@ import NotFound from '@views/NotFound'
 import { getServerMode } from '@core/utils/serverHelpers'
 
 const NotFoundPage = async () => {
-  // Vars
-  const direction = 'ltr'
   const mode = await getServerMode()
 
   return (
