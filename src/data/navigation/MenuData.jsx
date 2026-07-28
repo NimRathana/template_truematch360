@@ -11,29 +11,6 @@ const getStoredUserType = () => {
   return Number.isNaN(parsedUserType) ? null : parsedUserType
 }
 
-const getTranslatedLabel = (item) => {
-  const translationKey = item.translationKey || item.labelKey || item.label
-
-  if (!translationKey) return item.label
-
-  const translated = i18n.t(translationKey, { defaultValue: item.label })
-
-  return translated || item.label
-}
-
-const translateMenuLabels = (items = []) =>
-  items.map((item) => {
-    const translatedItem = {
-      ...item,
-      label: getTranslatedLabel(item),
-    }
-
-    if (item.children?.length) {
-      translatedItem.children = translateMenuLabels(item.children)
-    }
-
-    return translatedItem
-})
 
 const filterMenuByUserType = (items, userType) => {
   const isAllowed = (item) => {
@@ -64,7 +41,7 @@ const filterMenuByUserType = (items, userType) => {
     }
   })
 
-  return translateMenuLabels(filtered)
+  return filtered
 }
 
 const baseMenuData = [
@@ -261,3 +238,23 @@ const createDynamicRoleMap = () => {
 export const MenuData = createDynamicMenuArray()
 
 export const MenuDataByRole = createDynamicRoleMap()
+
+// Helper: translate labels at render time using the i18n 't' function.
+// Call this from components so translations update immediately when language changes.
+export const translateMenuLabels = (items = [], t) => {
+  if (!t || typeof t !== 'function') return items
+
+  return items.map(item => {
+    const translated = { ...item, label: t(item.label) }
+    if (item.children && Array.isArray(item.children)) {
+      translated.children = translateMenuLabels(item.children, t)
+    }
+    return translated
+  })
+}
+
+// Convenience: get translated menu for current user
+export const getTranslatedMenuForUser = (t, userType = getStoredUserType()) => {
+  const items = getMenuDataForUser(userType)
+  return translateMenuLabels(items, t)
+}

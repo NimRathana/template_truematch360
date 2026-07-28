@@ -14,7 +14,8 @@ import themeConfig from '@configs/themeConfig'
 
 // Components
 import VerticalMenu from "./VerticalMenu";
-import { MenuData } from "@data/navigation/MenuData";
+import { MenuData, translateMenuLabels } from "@data/navigation/MenuData";
+import { useTranslation } from 'react-i18next'
 
 // Styles
 import menuItemStyles from "@core/styles/horizontal/menuItemStyles";
@@ -50,6 +51,8 @@ const HorizontalMenu = () => {
     toggleVerticalNav,
     transitionDuration,
   } = useHorizontalNav();
+
+  const { t } = useTranslation()
 
   // Render Menu Items
   const renderMenuItems = (items, parentKey = "") => {
@@ -87,6 +90,8 @@ const HorizontalMenu = () => {
     });
   };
 
+  const translatedMenuData = translateMenuLabels(MenuData, t)
+
   return (
     <>
       <Drawer
@@ -122,7 +127,7 @@ const HorizontalMenu = () => {
           renderExpandIcon={RenderExpandIcon}
           subMenuOpenBehavior="hover"
         >
-          {renderMenuItems(MenuData)}
+          {renderMenuItems(translatedMenuData)}
         </Menu>
       )}
     </>

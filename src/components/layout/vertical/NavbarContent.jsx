@@ -26,7 +26,7 @@ const NavbarContent = ({ scrolled, isHorizontal }) => {
     >
       <div className='flex items-center gap-2 sm:gap-4'>
         <NavToggle />
-        <NavSearch />
+        {/* <NavSearch /> */}
       </div>
       <div className='flex items-center'>
         <TranslateDropdown />

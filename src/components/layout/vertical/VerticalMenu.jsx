@@ -1,3 +1,5 @@
+"use client"
+
 // MUI Imports
 import { useTheme } from '@mui/material/styles'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -7,7 +9,8 @@ import StyledVerticalNavExpandIcon from '@menu/vertical/styles/StyledVerticalNav
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
 import { useSettings } from '@core/hooks/useSettings'
-import { MenuData } from '@data/navigation/MenuData'
+import { MenuData, translateMenuLabels } from '@data/navigation/MenuData'
+import { useTranslation } from 'react-i18next'
 
 const RenderExpandIcon = ({ open, transitionDuration }) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
@@ -21,9 +24,12 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
   const { settings } = useSettings()
   const { isBreakpointReached, transitionDuration } = useVerticalNav()
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
+  const { t } = useTranslation()
 
-  const renderMenuItems = (items, parentKey = '') =>
-    items.map((item, index) => {
+  const items = translateMenuLabels(MenuData, t)
+
+  const renderMenuItems = (itemsToRender, parentKey = '') =>
+    itemsToRender.map((item, index) => {
       const key = `${parentKey}-${item.label}-${index}`
 
       if (item.type === 'section') {
@@ -78,7 +84,7 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
         menuSectionStyles={menuSectionStyles(theme, isCollapsed)}
         isCollapsed={isCollapsed}
       >
-        {renderMenuItems(MenuData)}
+        {renderMenuItems(items)}
       </Menu>
     </ScrollWrapper>
   )
