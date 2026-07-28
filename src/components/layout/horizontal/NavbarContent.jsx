@@ -4,7 +4,7 @@
 import classnames from 'classnames'
 
 // MUI Imports
-import { Box, IconButton, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
@@ -25,6 +25,7 @@ import themeConfig from '@configs/themeConfig'
 const NavbarContent = () => {
   const { isBreakpointReached } = useHorizontalNav();
   const access_token = useAuthStore(state => state.access_token);
+  const isAuthenticated = Boolean(access_token)
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -38,29 +39,22 @@ const NavbarContent = () => {
       }}
     >
       {/* LEFT: Logo & Search */}
-      <div className='flex items-center gap-4 sm:gap-6'>
-        <NavToggle />
-        {!isBreakpointReached && <Logo />}
+      <div className='flex items-center gap-4 sm:gap-6' style={{ minWidth: 0, flexShrink: 0 }}>
+        {isAuthenticated && <NavToggle />}
+        {(!isAuthenticated || !isBreakpointReached) && <Logo />}
       </div>
 
       {/* RIGHT: System Utilities */}
       <div className='flex items-center gap-1.5'>
-        <TranslateDropdown />
-        <ModeDropdown />
+        {!isBreakpointReached && (
+          <>
+            <TranslateDropdown />
+            <ModeDropdown />
+          </>
+        )}
         
-        <IconButton 
-          sx={{
-            color: "text.primary",
-            transition: "transform 0.3s ease-in-out",
-            "&:hover": { transform: "rotate(15deg)" },
-          }}
-        >
-          <i className='ri-notification-2-line' />
-        </IconButton>
-        
-        {/* Show login/register when not authenticated, else show user dropdown */}
-        {!access_token ? (
-          <Stack direction="row" spacing={1.5} sx={{ ml: 1.5 }}>
+        {!isAuthenticated ? (
+          <Stack direction="row" spacing={1.5} sx={{ ml: 1.5, flexWrap: 'nowrap', minWidth: 0 }}>
             <Button size='small' variant='outlined' onClick={() => router.push('/login')}>
               {t ? t('login') : 'Login'}
             </Button>
