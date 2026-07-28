@@ -9,7 +9,7 @@ import StyledVerticalNavExpandIcon from '@menu/vertical/styles/StyledVerticalNav
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
 import { useSettings } from '@core/hooks/useSettings'
-import { MenuData, translateMenuLabels } from '@data/navigation/MenuData'
+import { MenuData } from '@data/navigation/MenuData'
 import { useTranslation } from 'react-i18next'
 
 const RenderExpandIcon = ({ open, transitionDuration }) => (
@@ -26,15 +26,13 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
   const { t } = useTranslation()
 
-  const items = translateMenuLabels(MenuData, t)
-
   const renderMenuItems = (itemsToRender, parentKey = '') =>
     itemsToRender.map((item, index) => {
       const key = `${parentKey}-${item.label}-${index}`
 
       if (item.type === 'section') {
         return (
-          <MenuSection key={key} label={item.label}>
+          <MenuSection key={key} label={t(item.label)}>
             {renderMenuItems(item.children, key)}
           </MenuSection>
         )
@@ -42,7 +40,7 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
 
       if (item.type === 'submenu') {
         return (
-          <SubMenu key={key} label={item.label} icon={item.icon} suffix={item.suffix}>
+          <SubMenu key={key} label={t(item.label)} icon={item.icon} suffix={item.suffix}>
             {renderMenuItems(item.children, key)}
           </SubMenu>
         )
@@ -57,7 +55,7 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
           suffix={item.suffix}
           disabled={item.disabled}
         >
-          {item.label}
+          {t(item.label)}
         </MenuItem>
       )
     })
@@ -84,7 +82,7 @@ const VerticalMenu = ({ scrollMenu, isCollapsed }) => {
         menuSectionStyles={menuSectionStyles(theme, isCollapsed)}
         isCollapsed={isCollapsed}
       >
-        {renderMenuItems(items)}
+        {renderMenuItems(MenuData)}
       </Menu>
     </ScrollWrapper>
   )

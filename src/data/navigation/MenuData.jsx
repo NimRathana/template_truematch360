@@ -238,23 +238,3 @@ const createDynamicRoleMap = () => {
 export const MenuData = createDynamicMenuArray()
 
 export const MenuDataByRole = createDynamicRoleMap()
-
-// Helper: translate labels at render time using the i18n 't' function.
-// Call this from components so translations update immediately when language changes.
-export const translateMenuLabels = (items = [], t) => {
-  if (!t || typeof t !== 'function') return items
-
-  return items.map(item => {
-    const translated = { ...item, label: t(item.label) }
-    if (item.children && Array.isArray(item.children)) {
-      translated.children = translateMenuLabels(item.children, t)
-    }
-    return translated
-  })
-}
-
-// Convenience: get translated menu for current user
-export const getTranslatedMenuForUser = (t, userType = getStoredUserType()) => {
-  const items = getMenuDataForUser(userType)
-  return translateMenuLabels(items, t)
-}

@@ -14,7 +14,7 @@ import themeConfig from '@configs/themeConfig'
 
 // Components
 import VerticalMenu from "./VerticalMenu";
-import { MenuData, translateMenuLabels } from "@data/navigation/MenuData";
+import { MenuData } from "@data/navigation/MenuData";
 import { useTranslation } from 'react-i18next'
 
 // Styles
@@ -67,7 +67,7 @@ const HorizontalMenu = () => {
         return (
           <SubMenu
             key={key}
-            label={item.label}
+            label={t(item.label)}
             icon={item.icon}
             suffix={item.suffix}
           >
@@ -84,13 +84,11 @@ const HorizontalMenu = () => {
           suffix={item.suffix}
           disabled={item.disabled}
         >
-          {item.label}
+          {t(item.label)}
         </MenuItem>
       );
     });
   };
-
-  const translatedMenuData = translateMenuLabels(MenuData, t)
 
   return (
     <>
@@ -127,7 +125,7 @@ const HorizontalMenu = () => {
           renderExpandIcon={RenderExpandIcon}
           subMenuOpenBehavior="hover"
         >
-          {renderMenuItems(translatedMenuData)}
+          {renderMenuItems(MenuData)}
         </Menu>
       )}
     </>

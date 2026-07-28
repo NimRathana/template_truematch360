@@ -13,6 +13,7 @@ import Link from '@/components/Link'
 import Logo from '@components/layout/shared/Logo'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
+import { useTranslation } from 'react-i18next'
 
 const RenderExpandIcon = ({ open, transitionDuration }) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
@@ -24,6 +25,7 @@ const VerticalMenu = ({ scrollMenu }) => {
   const theme = useTheme()
   const { settings } = useSettings()
   const { isBreakpointReached, transitionDuration, toggleVerticalNav } = useHorizontalNav()
+  const { t } = useTranslation()
 
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
 
@@ -33,7 +35,7 @@ const VerticalMenu = ({ scrollMenu }) => {
 
       if (item.type === 'section') {
         return (
-          <MenuSection key={key} label={item.label}>
+          <MenuSection key={key} label={t(item.label)}>
             {renderMenuItems(item.children, key)}
           </MenuSection>
         )
@@ -41,7 +43,7 @@ const VerticalMenu = ({ scrollMenu }) => {
 
       if (item.type === 'submenu') {
         return (
-          <SubMenu key={key} label={item.label} icon={item.icon} suffix={item.suffix}>
+          <SubMenu key={key} label={t(item.label)} icon={item.icon} suffix={item.suffix}>
             {renderMenuItems(item.children, key)}
           </SubMenu>
         )
@@ -56,7 +58,7 @@ const VerticalMenu = ({ scrollMenu }) => {
           suffix={item.suffix}
           disabled={item.disabled}
         >
-          {item.label}
+          {t(item.label)}
         </MenuItem>
       )
     })
