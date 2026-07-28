@@ -103,12 +103,6 @@ const baseMenuData = [
         label: 'Audit',
         href: '/audit',
         icon: <i className='ri-file-list-3-line' />
-      },
-      {
-        type: 'item',
-        label: 'System Parameters',
-        href: '/system_parameters',
-        icon: <i className='ri-settings-3-line' />
       }
     ]
   },
