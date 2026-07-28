@@ -17,9 +17,9 @@ const RootLayout = async ({ children }) => {
     <html id='__next' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         <LocalizationProviderWrapper>
-        <Providers>
-          <AuthLayoutSwitcher>{children}</AuthLayoutSwitcher>
-        </Providers>
+          <Providers>
+            <AuthLayoutSwitcher>{children}</AuthLayoutSwitcher>
+          </Providers>
         </LocalizationProviderWrapper>
       </body>
     </html>

@@ -9,11 +9,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  ListItemIcon,
   ListItemText,
+  ListItemIcon,
   Fade,
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import Flag from 'react-world-flags';
 
 // Icon Imports
 import LanguageOutlinedIcon from '@mui/icons-material/Language';
@@ -53,9 +54,9 @@ const TranslateDropdown = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const supportedLanguages = [
-    { code: 'en', label: 'English', icon: '🇺🇸' },
-    { code: 'fr', label: 'Français', icon: '🇫🇷' },
-    { code: 'km', label: 'ខ្មែរ', icon: '🇰🇭' },
+    { code: 'en', label: 'English', country: 'US' },
+    { code: 'fr', label: 'Français', country: 'FR' },
+    { code: 'km', label: 'ខ្មែរ', country: 'KH' },
   ];
 
   const currentLanguage = i18n.language || 'en';
@@ -103,6 +104,17 @@ const TranslateDropdown = () => {
             selected={currentLanguage === lang.code}
             onClick={() => handleLanguageSelect(lang.code)}
           >
+            <ListItemIcon sx={{ minWidth: 32 }}>
+              <Flag
+                code={lang.country}
+                style={{
+                  width: 22,
+                  height: 16,
+                  borderRadius: 2,
+                  objectFit: 'cover',
+                }}
+              />
+            </ListItemIcon>
             <ListItemText
               primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
               sx={{ ml: 1 }}
