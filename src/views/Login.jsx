@@ -111,21 +111,20 @@ const Login = ({ mode }) => {
 
   return (
     <div className='flex flex-col justify-center items-center' style={{ minHeight: '100vh', position: 'relative', padding: 24 }}>
-      <Card className='flex flex-col sm:w-[450px]'>
-        <CardContent sx={{ p: { xs: 6, sm: 12 } }}>
+      <Card 
+        sx={{
+          width: '100%',
+          maxWidth: 450,
+          p: { xs: 3, sm: 6 }
+        }}
+      >
+        <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
             <Link href='/'>
               <Logo />
             </Link>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <Box>
-              <Typography variant="h4">{`Welcome to ${themeConfig.templateName}!👋🏻`}</Typography>
-              <Typography sx={{ mb: 1 }}>
-                Please sign-in to your account and start the adventure
-              </Typography>
-            </Box>
-
             <Box
               component="form"
               noValidate
@@ -136,7 +135,7 @@ const Login = ({ mode }) => {
               <TextField
                 autoFocus
                 fullWidth
-                label="Email"
+                label={t('email') || 'Email'}
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
@@ -144,7 +143,7 @@ const Login = ({ mode }) => {
 
               <TextField
                 fullWidth
-                label="Password"
+                label={t('password') || 'Password'}
                 id="outlined-adornment-password"
                 type={isPasswordShown ? 'text' : 'password'}
                 value={password}
@@ -175,13 +174,13 @@ const Login = ({ mode }) => {
                   flexWrap: 'wrap',
                 }}
               >
-                <FormControlLabel control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} />} label="Remember me" />
+                <FormControlLabel control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} />} label={t('remember_me') || 'Remember me'} />
                 <Typography
                   sx={{ textAlign: 'right', color: 'primary.main', cursor: 'pointer' }}
                   component={Link}
                   href="/forgot-password"
                 >
-                  Forgot password?
+                  {t('forgot_password') || 'Forgot password?'}
                 </Typography>
               </Box>
 
@@ -192,7 +191,7 @@ const Login = ({ mode }) => {
               )}
 
               <Button fullWidth variant="contained" type="submit" disabled={loading}>
-                {loading ? 'Signing in...' : 'Log In'}
+                {loading ? t('login')+'...' || 'Signing in...' : t('login') || 'Log In'}
               </Button>
 
               <Box
@@ -204,31 +203,14 @@ const Login = ({ mode }) => {
                   gap: 2,
                 }}
               >
-                <Typography>New on our platform?</Typography>
+                <Typography>{t('dont_have_account')+'?' || "Don't have an account?"}</Typography>
                 <Typography
                   component={Link}
                   href="/register"
                   sx={{ color: 'primary.main', cursor: 'pointer' }}
                 >
-                  Create an account
+                  {t('create_account') || 'Create an account'}
                 </Typography>
-              </Box>
-
-              <Divider>or</Divider>
-
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
-                <IconButton sx={{ color: '#4267B2' }}>
-                  <i className="ri-facebook-fill" />
-                </IconButton>
-                <IconButton sx={{ color: '#1DA1F2' }}>
-                  <i className="ri-twitter-fill" />
-                </IconButton>
-                <IconButton>
-                  <i className="ri-github-fill" />
-                </IconButton>
-                <IconButton sx={{ color: '#DB4437' }}>
-                  <i className="ri-google-fill" />
-                </IconButton>
               </Box>
             </Box>
           </Box>

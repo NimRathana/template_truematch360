@@ -571,5 +571,9 @@
   "messages_selected": "សារជាច្រើនត្រូវបានជ្រើសរើស",
   "retry": "ព្យាយាមម្ដងទៀត",
   "resume_created_date": "ថ្ងៃបង្កើតរូបភាពប្រវត្តិរូប",
-  "candidate_name": "ឈ្មោះបេក្ខជន"
+  "candidate_name": "ឈ្មោះបេក្ខជន",
+  "already_have_account": "មានគណនីរួចហើយ",
+  "dont_have_account": "មិនទាន់មានគណនីទេ",
+  "remember_me": "ចងចាំខ្ញុំ"
+
 }

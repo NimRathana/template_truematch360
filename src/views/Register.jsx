@@ -114,29 +114,21 @@ const Register = ({ mode }) => {
         alignItems: 'center',
         minHeight: '100vh',
         position: 'relative',
-        p: 6
       }}
     >
       <Card
         sx={{
           width: '100%',
-          maxWidth: 620,
+          maxWidth: 450,
+          p: { xs: 3, sm: 6 }
         }}
       >
-        <CardContent sx={{ p: { xs: 6, sm: 12 } }}>
+        <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
             <Link href='/'>
               <Logo />
             </Link>
           </Box>
-
-          <Typography variant="h4" gutterBottom sx={{ letterSpacing: 0.4, fontWeight: 700 }}>
-            Create your account
-          </Typography>
-
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 440 }}>
-            Join us and get started today
-          </Typography>
 
           <Box
             component="form"
@@ -206,7 +198,6 @@ const Register = ({ mode }) => {
                 onChange={e => setUserType(e.target.value)}
                 required
               >
-                <MenuItem value="">{t('select_user_type') || 'Select user type'}</MenuItem>
                 <MenuItem value="2">{t('employer') || 'Employer'}</MenuItem>
                 <MenuItem value="3">{t('candidate') || 'Candidate'}</MenuItem>
               </TextField>
@@ -218,7 +209,6 @@ const Register = ({ mode }) => {
                 value={gender}
                 onChange={e => setGender(e.target.value)}
               >
-                <MenuItem value="">{t('select_gender') || 'Select gender'}</MenuItem>
                 <MenuItem value="Male">{t('male') || 'Male'}</MenuItem>
                 <MenuItem value="Female">{t('female') || 'Female'}</MenuItem>
               </TextField>
@@ -250,23 +240,8 @@ const Register = ({ mode }) => {
               minRows={3}
             />
 
-            <FormControlLabel
-              control={<Checkbox required />}
-              label={
-                <>
-                  <span>I agree to </span>
-                  <Box
-                    component="a"
-                    sx={{ color: 'primary.main', cursor: 'pointer' }}
-                  >
-                    privacy policy & terms
-                  </Box>
-                </>
-              }
-            />
-
             <Button fullWidth variant="contained" type="submit" disabled={loading}>
-              {loading ? 'Signing up...' : 'Sign Up'}
+              {loading ? t('register')+'...' || 'Registering...' : t('register') || 'Register'}
             </Button>
 
             <Box
@@ -279,31 +254,14 @@ const Register = ({ mode }) => {
                 mt: 1,
               }}
             >
-              <Typography>{'Already have an account?'}</Typography>
+              <Typography>{t('already_have_account')+'?' || 'Already have an account?'}</Typography>
               <Typography
                 component={Link}
                 href="/login"
                 sx={{ color: 'primary.main', cursor: 'pointer', textDecoration: 'underline' }}
               >
-                {'Sign in'}
+                {t('login') || 'Log In'}
               </Typography>
-            </Box>
-
-            <Divider>{t('or') || 'or'}</Divider>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
-              <IconButton size="small" sx={{ color: '#4267B2' }}>
-                <i className="ri-facebook-fill" />
-              </IconButton>
-              <IconButton size="small" sx={{ color: '#1DA1F2' }}>
-                <i className="ri-twitter-fill" />
-              </IconButton>
-              <IconButton size="small">
-                <i className="ri-github-fill" />
-              </IconButton>
-              <IconButton size="small" sx={{ color: '#DB4437' }}>
-                <i className="ri-google-fill" />
-              </IconButton>
             </Box>
           </Box>
         </CardContent>
