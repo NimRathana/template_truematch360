@@ -8,7 +8,7 @@ const MenuItem = ({ href = '#', children, className, onClick, target, rel, ...re
   const content = (
     <a
       href={href}
-      className={classnames('materio-horizontal-menuitem', className)}
+      className={classnames('horizontal-menuitem', className)}
       onClick={onClick}
       target={target}
       rel={rel}
