@@ -2,7 +2,16 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import useAuthStore from '@views/store/useAuthStore'
+import { createRoot } from "react-dom/client";
+import html2pdf from "html2pdf.js";
+import useAuthStore from "@views/store/useAuthStore";
+import api from "@/services/api";
+import { t } from "i18next";
+
+// CV Templates
+import BlueSidebarModern from "@views/pages/cv_template/BlueSidebarModern";
+import ClassicSoftwareCV from "@views/pages/cv_template/ClassicCV";
+import SidebarTechTemplate from "@views/pages/cv_template/SidebarTechTemplate";
 
 // MUI Imports
 import {
@@ -22,9 +31,11 @@ import {
   Box,
   ListItemIcon,
   ListItemText,
+  Collapse,
 } from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
-// Styled components for that "Premium" feel
 const BadgeContentSpan = styled("span")(({ theme }) => ({
   width: 10,
   height: 10,
@@ -47,37 +58,109 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);
+  const [openCv, setOpenCv] = useState(false);
   const anchorRef = useRef(null);
   const router = useRouter();
+  const { user_data, clearAccessToken } = useAuthStore();
 
-  const clearAccessToken = useAuthStore(state => state.clearAccessToken)
+  const profileUrl = `${process.env.VITE_API_BASE_URL}/uploads/user/profile/${user_data?.user_data?.profile_image}`
+  const userName = user_data?.user_data?.user_name || user_data?.user_data?.email || "User";
+  const userEmail = user_data?.user_data?.email || "—";
+  const userType = user_data?.user_data?.user_type;
+
+  // Same CV templates as Topbar
+  const cvTemplates = [
+    { name: t("blue_sidebar_modern"), id: "blue-sidebar-modern" },
+    { name: t("sidebar_tech_template"), id: "sidebar-tech-template" },
+    { name: t("classic_software_cv"), id: "classic-software" },
+  ];
+
+  const cvTemplateMap = {
+    "blue-sidebar-modern": BlueSidebarModern,
+    "sidebar-tech-template": SidebarTechTemplate,
+    "classic-software": ClassicSoftwareCV,
+  };
+
   const handleToggle = () => setOpen((prev) => !prev);
 
   const handleClose = (event, url) => {
     if (url) router.push(url);
-    // Prevents closing if clicking the toggle button itself (handled by handleToggle)
     if (anchorRef.current && anchorRef.current.contains(event?.target)) return;
     setOpen(false);
+    setOpenCv(false);
   };
 
-  const handleDropdownClose = async (event, url) => {
+  const handleLogout = async (event, url) => {
     event?.preventDefault();
+    const token = useAuthStore.getState().access_token || (typeof window !== "undefined" ? window.localStorage.getItem("access_token") : null);
 
-    // capture token for server logout
-    const token = useAuthStore.getState().access_token || (typeof window !== 'undefined' ? window.localStorage.getItem('access_token') : null)
-
-    // Clear local session & close dropdown
-    try { clearAccessToken(); } catch (err) { console.warn('clearAccessToken failed', err) }
-    setOpen(false);
-
-    // Call server logout in background (best-effort)
     try {
-      await api.post('/user/logout', null, { headers: token ? { Authorization: 'Bearer ' + token } : {} });
+      clearAccessToken();
     } catch (err) {
-      console.warn('Logout API failed (ignored):', err?.message || err);
+      console.warn("clearAccessToken failed", err);
+    }
+
+    setOpen(false);
+    setOpenCv(false);
+
+    if (url) router.push(url);
+
+    try {
+      await api.post("/user/logout", null, {
+        headers: token ? { Authorization: "Bearer " + token } : {},
+      });
+    } catch (err) {
+      console.warn("Logout API failed (ignored):", err?.message || err);
     }
   };
 
+  const DownloadCvTemplate = async (template) => {
+    try {
+      const [candidateRes, profileRes] = await Promise.all([
+        api.get("/candidate/me"),
+        api.get("/user/profile"),
+      ]);
+
+      const candidate = candidateRes.data || {};
+      const profile = profileRes.data || {};
+      const mergedData = { ...candidate, ...profile };
+
+      const TemplateComponent = cvTemplateMap[template.id];
+      if (!TemplateComponent) throw new Error("Template not found");
+
+      exportPdfFromComponent(
+        TemplateComponent,
+        mergedData,
+        `cv-${template.id}.pdf`,
+      );
+    } catch (error) {
+      console.error("Error downloading CV template:", error);
+    }
+  };
+
+  const exportPdfFromComponent = (Component, data, filename = "cv.pdf") => {
+    const tempDiv = document.createElement("div");
+    const root = createRoot(tempDiv);
+    root.render(<Component candidate={data} />);
+
+    setTimeout(() => {
+      html2pdf()
+        .set({
+          margin: 0,
+          filename,
+          html2canvas: { scale: 2, useCORS: true },
+          pagebreak: { mode: "avoid-all" },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        })
+        .from(tempDiv)
+        .save()
+        .then(() => {
+          root.unmount();
+          tempDiv.remove();
+        })
+        .catch((err) => console.error("PDF export failed:", err));
+    }, 50);
+  };
 
   return (
     <>
@@ -90,17 +173,17 @@ const UserDropdown = () => {
       >
         <Avatar
           ref={anchorRef}
-          alt="John Doe"
-          src="/images/avatars/1.png"
+          alt={userName}
+          src={profileUrl}
           sx={{
             width: 40,
             height: 40,
             transition: "box-shadow 0.2s",
-            boxShadow: open
-              ? (theme) => `0 0 0 2px ${theme.palette.primary.main}`
-              : "none",
+            boxShadow: open ? (theme) => `0 0 0 2px ${theme.palette.primary.main}` : "none",
           }}
-        />
+        >
+          {!profileUrl && userName?.[0]?.toUpperCase()}
+        </Avatar>
       </Badge>
 
       <Popper
@@ -113,7 +196,7 @@ const UserDropdown = () => {
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={250}>
-            <Card sx={{ mt: 1.5 }}>
+            <Card sx={{ mt: 1.5, minWidth: 240, maxWidth: 320 }}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
                   {/* User Profile Header */}
@@ -121,29 +204,27 @@ const UserDropdown = () => {
                     sx={{
                       px: 2,
                       py: 1.5,
-                      backgroundColor: (theme) =>
-                        alpha(theme.palette.primary.main, 0.02),
+                      backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.02),
                     }}
                   >
                     <Box display="flex" alignItems="center" gap={1.5}>
-                      <Avatar
-                        src="/images/avatars/1.png"
-                        sx={{ width: 44, height: 44 }}
-                      />
+                      <Avatar src={profileUrl} sx={{ width: 44, height: 44 }}>
+                        {!profileUrl && userName?.[0]?.toUpperCase()}
+                      </Avatar>
                       <Box>
                         <Typography
                           variant="subtitle2"
                           noWrap
                           sx={{ fontWeight: 600 }}
                         >
-                          John Doe
+                          {userName}
                         </Typography>
                         <Typography
                           variant="caption"
                           color="text.secondary"
                           display="block"
                         >
-                          admin@example.com
+                          {userEmail}
                         </Typography>
                       </Box>
                     </Box>
@@ -151,59 +232,105 @@ const UserDropdown = () => {
 
                   <Divider sx={{ mb: 1 }} />
 
-                  {/* Menu Items */}
-                  {[
-                    {
-                      label: "My Profile",
-                      icon: "ri-user-3-line",
-                      url: "/profile",
-                    },
-                    {
-                      label: "Settings",
-                      icon: "ri-settings-4-line",
-                      url: "/settings",
-                    },
-                    {
-                      label: "Pricing",
-                      icon: "ri-money-dollar-circle-line",
-                      url: "/pricing",
-                    },
-                    { label: "FAQ", icon: "ri-question-line", url: "/faq" },
-                  ].map((item) => (
-                    <StyledMenuItem
-                      key={item.label}
-                      onClick={(e) => handleClose(e, item.url)}
-                    >
+                  {/* Update Profile */}
+                  <StyledMenuItem onClick={(e) => handleClose(e, "/profile")}>
+                    <ListItemIcon sx={{ minWidth: "32px !important" }}>
+                      <i
+                        className="ri-user-3-line"
+                        style={{ fontSize: "1.2rem" }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={t("update_profile")}
+                      primaryTypographyProps={{
+                        variant: "body2",
+                        fontWeight: 500,
+                      }}
+                    />
+                  </StyledMenuItem>
+
+                  {/* CV Templates (only for Candidate - user_type 3) */}
+                  {userType === 3 && (
+                    <StyledMenuItem onClick={() => setOpenCv((prev) => !prev)}>
                       <ListItemIcon sx={{ minWidth: "32px !important" }}>
                         <i
-                          className={item.icon}
+                          className="ri-file-list-3-line"
                           style={{ fontSize: "1.2rem" }}
                         />
                       </ListItemIcon>
                       <ListItemText
-                        primary={item.label}
+                        primary={t("cv_templates")}
                         primaryTypographyProps={{
                           variant: "body2",
                           fontWeight: 500,
                         }}
                       />
+                      {openCv ? (
+                        <ExpandLess fontSize="small" />
+                      ) : (
+                        <ExpandMore fontSize="small" />
+                      )}
                     </StyledMenuItem>
-                  ))}
+                  )}
+
+                  {userType === 3 && (
+                    <Collapse in={openCv} timeout="auto" unmountOnExit>
+                      <Box sx={{ pl: 2, pr: 1, pb: 0.5 }}>
+                        {cvTemplates.map((template) => (
+                          <StyledMenuItem
+                            key={template.id}
+                            onClick={() => {
+                              DownloadCvTemplate(template);
+                              setOpen(false);
+                              setOpenCv(false);
+                            }}
+                          >
+                            <ListItemText
+                              primary={template.name}
+                              primaryTypographyProps={{
+                                variant: "body2",
+                                fontSize: "0.875rem",
+                              }}
+                            />
+                          </StyledMenuItem>
+                        ))}
+                      </Box>
+                    </Collapse>
+                  )}
+
+                  {/* Change Password */}
+                  <StyledMenuItem onClick={(e) => handleClose(e, "/settings")}>
+                    <ListItemIcon sx={{ minWidth: "32px !important" }}>
+                      <i
+                        className="ri-lock-password-line"
+                        style={{ fontSize: "1.2rem" }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={t("change_password")}
+                      primaryTypographyProps={{
+                        variant: "body2",
+                        fontWeight: 500,
+                      }}
+                    />
+                  </StyledMenuItem>
 
                   <Divider sx={{ my: 1 }} />
 
-                  {/* Logout Action */}
+                  {/* Logout */}
                   <Box px={2} pb={1.5} pt={0.5}>
                     <Button
                       fullWidth
-                      variant='contained'
-                      color='error'
-                      size='small'
-                      endIcon={<i className='ri-logout-box-r-line' />}
-                      onClick={e => handleDropdownClose(e, '/login')}
-                      sx={{ '& .MuiButton-endIcon': { marginInlineStart: 1.5 } }}
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      endIcon={<i className="ri-logout-box-r-line" />}
+                      onClick={(e) => handleLogout(e, "/login")}
+                      sx={{
+                        "& .MuiButton-endIcon": { marginInlineStart: 1.5 },
+                      }}
                     >
-                      Logout
+                      {t("logout")}
                     </Button>
                   </Box>
                 </MenuList>
