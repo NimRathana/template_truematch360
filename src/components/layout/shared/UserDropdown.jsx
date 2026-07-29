@@ -6,7 +6,8 @@ import { createRoot } from "react-dom/client";
 import html2pdf from "html2pdf.js";
 import useAuthStore from "@views/store/useAuthStore";
 import api from "@/services/api";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import ChangePasswordDialog from '@views/components/ChangePasswordDialog';
 
 // CV Templates
 import BlueSidebarModern from "@views/pages/cv_template/BlueSidebarModern";
@@ -59,11 +60,14 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);
   const [openCv, setOpenCv] = useState(false);
+  const [openChangePassword, setOpenChangePassword] = useState(false);
   const anchorRef = useRef(null);
   const router = useRouter();
+  const { t } = useTranslation();
   const { user_data, clearAccessToken } = useAuthStore();
 
-  const profileUrl = `${process.env.VITE_API_BASE_URL}/uploads/user/profile/${user_data?.user_data?.profile_image}`
+  const profileFilename = user_data?.user_data?.profile_image;
+  const profileUrl = profileFilename && profileFilename !== 'null' && profileFilename !== 'undefined' ? `${(process.env.VITE_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/user/profile/${profileFilename}` : undefined;
   const userName = user_data?.user_data?.user_name || user_data?.user_data?.email || "User";
   const userEmail = user_data?.user_data?.email || "—";
   const userType = user_data?.user_data?.user_type;
@@ -79,6 +83,15 @@ const UserDropdown = () => {
     "blue-sidebar-modern": BlueSidebarModern,
     "sidebar-tech-template": SidebarTechTemplate,
     "classic-software": ClassicSoftwareCV,
+  };
+
+  const handleOpenChangePassword = () => {
+    setOpen(false);
+    setOpenChangePassword(true);
+  };
+
+  const handleCloseChangePassword = () => {
+    setOpenChangePassword(false);
   };
 
   const handleToggle = () => setOpen((prev) => !prev);
@@ -233,7 +246,7 @@ const UserDropdown = () => {
                   <Divider sx={{ mb: 1 }} />
 
                   {/* Update Profile */}
-                  <StyledMenuItem onClick={(e) => handleClose(e, "/profile")}>
+                  <StyledMenuItem onClick={(e) => handleClose(e, "/update_profile")}>
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                       <i
                         className="ri-user-3-line"
@@ -299,7 +312,7 @@ const UserDropdown = () => {
                   )}
 
                   {/* Change Password */}
-                  <StyledMenuItem onClick={(e) => handleClose(e, "/settings")}>
+                  <StyledMenuItem onClick={handleOpenChangePassword}>
                     <ListItemIcon sx={{ minWidth: "32px !important" }}>
                       <i
                         className="ri-lock-password-line"
@@ -316,7 +329,7 @@ const UserDropdown = () => {
                   </StyledMenuItem>
 
                   <Divider sx={{ my: 1 }} />
-
+ 
                   {/* Logout */}
                   <Box px={2} pb={1.5} pt={0.5}>
                     <Button
@@ -339,8 +352,12 @@ const UserDropdown = () => {
           </Fade>
         )}
       </Popper>
+
+      <ChangePasswordDialog
+        open={openChangePassword}
+        onClose={handleCloseChangePassword}
+      />
     </>
   );
 };
-
 export default UserDropdown;

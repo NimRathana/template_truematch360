@@ -164,31 +164,6 @@ const baseMenuData = [
         href: '/candidate_apply',
         icon: <i className='ri-file-user-line' />
       },
-      {
-        type: 'submenu',
-        label: 'cv_templates',
-        icon: <i className='ri-download-line' />,
-        children: [
-          {
-            type: 'item',
-            label: 'blue_sidebar_modern',
-            href: '#',
-            icon: <i className='ri-file-paper-2-line' />
-          },
-          {
-            type: 'item',
-            label: 'sidebar_tech_template',
-            href: '#',
-            icon: <i className='ri-file-code-line' />
-          },
-          {
-            type: 'item',
-            label: 'classic_software_cv',
-            href: '#',
-            icon: <i className='ri-file-text-line' />
-          }
-        ]
-      }
     ]
   }
 ]
