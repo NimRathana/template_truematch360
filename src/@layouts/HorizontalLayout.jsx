@@ -47,7 +47,7 @@ const HorizontalLayout = (props) => {
   `;
 
   return (
-    <div className={classnames(horizontalLayoutClasses.root, "flex flex-col min-h-screen")}>
+    <div className={classnames(horizontalLayoutClasses.root, "flex flex-col min-h-screen h-full")}>
       <StyledHeader
         overrideStyles={overrideStyles}
         isContentCompact={isContentCompact}

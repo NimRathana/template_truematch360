@@ -66,7 +66,7 @@ const Audit = () => {
   return (
     <Box
       sx={{
-        height: "calc(100vh - 120px)",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
       }}

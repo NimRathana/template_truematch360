@@ -169,7 +169,7 @@ const SystemParameters = () => {
     ];
 
     return (
-        <Box sx={{ height: "calc(100vh - 120px)", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
             {/* ===== Top Action Bar ===== */}
             <Stack
                 direction="row"

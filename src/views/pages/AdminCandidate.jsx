@@ -216,7 +216,7 @@ const AdminCandidate = () => {
             </Snackbar>
 
             {/* Table */}
-            <Box sx={{ height: "calc(100vh - 120px)" }}>
+            <Box sx={{ height: "100%" }}>
                 <DataGrid
                     rows={candidates}
                     columns={columns}
