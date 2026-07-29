@@ -12,7 +12,7 @@ const VerticalLayout = props => {
   const { navbar, footer, navigation, children } = props
 
   return (
-    <div className={classnames(verticalLayoutClasses.root, 'flex flex-auto')}>
+    <div className={classnames(verticalLayoutClasses.root, 'flex flex-auto min-h-screen')}>
       {navigation || null}
       <div className={classnames(verticalLayoutClasses.contentWrapper, 'flex flex-col min-is-0 is-full')}>
         {navbar || null}
