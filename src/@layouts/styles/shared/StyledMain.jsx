@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import themeConfig from '@configs/themeConfig'
 
 const StyledMain = styled.main`
-  padding-inline: ${themeConfig.layoutPadding}px;
+  padding: ${themeConfig.layoutPadding}px;
   /* padding-inline: ${({ isContentCompact }) => isContentCompact ? '0' : `${themeConfig.layoutPadding}px`}; */
   ${({ isContentCompact }) =>
     isContentCompact &&
