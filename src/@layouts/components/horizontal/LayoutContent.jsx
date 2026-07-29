@@ -12,17 +12,7 @@ const LayoutContent = ({ children }) => {
   return (
     <StyledMain
       isContentCompact={isContentCompact}
-      className={classnames(
-        horizontalLayoutClasses.content, 
-        horizontalLayoutClasses.contentCompact, 
-        'flex-auto is-full'
-      )}
-      sx={{
-        // Give enough top breathing room now that our layout has a horizontal navigation header
-        pt: 6, 
-        pb: 6,
-        px: { xs: 4, md: 6 }
-      }}
+      className={classnames(horizontalLayoutClasses.content, horizontalLayoutClasses.contentCompact, 'flex-auto is-full')}
     >
       {children}
     </StyledMain>

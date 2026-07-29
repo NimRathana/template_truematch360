@@ -14,7 +14,6 @@ import LayoutContent from "./components/horizontal/LayoutContent";
 import { useSettings } from "@core/hooks/useSettings";
 import themeConfig from "@configs/themeConfig";
 import StyledHeader from '@layouts/styles/horizontal/StyledHeader'
-import StyledMain from '@layouts/styles/shared/StyledMain'
 
 // Util Imports
 import { horizontalLayoutClasses } from "./utils/layoutClasses";
