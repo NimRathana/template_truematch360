@@ -275,7 +275,7 @@ const AdminUsers = () => {
 
     {
       field: "actions",
-      headerName: t('actions'),
+      headerName: t('applications.actions'),
       sortable: false,
       align: "center",
       headerAlign: "center",

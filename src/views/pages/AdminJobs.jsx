@@ -131,7 +131,6 @@ const AdminJobs = () => {
                   transform: "translateY(-3px)",
                   boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
                 },
-                bgcolor: "#fff",
                 border: "3px solid",
                 borderColor: "divider"
               }}
