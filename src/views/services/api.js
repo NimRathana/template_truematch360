@@ -2,13 +2,13 @@ import axios from 'axios'
 import useAuthStore from '@views/store/useAuthStore'
 
 const resolveApiBaseUrl = () => {
-  const configured = process.env.VITE_API_BASE_URL
+  const configured = process.env.NEXT_PUBLIC_API_BASE_URL
 
   if (configured) {
     return configured.replace(/\/$/, '')
   }
 
-  return 'http://localhost:8000'
+  return 'http://127.0.0.1:8000'
 }
 
 const api = axios.create({

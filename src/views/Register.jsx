@@ -30,7 +30,7 @@ import Logo from '@components/layout/shared/Logo'
 import { useImageVariant } from '@core/hooks/useImageVariant'
 
 // Service Imports
-import api from '@/services/api'
+import api from '@views/services/api'
 
 const Register = ({ mode }) => {
   const { t } = useTranslation()

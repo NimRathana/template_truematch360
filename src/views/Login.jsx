@@ -32,7 +32,7 @@ import themeConfig from '@configs/themeConfig'
 import { useImageVariant } from '@core/hooks/useImageVariant'
 
 // Service & Auth Imports (Import `api` directly if calling api.post)
-import api from '@/services/api'
+import api from '@views/services/api'
 import useAuthStore from '@views/store/useAuthStore'
 
 const Login = ({ mode }) => {

@@ -571,8 +571,8 @@
   "retry": "Réessayer",
   "resume_created_date": "Date de création du CV",
   "candidate_name": "Nom du candidat",
-  "already_have_account": "Vous avez déjà un compte ?",
-  "dont_have_account": "Vous n'avez pas de compte ?",
+  "already_have_account": "Vous avez déjà un compte",
+  "dont_have_account": "Vous n'avez pas de compte",
   "remember_me": "Remember me",
   "old_password_incorrect": "L'ancien mot de passe est incorrect"
 } 

@@ -66,6 +66,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  alpha
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import List from "@mui/material/List";
@@ -701,8 +702,6 @@ export default function Dashboard() {
     }
   };
 
-  
-
   const handleSnackbarClose = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
@@ -762,10 +761,6 @@ export default function Dashboard() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, rgba(30, 58, 138, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid rgba(59, 130, 246, 0.2)",
-          boxShadow: "0 8px 32px rgba(30, 58, 138, 0.15)",
           borderRadius: 3,
           overflow: "hidden",
         }}
@@ -777,8 +772,7 @@ export default function Dashboard() {
           justifyContent="space-between"
           alignItems="center"
           sx={{
-            background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)",
-            borderBottom: "1px solid rgba(59, 130, 246, 0.15)",
+            borderBottom: "1px solid var(--mui-palette-divider)",
           }}
         >
           {/* Search Field - unchanged */}
@@ -793,20 +787,10 @@ export default function Dashboard() {
                 fontSize: 13,
                 height: 38,
                 borderRadius: 2.5,
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                "& fieldset": {
-                  borderColor: "rgba(59, 130, 246, 0.2)",
-                },
-                "&:hover fieldset": {
-                  borderColor: "rgba(59, 130, 246, 0.5)",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#3b82f6",
-                },
               },
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 20, color: "#3b82f6" }} />
+                  <SearchIcon sx={{ fontSize: 20 }} />
                 </InputAdornment>
               ),
               endAdornment: searchTerm && (
@@ -816,7 +800,7 @@ export default function Dashboard() {
                     onClick={() => setSearchTerm("")}
                     sx={{ p: 0.25 }}
                   >
-                    <Cancel sx={{ fontSize: 18, color: "#f97316" }} />
+                    <Cancel sx={{ fontSize: 18 }} />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -833,14 +817,7 @@ export default function Dashboard() {
                 width: 38,
                 height: 38,
                 borderRadius: 2.5,
-                background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 0%, #f97316 90%)",
-                color: "#fff",
-                boxShadow: "0 4px 15px rgba(59, 130, 246, 0.4)",
-                "&:hover": {
-                  background: "linear-gradient(135deg, #1e40af 0%, #2563eb 0%, #ea580c 90%)",
-                  transform: "scale(1.05)",
-                  boxShadow: "0 6px 20px rgba(249, 115, 22, 0.4)",
-                },
+                backgroundColor: "var(--mui-palette-primary-main)",
                 transition: "all 0.2s ease",
               }}
             >
@@ -866,11 +843,6 @@ export default function Dashboard() {
             fullWidth
             PaperProps={{
               sx: {
-                borderRadius: 4,
-                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(239, 246, 255, 0.85) 100%)",
-                backdropFilter: "blur(20px)",
-                border: "1px solid rgba(59, 130, 246, 0.25)",
-                boxShadow: "0 25px 50px -12px rgba(30, 58, 138, 0.3)",
                 overflow: "hidden",
                 maxHeight: "80vh",
               },
@@ -878,8 +850,7 @@ export default function Dashboard() {
           >
             <DialogTitle
               sx={{
-                background: "linear-gradient(135deg, rgba(30, 58, 138, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%)",
-                borderBottom: "1px solid rgba(59, 130, 246, 0.2)",
+                borderBottom: "1px solid var(--mui-palette-divider)",
                 py: 2,
                 px: 3,
                 mb: 1,
@@ -889,12 +860,6 @@ export default function Dashboard() {
                 <Typography
                   variant="h6"
                   fontWeight={700}
-                  sx={{
-                    background: "#1e3a8a",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
                 >
                   {t('filter_sort_jobs')}
                 </Typography>
@@ -920,7 +885,6 @@ export default function Dashboard() {
                   variant="subtitle2"
                   fontWeight={600}
                   sx={{
-                    color: "#1e3a8a",
                     mb: 1.5,
                     display: "flex",
                     alignItems: "center",
@@ -942,18 +906,9 @@ export default function Dashboard() {
                         justifyContent: "flex-start",
                         py: 1.2,
                         px: 2,
-                        borderRadius: 2,
                         textTransform: "none",
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                        backdropFilter: "blur(8px)",
-                        "&:hover": {
-                          borderColor: "#3b82f6",
-                          background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                        },
                       }}
-                      startIcon={<CategoryRoundedIcon sx={{ color: "#3b82f6" }}/>}
+                      startIcon={<CategoryRoundedIcon />}
                       endIcon={
                         <Stack direction="row" spacing={1} alignItems="center">
                           {!categoryFilter.includes("All") && categoryFilter.length > 0 && (
@@ -961,8 +916,6 @@ export default function Dashboard() {
                               size="small"
                               label={categoryFilter.length}
                               sx={{
-                                background: "linear-gradient(135deg, #3b82f6 0%, #f97316 100%)",
-                                color: "#fff",
                                 height: 20,
                                 fontSize: "0.7rem",
                               }}
@@ -971,7 +924,6 @@ export default function Dashboard() {
                           <ArrowDownward
                             sx={{
                               fontSize: 18,
-                              color: "#f97316",
                               transform: showCategoryDropdown ? "rotate(180deg)" : "none",
                               transition: "transform 0.2s",
                             }}
@@ -990,10 +942,7 @@ export default function Dashboard() {
                           mt: 1,
                           maxHeight: 250,
                           overflowY: "auto",
-                          borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.2)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <List dense disablePadding>
@@ -1003,19 +952,13 @@ export default function Dashboard() {
                             sx={{ 
                               borderRadius: 1, 
                               py: 1,
-                              "&.Mui-selected": {
-                                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
-                                "&:hover": {
-                                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(249, 115, 22, 0.12) 100%)",
-                                },
-                              },
                             }}
                           >
                             <Checkbox
                               size="small"
                               checked={categoryFilter.includes("All")}
                               icon={<CheckBoxOutlineBlank fontSize="small" />}
-                              checkedIcon={<CheckBox fontSize="small" sx={{ color: "#3b82f6" }}/>}
+                              checkedIcon={<CheckBox fontSize="small" />}
                             />
                             <ListItemText primary={t("all")} />
                           </ListItemButton>
@@ -1026,10 +969,9 @@ export default function Dashboard() {
                                 key={cat.pk_id}
                                 selected={checked}
                                 sx={{ 
-                                  borderRadius: 1, 
                                   py: 1,
                                   "&.Mui-selected": {
-                                    background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                    background: "var(--mui-palette-action-selected)",
                                   }, 
                                 }}
                                 onClick={() => {
@@ -1047,7 +989,7 @@ export default function Dashboard() {
                                   size="small"
                                   checked={checked}
                                   icon={<CheckBoxOutlineBlank fontSize="small" />}
-                                  checkedIcon={<CheckBox fontSize="small" sx={{ color: "#3b82f6" }}/>}
+                                  checkedIcon={<CheckBox fontSize="small" />}
                                 />
                                 <ListItemText primary={cat.name} />
                               </ListItemButton>
@@ -1068,18 +1010,9 @@ export default function Dashboard() {
                         justifyContent: "flex-start",
                         py: 1.2,
                         px: 2,
-                        borderRadius: 2,
                         textTransform: "none",
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                        backdropFilter: "blur(8px)",
-                        "&:hover": {
-                          borderColor: "#3b82f6",
-                          background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                        },
                       }}
-                      startIcon={<WorkOutlineIcon sx={{ color: "#3b82f6" }}/>}
+                      startIcon={<WorkOutlineIcon />}
                       endIcon={
                         <Stack direction="row" spacing={1} alignItems="center">
                           {Array.isArray(typeFilter) && typeFilter.length > 0 && !typeFilter.includes("All") && (
@@ -1087,8 +1020,6 @@ export default function Dashboard() {
                               size="small"
                               label={typeFilter.length}
                               sx={{
-                                background: "linear-gradient(135deg, #3b82f6 0%, #f97316 100%)",
-                                color: "#fff",
                                 height: 20,
                                 fontSize: "0.7rem",
                               }}
@@ -1097,7 +1028,6 @@ export default function Dashboard() {
                           <ArrowDownward
                             sx={{
                               fontSize: 18,
-                              color: "#f97316",
                               transform: showTypeDropdown ? "rotate(180deg)" : "none",
                               transition: "transform 0.2s",
                             }}
@@ -1127,20 +1057,16 @@ export default function Dashboard() {
                           mt: 1,
                           maxHeight: 250,
                           overflowY: "auto",
-                          borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.2)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <List dense disablePadding>
                           <ListItemButton
                             selected={Array.isArray(typeFilter) ? typeFilter.includes("All") : typeFilter === "All"}
                             sx={{ 
-                              borderRadius: 1,
                               py: 1,
                               "&.Mui-selected": {
-                                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                background: "var(--mui-palette-action-selected)",
                               }, 
                             }}
                             onClick={() => setTypeFilter(["All"])}
@@ -1148,7 +1074,6 @@ export default function Dashboard() {
                             <Checkbox 
                               checked={Array.isArray(typeFilter) ? typeFilter.includes("All") : typeFilter === "All"} 
                               size="small" 
-                              sx={{ "&.Mui-checked": { color: "#3b82f6" } }}
                             />
                             <ListItemText primary={t("all")} />
                           </ListItemButton>
@@ -1156,10 +1081,9 @@ export default function Dashboard() {
                           <ListItemButton
                             selected={Array.isArray(typeFilter) && typeFilter.includes("Full-time")}
                             sx={{ 
-                              borderRadius: 1, 
                               py: 1,
                               "&.Mui-selected": {
-                                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                background: "var(--mui-palette-action-selected)",
                               }, 
                             }}
                             onClick={() => {
@@ -1177,7 +1101,6 @@ export default function Dashboard() {
                             <Checkbox 
                               checked={Array.isArray(typeFilter) && typeFilter.includes("Full-time")} 
                               size="small" 
-                              sx={{ "&.Mui-checked": { color: "#3b82f6" } }}
                             />
                             <ListItemText primary={t("full_time")} />
                           </ListItemButton>
@@ -1185,10 +1108,9 @@ export default function Dashboard() {
                           <ListItemButton
                             selected={Array.isArray(typeFilter) && typeFilter.includes("Part-time")}
                             sx={{ 
-                              borderRadius: 1, 
                               py: 1,
                               "&.Mui-selected": {
-                                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                background: "var(--mui-palette-action-selected)",
                               }, 
                             }}
                             onClick={() => {
@@ -1206,7 +1128,6 @@ export default function Dashboard() {
                             <Checkbox 
                               checked={Array.isArray(typeFilter) && typeFilter.includes("Part-time")} 
                               size="small" 
-                              sx={{ "&.Mui-checked": { color: "#3b82f6" } }}
                             />
                             <ListItemText primary={t("part_time")} />
                           </ListItemButton>
@@ -1214,10 +1135,9 @@ export default function Dashboard() {
                           <ListItemButton
                             selected={Array.isArray(typeFilter) && typeFilter.includes("Internship")}
                             sx={{ 
-                              borderRadius: 1, 
                               py: 1,
                               "&.Mui-selected": {
-                                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                background: "var(--mui-palette-action-selected)",
                               }, 
                             }}
                             onClick={() => {
@@ -1235,7 +1155,6 @@ export default function Dashboard() {
                             <Checkbox 
                               checked={Array.isArray(typeFilter) && typeFilter.includes("Internship")} 
                               size="small" 
-                              sx={{ "&.Mui-checked": { color: "#3b82f6" } }}
                             />
                             <ListItemText primary={t("internship")} />
                           </ListItemButton>
@@ -1254,43 +1173,23 @@ export default function Dashboard() {
                         justifyContent: "flex-start",
                         py: 1.2,
                         px: 2,
-                        borderRadius: 2,
-                        textTransform: "none",
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                        backdropFilter: "blur(8px)",
-                        "&:hover": {
-                          borderColor: "#3b82f6",
-                          background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                        },
                       }}
-                      startIcon={<EventIcon sx={{ color: "#3b82f6" }}/>}
+                      startIcon={<EventIcon />}
                       endIcon={
                         <Stack direction="row" spacing={1} alignItems="center">
                           {dateFilterMode !== "all" && (
                             <Chip
                               size="small"
-                              label={
-                                dateFilterMode === "today"
-                                  ? t('today')
-                                  : dateFilterMode === "last7"
-                                    ? t('last_7_days')
-                                    : t('custom')
-                              }
-                              variant="outlined"
+                              label={dateFilterMode === "today" ? t('today') : dateFilterMode === "last7" ? t('last_7_days') : t('custom')}
                               sx={{
                                 height: 20,
                                 fontSize: "0.7rem",
-                                borderColor: "#f97316",
-                                color: "#f97316",
                               }}
                             />
                           )}
                           <ArrowDownward
                             sx={{
                               fontSize: 18,
-                              color: "#f97316",
                               transform: showDateFilterDropdown ? "rotate(180deg)" : "none",
                               transition: "transform 0.2s",
                             }}
@@ -1308,10 +1207,7 @@ export default function Dashboard() {
                         sx={{
                           mt: 1,
                           p: 2,
-                          borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.2)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <RadioGroup
@@ -1325,10 +1221,10 @@ export default function Dashboard() {
                             }
                           }}
                         >
-                          <FormControlLabel value="all" control={<Radio size="small" sx={{ color: "#3b82f6", "&.Mui-checked": { color: "#3b82f6" } }}/>} label={t('all_dates')} />
-                          <FormControlLabel value="today" control={<Radio size="small" sx={{ color: "#3b82f6", "&.Mui-checked": { color: "#3b82f6" } }}/>} label={t('today')} />
-                          <FormControlLabel value="last7" control={<Radio size="small" sx={{ color: "#3b82f6", "&.Mui-checked": { color: "#3b82f6" } }}/>} label={t('last_7_days')} />
-                          <FormControlLabel value="custom" control={<Radio size="small" sx={{ color: "#3b82f6", "&.Mui-checked": { color: "#3b82f6" } }}/>} label={t('custom_range')} />
+                          <FormControlLabel value="all" control={<Radio size="small" />} label={t('all_dates')} />
+                          <FormControlLabel value="today" control={<Radio size="small" />} label={t('today')} />
+                          <FormControlLabel value="last7" control={<Radio size="small" />} label={t('last_7_days')} />
+                          <FormControlLabel value="custom" control={<Radio size="small" />} label={t('custom_range')} />
                         </RadioGroup>
 
                         {dateFilterMode === "custom" && (
@@ -1342,13 +1238,6 @@ export default function Dashboard() {
                                 textField: { 
                                   size: "small", 
                                   fullWidth: true,
-                                  sx: {
-                                    "& .MuiOutlinedInput-root": {
-                                      "&.Mui-focused fieldset": {
-                                        borderColor: "#3b82f6",
-                                      },
-                                    },
-                                  }, 
                                 } 
                               }}
                               maxDate={dateTo || dayjs()}
@@ -1362,13 +1251,6 @@ export default function Dashboard() {
                                 textField: { 
                                   size: "small", 
                                   fullWidth: true,
-                                  sx: {
-                                    "& .MuiOutlinedInput-root": {
-                                      "&.Mui-focused fieldset": {
-                                        borderColor: "#3b82f6",
-                                      },
-                                    },
-                                  },
                                 }  
                               }}
                               minDate={dateFrom}
@@ -1397,7 +1279,7 @@ export default function Dashboard() {
                 </Stack>
               </Box>
 
-              <Divider sx={{ my: 2, borderColor: "rgba(59, 130, 246, 0.15)" }} />
+              <Divider sx={{ my: 2 }} />
 
               {/* SORT SECTION */}
               <Box sx={{ mb: 2 }}>
@@ -1405,7 +1287,6 @@ export default function Dashboard() {
                   variant="subtitle2"
                   fontWeight={600}
                   sx={{
-                    color: "#1e3a8a",
                     mb: 1.5,
                     display: "flex",
                     alignItems: "center",
@@ -1427,37 +1308,24 @@ export default function Dashboard() {
                         justifyContent: "flex-start",
                         py: 1.2,
                         px: 2,
-                        borderRadius: 2,
                         textTransform: "none",
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                        backdropFilter: "blur(8px)",
-                        "&:hover": {
-                          borderColor: "#3b82f6",
-                          background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                        },
                       }}
-                      startIcon={<EventIcon sx={{ color: "#3b82f6" }}/>}
+                      startIcon={<EventIcon />}
                       endIcon={
                         <Stack direction="row" spacing={1} alignItems="center">
                           {sortBy.startsWith("date-") && (
                             <Chip
                               size="small"
                               label={sortBy === "date-desc" ? t('newest') : t('oldest')}
-                              variant="outlined"
                               sx={{
                                 height: 20,
                                 fontSize: "0.7rem",
-                                borderColor: "#f97316",
-                                color: "#f97316",
                               }}
                             />
                           )}
                           <ArrowDownward
                             sx={{
                               fontSize: 18,
-                              color: "#f97316",
                               transform: showDateSortDropdown ? "rotate(180deg)" : "none",
                               transition: "transform 0.2s",
                             }}
@@ -1474,10 +1342,7 @@ export default function Dashboard() {
                         elevation={0}
                         sx={{
                           mt: 1,
-                          borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.2)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <List dense disablePadding>
@@ -1496,13 +1361,13 @@ export default function Dashboard() {
                                 borderRadius: 1,
                                 py: 1.5,
                                 "&.Mui-selected": {
-                                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                  background: "var(--mui-palette-action-selected)",
                                 }, 
                               }}
                             >
                               <ListItemText primary={item.label} />
                               {sortBy === item.value && (
-                                <CheckCircle sx={{ fontSize: 18, color: "#3b82f6" }} />
+                                <CheckCircle sx={{ fontSize: 18, color: "primary.main" }} />
                               )}
                             </ListItemButton>
                           ))}
@@ -1521,37 +1386,24 @@ export default function Dashboard() {
                         justifyContent: "flex-start",
                         py: 1.2,
                         px: 2,
-                        borderRadius: 2,
                         textTransform: "none",
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                        backdropFilter: "blur(8px)",
-                        "&:hover": {
-                          borderColor: "#3b82f6",
-                          background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                        },
                       }}
-                      startIcon={<BadgeIcon sx={{ color: "#3b82f6" }} />}
+                      startIcon={<BadgeIcon />}
                       endIcon={
                         <Stack direction="row" spacing={1} alignItems="center">
                           {sortBy.startsWith("title-") && (
                             <Chip
                               size="small"
                               label={sortBy === "title-asc" ? t('a_to_z') : t('z_to_a')}
-                              variant="outlined"
                               sx={{
                                 height: 20,
                                 fontSize: "0.7rem",
-                                borderColor: "#f97316",
-                                color: "#f97316",
                               }}
                             />
                           )}
                           <ArrowDownward
                             sx={{
                               fontSize: 18,
-                              color: "#f97316",
                               transform: showTitleSortDropdown ? "rotate(180deg)" : "none",
                               transition: "transform 0.2s",
                             }}
@@ -1568,10 +1420,7 @@ export default function Dashboard() {
                         elevation={0}
                         sx={{
                           mt: 1,
-                          borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.2)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <List dense disablePadding>
@@ -1587,16 +1436,15 @@ export default function Dashboard() {
                                 setShowTitleSortDropdown(false);
                               }}
                               sx={{ 
-                                borderRadius: 1, 
                                 py: 1.5,
                                 "&.Mui-selected": {
-                                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%)",
+                                  background: "var(--mui-palette-action-selected)",
                                 }, 
                               }}
                             >
                               <ListItemText primary={item.label} />
                               {sortBy === item.value && (
-                                <CheckCircle sx={{ fontSize: 18, color: "#3b82f6" }} />
+                                <CheckCircle sx={{ fontSize: 18, color: "primary.main" }} />
                               )}
                             </ListItemButton>
                           ))}
@@ -1610,9 +1458,12 @@ export default function Dashboard() {
 
             <DialogActions
               sx={{
-                pt: 0,
+                pt: "unset !important",
+                padding: "unset",
+                pt: "8px !important",
+                padding: "8px",
                 gap: 1,
-                borderTop: "1px solid rgba(59, 130, 246, 0.15)",
+                borderTop: "1px solid var(--mui-palette-divider)",
               }}
             >
               <Button
@@ -1636,15 +1487,7 @@ export default function Dashboard() {
                   setShowTitleSortDropdown(false);
                 }}
                 sx={{
-                  mt: 1,
                   textTransform: "none",
-                  borderRadius: 2,
-                  borderColor: "rgba(239, 68, 68, 0.3)",
-                  color: "#ef4444",
-                  "&:hover": {
-                    borderColor: "#ef4444",
-                    bgcolor: "rgba(239, 68, 68, 0.05)",
-                  },
                 }}
               >
                 {t('reset_all')}
@@ -1660,17 +1503,7 @@ export default function Dashboard() {
                   setShowTitleSortDropdown(false);
                 }}
                 sx={{
-                  mt: 1,
                   textTransform: "none",
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  px: 3,
-                  background: "#1e3a8a",
-                  boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)",
-                  "&:hover": {
-                    background: "#1e3a8a",
-                    boxShadow: "0 6px 20px rgba(249, 115, 22, 0.4)",
-                  },
                 }}
               >
                 {t('done')}
@@ -1679,7 +1512,7 @@ export default function Dashboard() {
           </Dialog>
         </Stack>
 
-        <Divider sx={{ borderColor: "rgba(59, 130, 246, 0.15)" }} />
+        <Divider />
 
         {/* Job List - exactly the same as before */}
         <Box
@@ -1687,7 +1520,6 @@ export default function Dashboard() {
             flex: 1,
             overflowY: "auto",
             minHeight: 0,
-            background: "linear-gradient(135deg, rgba(250, 250, 250, 0.6) 0%, rgba(239, 246, 255, 0.4) 100%)",
           }}
         >
           {/* ... rest of the job list code remains unchanged ... */}
@@ -1706,10 +1538,6 @@ export default function Dashboard() {
                 elevation={0}
                 sx={{
                   p: 2,
-                  borderRadius: 4,
-                  background: "linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(239, 246, 255, 0.3) 100%)",
-                  backdropFilter: "blur(8px)",
-                  border: "1px solid rgba(59, 130, 246, 0.15)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -1757,39 +1585,25 @@ export default function Dashboard() {
                       py: { xs: 1, sm: 1.15 },
                       cursor: "pointer",
                       position: "relative",
-                      backgroundColor: active
-                        ? "linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%)"
-                        : "transparent",
-                      borderLeft: active
-                        ? "4px solid"
-                        : "4px solid transparent",
-                      borderImage: active
-                        ? "linear-gradient(180deg, #3b82f6 0%, #f97316 100%) 1"
-                        : "none",
-                      borderBottom: "1px solid rgba(59, 130, 246, 0.1)",
+                      backgroundColor: (theme) => active ? alpha(theme.palette.primary.main, 0.15) : "transparent",
+                      borderLeft: active ? "4px solid var(--mui-palette-primary-main)" : "0px solid transparent",
+                      borderBottom: active ? "1px solid var(--mui-palette-primary-main)" : "none",
                       transition: "all 0.2s ease",
                       "&:hover": {
-                        background: active
-                          ? "linear-gradient(135deg, rgba(59, 130, 246, 0.18) 0%, rgba(249, 115, 22, 0.12) 100%)"
-                          : "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
                         transform: "translateY(2px)",
                       },
                     }}
                   >
                     <Stack direction="row" spacing={1.5} alignItems="center">
                       <Avatar
-                        src={
-                          logoFilename
-                            ? `${baseURL}/uploads/employers/${logoFilename}`
-                            : undefined
-                        }
+                        src={logoFilename ? `${baseURL}/uploads/employers/${logoFilename}` : undefined}
                         alt={`${companyName} logo`}
                         sx={{
                           width: { xs: 40, sm: 50 },
                           height: { xs: 40, sm: 50 },
                           border: "2px solid",
-                          borderColor: "rgba(59, 130, 246, 0.3)",
-                          boxShadow: "0 2px 8px rgba(30, 58, 138, 0.15)",
+                          borderColor: "primary.main",
                           "& img": { objectFit: "contain" },
                         }}
                       >
@@ -1809,7 +1623,7 @@ export default function Dashboard() {
                             sx={{
                               fontSize: "0.95rem",
                               lineHeight: 1.3,
-                              color: active ? "#1e3a8a" : "text.primary",
+                              color: active ? "primary.main" : "text.primary",
                             }}
                           >
                             {job.job_title}
@@ -1860,14 +1674,9 @@ export default function Dashboard() {
                                 key={cat.pk_id}
                                 label={cat.name}
                                 size="small"
-                                variant="outlined"
                                 sx={{
                                   fontSize: "0.68rem",
                                   height: 20,
-                                  borderRadius: "6px",
-                                  borderColor: "#3b82f6",
-                                  color: "#1e3a8a",
-                                  bgcolor: "rgba(59, 130, 246, 0.08)",
                                 }}
                               />
                             ))}
@@ -1887,16 +1696,13 @@ export default function Dashboard() {
                         )}
                         <Stack direction="row" spacing={0.3} mt={0.5} alignItems="center" justifyContent="space-between" flexWrap="wrap">
                           <Chip
-                            icon={<EventIcon sx={{ color: "#3b82f6" }}/>}
+                            icon={<EventIcon />}
                             label={`${t("posted")}: ${postedInfo.date}`}
                             size="small"
-                            variant="outlined"
                             color="primary"
                             sx={{
                               fontSize: "0.72rem",
                               height: 22,
-                              borderColor: "rgba(59, 130, 246, 0.2)",
-                              color: "#1e3a8a",
                             }}
                           />
                           {/* Days Count Chip - New addition */}
@@ -1945,7 +1751,7 @@ export default function Dashboard() {
                       }}
                     >
                       {loadingMore ? (
-                        <CircularProgress size={18} sx={{ color: "#3b82f6" }}/>
+                        <CircularProgress size={18} />
                       ) : (
                         <ArrowDownward />
                       )}
@@ -1955,7 +1761,7 @@ export default function Dashboard() {
               )}
               {!hasMore && filteredJobs.length > 0 && (
                 <Box sx={{ p: 3, textAlign: "center", color: "text.secondary" }}>
-                  <Typography variant="body2" sx={{ color: "#1e3a8a" }}>{t("no_more_jobs")}</Typography>
+                  <Typography variant="body2">{t("no_more_jobs")}</Typography>
                 </Box>
               )}
             </>
@@ -2062,35 +1868,15 @@ export default function Dashboard() {
     const companyName = selectedJob?.employer?.company_name;
     const logoFilename = selectedJob?.employer?.company_logo;
     return (
-      <Box
+      <Card
         sx={{
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, rgba(30, 58, 138, 0.06) 0%, rgba(249, 115, 22, 0.04) 100%)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid rgba(59, 130, 246, 0.2)",
-          boxShadow: "0 8px 32px rgba(30, 58, 138, 0.12)",
           borderRadius: 3,
           overflow: "hidden",
         }}
       >
-        {/* Mobile top bar */}
-        {isMobile && (
-          <AppBar 
-            position="sticky" 
-            color="default" 
-            elevation={0}
-            sx={{
-              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(239, 246, 255, 0.85) 100%)",
-              backdropFilter: "blur(10px)",
-              borderBottom: "1px solid rgba(59, 130, 246, 0.15)",
-            }}
-          >
-            <Toolbar variant="dense" />
-          </AppBar>
-        )}
-
         {selectedJob ? (
           <Box sx={{ flex: 1, overflowY: "auto", pb: { xs: 10, sm: 4 } }}>
             {/* Hero section – like screenshot */}
@@ -2098,25 +1884,18 @@ export default function Dashboard() {
               sx={{ 
                 p: 3, 
                 pb: 2.5, 
-                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)",
-                borderBottom: "1px solid rgba(59, 130, 246, 0.12)" 
               }}
             >
               <Stack direction="row" spacing={2} alignItems="center">
                 <Stack direction="row" spacing={2} alignItems="center" flex={1}>
                   <Avatar
-                    src={
-                      logoFilename
-                        ? `${baseURL}/uploads/employers/${logoFilename}`
-                        : undefined
-                    }
+                    src={logoFilename ? `${baseURL}/uploads/employers/${logoFilename}` : undefined}
                     alt={`${companyName} logo`}
                     sx={{
                       width: { xs: 56, sm: 62 },
                       height: { xs: 56, sm: 62 },
                       border: "3px solid",
-                      borderColor: "rgba(59, 130, 246, 0.3)",
-                      boxShadow: "0 4px 12px rgba(30, 58, 138, 0.15)",
+                      borderColor: "primary.main",
                       "& img": { objectFit: "contain" },
                     }}
                   >
@@ -2127,12 +1906,6 @@ export default function Dashboard() {
                       variant="h6" 
                       fontWeight={700} 
                       lineHeight={1.3}
-                      sx={{ 
-                        background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #f97316 100%)",
-                        backgroundClip: "text",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }}
                     >
                       {selectedJob.job_title}
                     </Typography>
@@ -2144,9 +1917,6 @@ export default function Dashboard() {
                         height: 26,
                         fontSize: "0.8rem",
                         fontWeight: 500,
-                        background: "linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%)",
-                        color: "#1e3a8a",
-                        border: "1px solid rgba(59, 130, 246, 0.3)",
                         alignSelf: "flex-start",
                       }}
                     />
@@ -2164,17 +1934,8 @@ export default function Dashboard() {
                     disabled={applying[selectedJob?.pk_id]}
                     sx={{
                       display: {  xs: "none", md: "inline-flex"},
-                      px: 3,
-                      py: 1,
-                      borderRadius: 2.5,
                       textTransform: "none",
                       fontWeight: 600,
-                      background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 0%, #f97316 105%)",
-                      boxShadow: "0 4px 15px rgba(59, 130, 246, 0.4)",
-                      "&:hover": {
-                        background: "linear-gradient(135deg, #1e40af 0%, #2563eb 0%, #ea580c 105%)",
-                        boxShadow: "0 6px 20px rgba(249, 115, 22, 0.4)",
-                      },
                     }}
                   >
                     {hasAppliedToThisJob ? t('reapply') : t('apply_now')}
@@ -2189,16 +1950,6 @@ export default function Dashboard() {
                         color="primary"
                         size="small"
                         onClick={handleOpenApplyDialog}
-                        sx={{
-                          minWidth: 42,
-                          height: 42,
-                          borderRadius: 2.5,
-                          background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 0%, #f97316 105%)",
-                          boxShadow: "0 4px 15px rgba(59, 130, 246, 0.4)",
-                          "&:hover": {
-                            background: "linear-gradient(135deg, #1e40af 0%, #2563eb 0%, #ea580c 105%)",
-                          },
-                        }}
                       >
                         <Send fontSize="small" />
                       </Button>
@@ -2211,19 +1962,6 @@ export default function Dashboard() {
                       variant="outlined"
                       onClick={() => setCompanyDialogOpen(true)}
                       size="small"
-                      color="info"
-                      sx={{
-                        minWidth: 42,
-                        height: 42,
-                        borderRadius: 2.5,
-                        borderColor: "rgba(59, 130, 246, 0.4)",
-                        color: "#3b82f6",
-                        "&:hover": {
-                          borderColor: "#f97316",
-                          color: "#f97316",
-                          backgroundColor: "rgba(249, 115, 22, 0.08)",
-                        },
-                      }}
                     >
                       <InfoOutlinedIcon />
                     </Button>
@@ -2243,11 +1981,6 @@ export default function Dashboard() {
                   fullWidth
                   PaperProps={{
                     sx: {
-                      borderRadius: 4,
-                      background: "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(239, 246, 255, 0.85) 100%)",
-                      backdropFilter: "blur(20px)",
-                      border: "1px solid rgba(59, 130, 246, 0.25)",
-                      boxShadow: "0 25px 50px -12px rgba(30, 58, 138, 0.3)",
                       overflow: "hidden",
                       maxHeight: "85vh",
                     },
@@ -2257,8 +1990,7 @@ export default function Dashboard() {
                   <DialogTitle
                     id="draggable-dialog-title"
                     sx={{
-                      background: "linear-gradient(135deg, rgba(30, 58, 138, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%)",
-                      borderBottom: "1px solid rgba(59, 130, 246, 0.2)",
+                      borderBottom: "1px solid var(--mui-palette-divider)",
                       py: 2,
                       px: 3,
                       cursor: "move",
@@ -2267,17 +1999,13 @@ export default function Dashboard() {
                     <Stack direction="row" alignItems="center" justifyContent="space-between">
                       <Stack direction="row" alignItems="center" spacing={1.5}>
                         <Avatar
-                          src={
-                            logoFilename
-                              ? `${baseURL}/uploads/employers/${logoFilename}`
-                              : undefined
-                          }
+                          src={logoFilename ? `${baseURL}/uploads/employers/${logoFilename}` : undefined}
                           alt={`${companyName} logo`}
                           sx={{
                             width: 48,
                             height: 48,
                             border: "2px solid",
-                            borderColor: "rgba(59, 130, 246, 0.3)",
+                            borderColor: "primary.main",
                             "& img": { objectFit: "contain" },
                           }}
                         >
@@ -2286,12 +2014,6 @@ export default function Dashboard() {
                         <Typography
                           variant="h6"
                           fontWeight={700}
-                          sx={{
-                            background: "#1e3a8a",
-                            backgroundClip: "text",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                          }}
                         >
                           {t('company_information')}
                         </Typography>
@@ -2319,9 +2041,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2.5,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="center" spacing={2}>
@@ -2336,7 +2056,7 @@ export default function Dashboard() {
                             >
                               {t('company_name')}:
                             </Typography>
-                            <Typography variant="body1" fontWeight={500} sx={{ color: "#1e3a8a", mt: 0.5 }}>
+                            <Typography variant="body1" fontWeight={500} sx={{ color: "primary.main", mt: 0.5 }}>
                               {selectedJob.employer?.company_name || "—"}
                             </Typography>
                           </Box>
@@ -2349,9 +2069,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="flex-start" spacing={2}>
@@ -2366,7 +2084,7 @@ export default function Dashboard() {
                             >
                               {t('address')}:
                             </Typography>
-                            <Typography variant="body1" sx={{ mt: 0.5, color: "#1e3a8a" }}>
+                            <Typography variant="body1" sx={{ mt: 0.5, color: "primary.main" }}>
                               {selectedJob.employer?.company_address || "—"}
                             </Typography>
                           </Box>
@@ -2379,9 +2097,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="center" spacing={2}>
@@ -2396,7 +2112,7 @@ export default function Dashboard() {
                             >
                               {t('email')}:
                             </Typography>
-                            <Typography variant="body1" sx={{ mt: 0.5, color: "#3b82f6" }}>
+                            <Typography variant="body1" sx={{ mt: 0.5, color: "primary.main" }}>
                               {selectedJob.employer?.company_email || "—"}
                             </Typography>
                           </Box>
@@ -2409,9 +2125,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="center" spacing={2}>
@@ -2426,7 +2140,7 @@ export default function Dashboard() {
                             >
                               {t('contact')}:
                             </Typography>
-                            <Typography variant="body1" sx={{ mt: 0.5, color: "#1e3a8a" }}>
+                            <Typography variant="body1" sx={{ mt: 0.5, color: "primary.main" }}>
                               {selectedJob.employer?.company_contact || "—"}
                             </Typography>
                           </Box>
@@ -2439,9 +2153,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="center" spacing={2}>
@@ -2465,21 +2177,16 @@ export default function Dashboard() {
                                 sx={{
                                   mt: 0.5,
                                   textTransform: "none",
-                                  color: "#3b82f6",
+                                  color: "primary.main",
                                   p: 0,
                                   minWidth: 0,
                                   fontWeight: 500,
-                                  "&:hover": {
-                                    bgcolor: "transparent",
-                                    color: "#f97316",
-                                    textDecoration: "underline",
-                                  },
                                 }}
                               >
                                 {selectedJob.employer.company_website}
                               </Button>
                             ) : (
-                              <Typography variant="body1" sx={{ mt: 0.5, color: "#1e3a8a" }}>—</Typography>
+                              <Typography variant="body1" sx={{ mt: 0.5, color: "primary.main" }}>—</Typography>
                             )}
                           </Box>
                         </Stack>
@@ -2491,9 +2198,7 @@ export default function Dashboard() {
                         sx={{
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(59, 130, 246, 0.15)",
+                          border: "1px solid var(--mui-palette-primary-main)",
                         }}
                       >
                         <Stack direction="row" alignItems="flex-start" spacing={2}>
@@ -2514,9 +2219,12 @@ export default function Dashboard() {
                                 "& .ql-editor": {
                                   padding: 0,
                                   fontSize: "0.95rem",
-                                  color: "#1e3a8a",
+                                  color: "primary.main",
                                 },
                                 "& .ql-container": {
+                                  border: "none",
+                                },
+                                "& .ql-container.ql-snow": {
                                   border: "none",
                                 },
                               }}
@@ -2536,24 +2244,14 @@ export default function Dashboard() {
 
                   <DialogActions
                     sx={{
-                      pt: 1,
-                      borderTop: "1px solid rgba(59, 130, 246, 0.15)",
+                      paddingTop: "8px",
+                      padding: "8px",
+                      borderTop: "1px solid var(--mui-palette-divider)",
                     }}
                   >
                     <Button
                       variant="contained"
                       onClick={() => setCompanyDialogOpen(false)}
-                      sx={{
-                        textTransform: "none",
-                        fontWeight: 600,
-                        borderRadius: 2,
-                        background: "#1e3a8a",
-                        boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)",
-                        "&:hover": {
-                          background: "#1e3a8a",
-                          boxShadow: "0 6px 20px rgba(249, 115, 22, 0.4)",
-                        },
-                      }}
                     >
                       {t('close')}
                     </Button>
@@ -3275,7 +2973,7 @@ export default function Dashboard() {
                 </Dialog>
               </Stack>
 
-              <Divider sx={{ mt: 2, borderColor: "rgba(59, 130, 246, 0.15)" }} />
+              <Divider sx={{ mt: 2 }} />
 
               {/* Quick info chips / rows */}
               
@@ -3295,12 +2993,9 @@ export default function Dashboard() {
                     <Chip
                       label={item.value}
                       size="small"
-                      variant="outlined"
                       sx={{
                         fontSize: "0.78rem",
-                        borderColor: "rgba(59, 130, 246, 0.2)",
-                        color: "#1e3a8a",
-                        backgroundColor: "rgba(255, 255, 255, 0.7)",
+                        backgroundColor: "primary.main",
                       }}
                     />
                   </Stack>
@@ -3312,7 +3007,7 @@ export default function Dashboard() {
                   <Typography variant="body2" fontWeight={600} minWidth={110} color="text.secondary">
                     {t('location')}:
                   </Typography>
-                  <Typography variant="subtitle2" sx={{ color: "#1e3a8a" }}>{selectedJob.location}</Typography>
+                  <Typography variant="subtitle2">{selectedJob.location}</Typography>
                 </Stack>
 
                 {/* Categories */}
@@ -3330,9 +3025,7 @@ export default function Dashboard() {
                           size="small"
                           sx={{
                             fontSize: "0.73rem",
-                            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.06) 100%)",
-                            color: "#1e3a8a",
-                            border: "1px solid rgba(59, 130, 246, 0.3)",
+                            backgroundColor: "primary.main",
                           }}
                         />
                       ))}
@@ -3355,16 +3048,13 @@ export default function Dashboard() {
                     size="small"
                     sx={{
                       fontWeight: 700,
-                      bgcolor: "#dbeafe",
-                      color: "#1d4ed8",
-                      borderRadius: "8px",
                     }}
                   />
                 </Stack>
               </Stack>
             </Box>
 
-            <Divider sx={{ borderColor: "rgba(59, 130, 246, 0.12)" }}/>
+            <Divider />
 
             {/* Job Description & Requirements */}
             <Box
@@ -3382,12 +3072,6 @@ export default function Dashboard() {
                     <Typography 
                       variant="h6" 
                       fontWeight={700} 
-                      sx={{
-                        background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-                        backgroundClip: "text",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }}
                     >
                       {t('job_description')}
                     </Typography>
@@ -3396,15 +3080,12 @@ export default function Dashboard() {
                     elevation={0}
                     sx={{
                       p: 2.5,
-                      background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                      border: "1px solid rgba(59, 130, 246, 0.12)",
-                      borderRadius: 2,
+                      border: "1px solid var(--mui-palette-primary-main)",
                       "& .ql-editor": {
                         backgroundColor: "transparent !important",
                         padding: 0,
-                        color: "#1e3a8a",
                       },
-                      "& .ql-container": {
+                      "& .ql-container.ql-snow": {
                         border: "none",
                       },
                     }}
@@ -3426,12 +3107,6 @@ export default function Dashboard() {
                     <Typography 
                       variant="h6" 
                       fontWeight={700} 
-                      sx={{
-                        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-                        backgroundClip: "text",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                      }}
                     >
                       {t('requirements')}
                     </Typography>
@@ -3440,15 +3115,12 @@ export default function Dashboard() {
                     elevation={0}
                     sx={{
                       p: 2,
-                      background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                      border: "1px solid rgba(249, 115, 22, 0.12)",
-                      borderRadius: 2,
+                      border: "1px solid var(--mui-palette-primary-main)",
                       "& .ql-editor": {
                         backgroundColor: "transparent !important",
                         padding: 0,
-                        color: "#1e3a8a",
                       },
-                      "& .ql-container": {
+                      "& .ql-container.ql-snow": {
                         border: "none",
                       },
                     }}
@@ -3488,7 +3160,6 @@ export default function Dashboard() {
                 right: "-10%",
                 width: "60%",
                 height: "60%",
-                background: "radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)",
                 borderRadius: "50%",
                 zIndex: 0,
               }}
@@ -3500,7 +3171,6 @@ export default function Dashboard() {
                 left: "-10%",
                 width: "60%",
                 height: "60%",
-                background: "radial-gradient(circle, rgba(249, 115, 22, 0.06) 0%, transparent 70%)",
                 borderRadius: "50%",
                 zIndex: 0,
               }}
@@ -3513,8 +3183,6 @@ export default function Dashboard() {
                 height: "100%",
                 minHeight: "100%",
                 borderRadius: 0,
-                background: "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(239, 246, 255, 0.75) 100%)",
-                backdropFilter: "blur(15px)",
                 border: "none",
                 boxShadow: "none",
                 display: "flex",
@@ -3666,9 +3334,7 @@ export default function Dashboard() {
               left: 0,
               right: 0,
               p: 1.5,
-              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)",
-              backdropFilter: "blur(12px)",
-              borderTop: "1px solid rgba(59, 130, 246, 0.15)",
+              borderTop: "1px solid var(--mui-palette-divider)",
               zIndex: 10,
             }}
           >
@@ -3676,26 +3342,19 @@ export default function Dashboard() {
               variant="outlined"
               size="small"
               onClick={handleBackToList}
-              startIcon={<Home sx={{ color: "#3b82f6" }}/>}
+              startIcon={<Home />}
               fullWidth
               sx={{
                 borderRadius: 2.5,
                 textTransform: "none",
                 py: 1,
-                borderColor: "rgba(59, 130, 246, 0.3)",
-                color: "#1e3a8a",
-                "&:hover": {
-                  borderColor: "#f97316",
-                  color: "#f97316",
-                  bgcolor: "rgba(249, 115, 22, 0.08)",
-                },
               }}
             >
               {t('home')}
             </Button>
           </Box>
         )}
-      </Box>
+      </Card>
     );
   };
 
@@ -3742,22 +3401,6 @@ export default function Dashboard() {
               display: "flex",
               flexDirection: "column",
               minHeight: 0,
-              ...(isMobile
-                ? {
-                    position: "fixed",
-                    inset: 0,
-                    zIndex: showDetailMobile ? 20 : -1,
-                    transform: showDetailMobile
-                      ? "translateX(0)"
-                      : "translateX(100%)",
-                    transition: "transform 0.3s ease-in-out",
-                    bgcolor: "background.default",
-                    overflowY: "auto",
-                  }
-                : {
-                    borderRadius: 2,
-                    boxShadow: 1,
-                  }),
             }}
           >
             {DetailContent()}

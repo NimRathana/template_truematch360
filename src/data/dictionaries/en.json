@@ -571,8 +571,8 @@
   "retry": "Retry",
   "resume_created_date": "Resume created date",
   "candidate_name": "Candidate name",
-  "already_have_account": "Already have an account?",
-  "dont_have_account": "Don't have an account?",
+  "already_have_account": "Already have an account",
+  "dont_have_account": "Don't have an account",
   "remember_me": "Remember me",
   "old_password_incorrect": "Old password is incorrect"
 }

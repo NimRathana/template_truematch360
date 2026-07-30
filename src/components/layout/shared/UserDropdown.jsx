@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createRoot } from "react-dom/client";
 import html2pdf from "html2pdf.js";
 import useAuthStore from "@views/store/useAuthStore";
-import api from "@/services/api";
+import api from "@views/services/api";
 import { useTranslation } from "react-i18next";
 import ChangePasswordDialog from '@views/components/ChangePasswordDialog';
 
@@ -67,7 +67,7 @@ const UserDropdown = () => {
   const { user_data, clearAccessToken } = useAuthStore();
 
   const profileFilename = user_data?.user_data?.profile_image;
-  const profileUrl = profileFilename && profileFilename !== 'null' && profileFilename !== 'undefined' ? `${(process.env.VITE_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/user/profile/${profileFilename}` : undefined;
+  const profileUrl = profileFilename && profileFilename !== 'null' && profileFilename !== 'undefined' ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/user/profile/${profileFilename}` : undefined;
   const userName = user_data?.user_data?.user_name || user_data?.user_data?.email || "User";
   const userEmail = user_data?.user_data?.email || "—";
   const userType = user_data?.user_data?.user_type;

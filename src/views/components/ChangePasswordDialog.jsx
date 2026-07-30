@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import api from '@/services/api'
+import api from '@views/services/api'
 
 const ChangePasswordDialog = ({ open = false, onClose }) => {
   const { t } = useTranslation()
