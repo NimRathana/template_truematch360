@@ -11,7 +11,7 @@ import {
     Alert,
     Tooltip,
     Avatar,
-    IconButton, Menu
+    IconButton, Menu, Card
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
@@ -30,10 +30,6 @@ const SectionBox = ({ title, children }) => (
         elevation={0}
         sx={{
             p: 2,
-            borderRadius: 3,
-            border: "1px solid",
-            borderColor: "divider",
-            backgroundColor: "#fafafa",
             mb: 2,
         }}
     >
@@ -261,7 +257,6 @@ const UpdateProfileAdmin = () => {
             <Box
                 sx={{
                     minHeight: "auto",
-                    bgcolor: "#f0f2f5",
                     py: { xs: 4, md: 6 },
                     px: { xs: 2, md: 4 },
                     display: "flex",
@@ -277,12 +272,9 @@ const UpdateProfileAdmin = () => {
                         maxWidth: 700,
                     }}
                 >
-                    <Paper
+                    <Card
                         sx={{
                             p: { xs: 3, md: 4 },
-                            borderRadius: 4,
-                            boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-                            bgcolor: "#fff",
                         }}
                     >
                         <SectionBox title={t('personal_information')}>
@@ -321,43 +313,15 @@ const UpdateProfileAdmin = () => {
                                                     cursor: "pointer",
                                                     border: "2px dashed",
                                                     borderColor: "primary.main",
-                                                    bgcolor: "grey.300",
                                                     transition: 'transform 0.1s ease-in-out',
                                                     '&:hover': {
                                                         transform: 'scale(1.1)'
                                                     }
                                                 }}
-                                                src={
-                                                    userProfilePreview
-                                                        ? userProfilePreview
-                                                        : formData.profile_image
-                                                            ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}`
-                                                            : undefined
-                                                }
+                                                src={userProfilePreview ? userProfilePreview : formData.profile_image ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}` : undefined}
                                             >
                                                 {formData.user_name.charAt(0).toUpperCase()}
                                             </Avatar>
-                                        </Tooltip>
-                                        <Tooltip title={t('upload_logo')}>
-                                            <IconButton
-                                                size="small"
-                                                color="primary"
-                                                onClick={() => document.getElementById("user-profile-input").click()}
-                                                sx={{
-                                                    position: "absolute",
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    bgcolor: "white",
-                                                    border: 1,
-                                                    width: 24,
-                                                    height: 24,
-                                                    '&:hover': {
-                                                        backgroundColor: '#f4f4f4ff'
-                                                    }
-                                                }}
-                                            >
-                                                <PhotoCameraIcon sx={{ fontSize: 16 }} />
-                                            </IconButton>
                                         </Tooltip>
 
                                         <Menu
@@ -501,18 +465,16 @@ const UpdateProfileAdmin = () => {
                             </Button>
 
                         </Stack>
-                    </Paper>
+                    </Card>
                 </Box>
             </Box>
+
             <ViewProfileDialog
                 open={openProfilePreview}
                 onClose={() => setOpenProfilePreview(false)}
-                imageUrl={userProfilePreview
-                    ? userProfilePreview
-                    : formData.profile_image
-                        ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}`
-                        : undefined}
+                imageUrl={userProfilePreview ? userProfilePreview : formData.profile_image ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}` : undefined}
             />
+
             <DeleteProfileDialog
                 open={openDeleteProfile}
                 onClose={() => setOpenDeleteProfile(false)}

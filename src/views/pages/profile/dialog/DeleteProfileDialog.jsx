@@ -66,7 +66,7 @@ function ViewProfileDialog({ open, onClose, loading, onConfirm }) {
                     variant="contained"
                     color="error"
                 >
-                    {loading ? <CircularProgress sx={{ fontSize: 14, color: 'white' }} /> : 'Delete'}
+                    {loading ? <CircularProgress /> : 'Delete'}
                 </Button>
             </DialogActions>
         </Dialog>

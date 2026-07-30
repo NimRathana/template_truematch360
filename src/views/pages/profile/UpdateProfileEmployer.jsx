@@ -34,10 +34,6 @@ const SectionBox = ({ title, children }) => (
         elevation={0}
         sx={{
             p: 1,
-            borderRadius: 3,
-            border: "1px solid",
-            borderColor: "divider",
-            backgroundColor: "#fafafa",
         }}
     >
         <Typography variant="subtitle1" fontWeight={600} mb={1}>
@@ -362,29 +358,12 @@ const UpdateProfileEmployer = () => {
     const isFormChanged = useMemo(() => {
         if (!originalFormRef.current) return false;
 
-        const formChanged =
-            JSON.stringify(formData) !== JSON.stringify(originalFormRef.current);
-
-        const logoChanged =
-            companyLogoFile !== null ||
-            removeCompanyLogo ||
-            companyLogoPreview !== originalLogoRef.current;
-
-        const profileChanged =
-            userProfilePreview !==
-            (originalFormRef.current.profile_image
-                ? `${BASE_URL}/uploads/user/profile/${originalFormRef.current.profile_image}`
-                : null);
+        const formChanged = JSON.stringify(formData) !== JSON.stringify(originalFormRef.current);
+        const logoChanged = companyLogoFile !== null || removeCompanyLogo || companyLogoPreview !== originalLogoRef.current;
+        const profileChanged = userProfilePreview !== (originalFormRef.current.profile_image ? `${BASE_URL}/uploads/user/profile/${originalFormRef.current.profile_image}` : null);
 
         return formChanged || logoChanged || profileChanged;
-    }, [
-        formData,
-        companyLogoFile,
-        removeCompanyLogo,
-        companyLogoPreview,
-        userProfilePreview,
-        BASE_URL
-    ]);
+        }, [formData, companyLogoFile, removeCompanyLogo, companyLogoPreview, userProfilePreview, BASE_URL]);
 
     return (
         <>
@@ -405,11 +384,9 @@ const UpdateProfileEmployer = () => {
                     maxWidth: 1200,
                     mx: "auto",
                     p: 2,
-                    bgcolor: "#f0f2f5",
-                    borderRadius: 3,
                 }}
             >
-                <Card elevation={4} sx={{ borderRadius: 4 }}>
+                <Card>
                     <CardContent>
                         {/* Wrap in form */}
                         <form onSubmit={handleSubmit}>
@@ -444,7 +421,6 @@ const UpdateProfileEmployer = () => {
                                                         cursor: "pointer",
                                                         border: "2px dashed",
                                                         borderColor: "primary.main",
-                                                        bgcolor: "#f5f5f5",
                                                         transition: 'transform 0.1s ease-in-out',
                                                         '&:hover': {
                                                             transform: 'scale(1.1)'
@@ -462,13 +438,9 @@ const UpdateProfileEmployer = () => {
                                                         position: "absolute",
                                                         bottom: 0,
                                                         right: 0,
-                                                        bgcolor: "white",
                                                         border: 1,
                                                         width: 24,
                                                         height: 24,
-                                                        '&:hover': {
-                                                            backgroundColor: '#f4f4f4ff'
-                                                        }
                                                     }}
                                                 >
                                                     <PhotoCameraIcon sx={{ fontSize: 16 }} />
@@ -521,8 +493,6 @@ const UpdateProfileEmployer = () => {
                                                 )}
                                             </Menu>
                                         </Box>
-
-
                                     </Box>
 
                                     <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
@@ -600,10 +570,7 @@ const UpdateProfileEmployer = () => {
                                                     })
                                                 }
                                             />
-
-
                                         </Box>
-
 
                                         <Box sx={{ gridColumn: "1 / -1" }}>
                                             <TextField
@@ -617,6 +584,7 @@ const UpdateProfileEmployer = () => {
                                                 fullWidth
                                             />
                                         </Box>
+
                                         <Box sx={{ gridColumn: "1 / -1" }}>
                                             <TextField
                                                 label={t('company_description')}
@@ -637,7 +605,6 @@ const UpdateProfileEmployer = () => {
                                     <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
                                         <Box sx={{ gridColumn: "1 / -1", display: 'flex', justifyContent: 'center', mb: 1 }}>
                                             <Box sx={{ position: "relative" }}>
-
                                                 <input
                                                     type="file"
                                                     accept="image/*"
@@ -660,7 +627,6 @@ const UpdateProfileEmployer = () => {
                                                             cursor: "pointer",
                                                             border: "2px dashed",
                                                             borderColor: "primary.main",
-                                                            bgcolor: "#f5f5f5",
                                                             transition: 'transform 0.1s ease-in-out',
                                                             '&:hover': {
                                                                 transform: 'scale(1.1)'
@@ -668,9 +634,7 @@ const UpdateProfileEmployer = () => {
                                                         }}
                                                         src={
                                                             userProfilePreview ||
-                                                            (formData.profile_image
-                                                                ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}`
-                                                                : null)
+                                                            (formData.profile_image ? `${BASE_URL}/uploads/user/profile/${formData.profile_image}` : null)
                                                         }
                                                     >
                                                         {formData.user_name.charAt(0).toUpperCase()}
@@ -685,13 +649,9 @@ const UpdateProfileEmployer = () => {
                                                             position: "absolute",
                                                             bottom: 0,
                                                             right: 0,
-                                                            bgcolor: "white",
                                                             border: 1,
                                                             width: 24,
                                                             height: 24,
-                                                            '&:hover': {
-                                                                backgroundColor: '#f4f4f4ff'
-                                                            }
                                                         }}
                                                     >
                                                         <PhotoCameraIcon sx={{ fontSize: 16 }} />
