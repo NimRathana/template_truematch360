@@ -44,7 +44,7 @@ import {
 import { isValidElement, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import api from "../services/api";
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 // Reusable InfoRow
 function InfoRow({ icon, label, value, color = 'inherit', fontWeight = 600 }) {
@@ -125,12 +125,7 @@ export default function MyApplicationsToCompanies() {
                 const { data } = await api.get('/candidate/me/applications');
                 setApplications(data || []);
             } catch (err) {
-                console.error(err);
-                setError(
-                    err.response?.status === 404
-                        ? t('complete_profile_first')
-                        : t('failed_to_load_applications')
-                );
+                setError(err.response?.status === 404 ? t('complete_profile_first') : t('failed_to_load_applications'));
             } finally {
                 setLoading(false);
             }
@@ -141,13 +136,8 @@ export default function MyApplicationsToCompanies() {
     const getComputedStatus = (app) => {
         const job = app.job || {};
         const today = new Date();
-
-        const isClosed =
-            job.status === 'Closed' ||
-            (job.closing_date && new Date(job.closing_date) < today);
-
+        const isClosed = job.status === 'Closed' || (job.closing_date && new Date(job.closing_date) < today);
         const status = (app.application_status || '').toLowerCase();
-
         return {
             status,
             isCancelled: !!app.cancelled,
@@ -245,7 +235,7 @@ export default function MyApplicationsToCompanies() {
         const job = app.job || {};
         const isClosed = job.status === 'Closed' || (job.closing_date && new Date(job.closing_date) < today);
 
-        if (app.cancelled) return theme.palette.grey[600];
+        if (app.cancelled) return theme.palette.error.main;
         if (isClosed) return theme.palette.error.main;
         const status = (app.application_status || '').toLowerCase();
         if (status === 'accepted') return theme.palette.success.main;
@@ -300,11 +290,8 @@ export default function MyApplicationsToCompanies() {
 
     if (loading) {
         return (
-            <Box sx={{ py: 10, textAlign: 'center' }}>
-                <CircularProgress size={60} thickness={4} />
-                <Typography mt={3} variant="h6" color="text.secondary">
-                    {t('loading_applications')}
-                </Typography>
+            <Box sx={{ height: "100%", alignItems: "center", justifyContent: "center", display: "flex" }}>
+                <CircularProgress />
             </Box>
         );
     }
@@ -519,19 +506,24 @@ export default function MyApplicationsToCompanies() {
     }
 
     return (
-        <Box sx={{ px: { xs: 1.5 } }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",       
+                minHeight: 0,
+            }}
+        >
             <Stack
                 spacing={1}
+                alignItems="flex-start"
                 sx={{
                     mb: 2,
-                    position: 'sticky',
-                    top: 10,
-                    zIndex: 20,
                     py: 1,
+                    flexShrink: 0,
                 }}
             >
                 <TextField
-                    fullWidth
                     size='small'
                     variant="outlined"
                     placeholder={t('search')}
@@ -543,100 +535,68 @@ export default function MyApplicationsToCompanies() {
                                 <SearchIcon color="action" />
                             </InputAdornment>
                         ),
-                        sx: { borderRadius: 3 },
                     }}
                 />
 
                 <Tabs
                     value={tabValue}
                     onChange={handleChangeTab}
-                    variant={isMobile ? "scrollable" : "fullWidth"}
+                    variant={isMobile ? "scrollable" : "standard"}
                     scrollButtons={isMobile ? "auto" : false}
                     allowScrollButtonsMobile
-                    TabIndicatorProps={{ style: { display: 'none' } }}
+                    TabIndicatorProps={{ style: { display: "none" } }}
                     sx={{
+                        width: "100%",
                         minHeight: 0,
-                        borderRadius: '16px',
-                        backgroundColor: alpha(theme.palette.background.paper, 0.6),
-                        backdropFilter: 'blur(12px)',
-                        border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
-                        boxShadow: `0 6px 20px ${alpha(theme.palette.common.black, 0.08)}`,
-                        overflow: 'hidden',
-                        WebkitOverflowScrolling: 'touch',
-                        p: 0.75,
-                        '& .MuiTabs-flexContainer': { gap: { xs: 0.5, sm: 1 } },
-                        '& .MuiTab-root': {
-                            minHeight: 42,
-                            minWidth: { xs: 90, sm: 110 },
-                            px: { xs: 2, sm: 3 },
-                            py: 1,
-                            mx: 0.25,
-                            borderRadius: '12px',
-                            textTransform: 'none',
-                            fontSize: { xs: '0.875rem', sm: '0.95rem' },
-                            fontWeight: 600,
-                            color: 'text.secondary',
-                            transition: 'all 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-                            '&:hover': {
-                                backgroundColor: alpha(theme.palette.primary.main, 0.07),
-                                color: theme.palette.primary.main,
-                            },
-                            '&.Mui-selected': {
-                                background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
-                                color: '#ffffff !important',
-                                fontWeight: 700,
-                                boxShadow: '0 4px 14px rgba(13, 148, 136, 0.35)',
-                                transform: 'translateY(-1px)',
-                            },
+                        p: 1,
+                        borderRadius: "var(--mui-shape-borderRadius)",
+                        backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.04),
+                        borderBlockEnd: "none",
+                        "& .MuiTabs-flexContainer": {
+                            gap: 1,
                         },
-                        '& .MuiTabs-scrollButtons': {
-                            color: theme.palette.primary.main,
-                            opacity: 0.7,
-                            '&:hover': { opacity: 1 },
+                        "& .MuiTab-root": {
+                            borderRadius: "var(--mui-shape-borderRadius)",
+                            textTransform: "none",
+                            transition: "all 0.2s ease",
+                            "&:hover": {
+                                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                                color: "primary.main",
+                            },
+                            "&.Mui-selected": {
+                                backgroundColor: "primary.main",
+                                color: "primary.contrastText",
+                                "&:hover": {
+                                    backgroundColor: "primary.main",
+                                    color: "primary.contrastText",
+                                },
+                            },
                         },
                     }}
-                >
-                    {statusTabs.map((tab) => {
+                    >
+                    {statusTabs.map((tab, index) => {
                         const count = counts[tab.value] || 0;
-                        const isSelected = tabValue === statusTabs.findIndex(t => t.value === tab.value);
+                        const isSelected = tabValue === index;
 
                         return (
                             <Tab
                                 key={tab.value}
                                 disableRipple
+                                icon={tab.icon}         
+                                iconPosition="start"
                                 label={
                                     <Stack direction="row" alignItems="center" spacing={1}>
-                                        <Box
-                                            component="span"
-                                            sx={{
-                                                background: isSelected ? 'linear-gradient(90deg, #ffffff, #f0f0ff)' : 'none',
-                                                WebkitBackgroundClip: isSelected ? 'text' : 'none',
-                                                WebkitTextFillColor: isSelected ? 'transparent' : 'inherit',
-                                            }}
-                                        >
-                                            {tab.label}
-                                        </Box>
+                                        <span>{tab.label}</span>
+
                                         {count > 0 && (
                                             <Chip
                                                 label={count}
                                                 size="small"
                                                 sx={{
                                                     height: 20,
-                                                    minWidth: 20,
-                                                    fontSize: '0.72rem',
-                                                    fontWeight: 700,
-                                                    borderRadius: '10px',
-                                                    px: 1,
-                                                    backgroundColor: isSelected
-                                                        ? 'rgba(255,255,255,0.28)'
-                                                        : alpha(
-                                                            theme.palette[tab.color === 'grey' ? 'primary' : tab.color].main,
-                                                            isSelected ? 0.25 : 0.12
-                                                        ),
-                                                    color: isSelected ? '#fff' : theme.palette[tab.color === 'grey' ? 'primary' : tab.color].main,
-                                                    boxShadow: isSelected ? '0 2px 8px rgba(0,0,0,0.18)' : 'none',
-                                                    transition: 'all 0.25s ease',
-                                                    border: isSelected ? '1px solid rgba(255,255,255,0.4)' : 'none',
+                                                    fontSize: "0.7rem",
+                                                    borderRadius: "10px",
+                                                    bgcolor: isSelected ? "rgba(255,255,255,0.2)" : (theme) => alpha(theme.palette.primary.main, 0.12),
                                                 }}
                                             />
                                         )}
@@ -648,17 +608,22 @@ export default function MyApplicationsToCompanies() {
                 </Tabs>
             </Stack>
 
-            <Grid container spacing={2}>
+            <Grid 
+                container 
+                spacing={2} 
+                sx={{
+                    flex: 1,               
+                    minHeight: 0,          
+                    overflow: "auto",
+                    alignContent: "flex-start",      
+                }}
+            >
                 {filteredApplications.length === 0 && !loading ? (
-                    <Grid item xs={12} sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Grid size={12} sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, minHeight: "100%" }}>
                         <Card
                             elevation={0}
                             sx={{
-                                borderRadius: 3,
                                 overflow: 'hidden',
-                                bgcolor: alpha(theme.palette.background.paper, 0.7),
-                                backdropFilter: 'blur(14px)',
-                                border: `1px dashed ${alpha(theme.palette.divider, 0.3)}`,
                                 minHeight: 340,
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -668,8 +633,6 @@ export default function MyApplicationsToCompanies() {
                                 textAlign: 'center',
                             }}
                         >
-                            <Box sx={{ height: 5, width: '80px', bgcolor: alpha(theme.palette.primary.main, 0.4), borderRadius: '0 0 4px 4px', mb: 4 }} />
-
                             <Stack spacing={3} alignItems="center">
                                 <Box
                                     sx={{
@@ -710,26 +673,20 @@ export default function MyApplicationsToCompanies() {
                     const statusCfg = getStatusConfig(app.application_status, isClosed);
 
                     return (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={app.pk_id || app.id} sx={{ width: '100%', maxWidth: 400, minWidth: 320, mx: isMobile ? 'auto' : 0 }}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={app.pk_id || app.id} sx={{ width: '100%', maxWidth: 400, minWidth: 320, mx: isMobile ? 'auto' : 0 }}>
                             <Card
                                 elevation={0}
                                 sx={{
                                     height: '100%',
                                     width: '100%',
-                                    borderRadius: 3,
                                     overflow: 'hidden',
-                                    bgcolor: alpha(theme.palette.background.paper, 0.7),
-                                    backdropFilter: 'blur(12px)',
-                                    border: `1px solid ${alpha(accent, 0.2)}`,
+                                    border: `1px solid ${accent}`,
                                     transition: 'all 0.36s cubic-bezier(0.34, 1.56, 0.64, 1)',
                                     '&:hover': {
-                                        transform: 'translateY(-10px)',
-                                        boxShadow: `0 20px 40px ${alpha(accent, 0.18)}`,
-                                        borderColor: alpha(accent, 0.45),
                                     },
                                 }}
                             >
-                                <Box sx={{ height: 6, background: `linear-gradient(90deg, ${accent}, ${alpha(accent, 0.4)})` }} />
+                                <Box sx={{ height: 6, background: `${accent}` }} />
 
                                 <CardContent sx={{ p: 3 }}>
                                     <Stack direction="row" spacing={2} alignItems="center" mb={2}>
@@ -825,7 +782,6 @@ export default function MyApplicationsToCompanies() {
                                         startIcon={<Visibility fontSize="small" />}
                                         onClick={() => job.pk_id && router.push(`/job/${job.pk_id}`)}
                                         sx={{
-                                            borderRadius: 20,
                                             borderColor: alpha(accent, 0.5),
                                             color: accent,
                                             '&:hover': { bgcolor: alpha(accent, 0.08) },
@@ -862,19 +818,6 @@ export default function MyApplicationsToCompanies() {
                 maxWidth="xs"
                 fullWidth={!isMobile}
                 TransitionProps={{ timeout: { enter: 320, exit: 240 } }}
-                sx={{
-                    '& .MuiBackdrop-root': {
-                        backgroundColor: alpha('#000', isMobile ? 0.72 : 0.68),
-                        backdropFilter: 'blur(6px)',
-                    },
-                    '& .MuiDialog-paper': {
-                        borderRadius: isMobile ? 0 : 3,
-                        boxShadow: isMobile
-                            ? 'none'
-                            : '0 20px 60px rgba(0,0,0,0.28), 0 0 0 1px rgba(239,68,68,0.08)',
-                        overflow: 'hidden',
-                    },
-                }}
             >
                 <Box
                     sx={{
@@ -888,47 +831,48 @@ export default function MyApplicationsToCompanies() {
                     <DialogTitle
                         sx={{
                             p: 0,
-                            display: 'flex',
-                            alignItems: 'center',
+                            display: "flex",
+                            alignItems: "center",
                             gap: 1.8,
                             color: theme.palette.error.dark,
-                            fontWeight: 700,
-                            fontSize: '1.28rem',
                         }}
-                    >
+                        >
                         <WarningAmberIcon
                             color="error"
                             sx={{
-                                fontSize: 32,
-                                animation: 'pulseWarning 2s infinite',
-                                '@keyframes pulseWarning': {
-                                    '0%, 100%': { transform: 'scale(1)' },
-                                    '50%': { transform: 'scale(1.15)' },
-                                },
+                            fontSize: 32,
+                            animation: "pulseWarning 2s infinite",
+                            "@keyframes pulseWarning": {
+                                "0%, 100%": { transform: "scale(1)" },
+                                "50%": { transform: "scale(1.15)" },
+                            },
                             }}
                         />
-                        {t('cancel_application')}
-                    </DialogTitle>
 
-                    <IconButton
-                        aria-label={t('close')}
-                        onClick={handleCloseCancelDialog}
-                        disabled={cancelDialog.loading}
-                        sx={{
-                            position: 'absolute',
-                            right: 16,
-                            top: 16,
-                            color: theme.palette.error.main,
-                            '&:hover': { bgcolor: alpha(theme.palette.error.main, 0.12) },
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
+                        {t("cancel_application")}
+
+                        <IconButton
+                            onClick={handleCloseCancelDialog}
+                            disabled={cancelDialog.loading}
+                            sx={{
+                                ml: "auto",              
+                                color: theme.palette.error.main,
+                                "&:hover": {
+                                    bgcolor: alpha(theme.palette.error.main, 0.12),
+                                },
+                            }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
                 </Box>
 
                 <DialogContent sx={{ px: { xs: 3, sm: 4 }, py: 3.5, pb: isMobile ? 4 : 3 }}>
                     <DialogContentText sx={{ color: 'text.primary', fontSize: '1.03rem', lineHeight: 1.65 }}>
-                        {t('confirm_cancel_application')}
+                        <Trans
+                            i18nKey="confirm_cancel_application"
+                            components={{ strong: <strong /> }}
+                        />
                     </DialogContentText>
                     <TextField
                         autoFocus={!isMobile}
@@ -941,12 +885,6 @@ export default function MyApplicationsToCompanies() {
                         value={cancelReason}
                         onChange={(e) => setCancelReason(e.target.value)}
                         disabled={cancelDialog.loading}
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 2,
-                            },
-                        }}
-                        FormHelperTextProps={{ sx: { fontSize: '0.82rem', mt: 1 } }}
                     />
                 </DialogContent>
 
@@ -959,24 +897,14 @@ export default function MyApplicationsToCompanies() {
                         justifyContent: isMobile ? 'stretch' : 'flex-end',
                         gap: { xs: 2, sm: 1.5 },
                         borderTop: `1px solid ${theme.palette.divider}`,
-                        bgcolor: alpha(theme.palette.background.paper, isMobile ? 0.5 : 0.3),
                     }}
                 >
                     <Button
                         fullWidth={isMobile}
                         onClick={handleCloseCancelDialog}
                         disabled={cancelDialog.loading}
-                        variant={isMobile ? "outlined" : "text"}
-                        color="inherit"
+                        variant="contained"
                         size={isMobile ? "medium" : "small"}
-                        sx={{
-                            borderRadius: isMobile ? 28 : 2,
-                            px: isMobile ? 4 : 2.5,
-                            py: isMobile ? 1.1 : 0.5,
-                            fontWeight: isMobile ? 600 : 500,
-                            textTransform: 'none',
-                            minWidth: 'auto',
-                        }}
                     >
                         {t('no_keep_it')}
                     </Button>
@@ -991,31 +919,6 @@ export default function MyApplicationsToCompanies() {
                         onClick={handleConfirmCancel}
                         disabled={cancelDialog.loading || !cancelReason.trim()}
                         autoFocus
-                        sx={{
-                            borderRadius: isMobile ? 28 : 2,
-                            px: isMobile ? 4 : 3,
-                            py: isMobile ? 1.1 : 0.6,
-                            fontWeight: 600,
-                            textTransform: 'none',
-                            minWidth: 'auto',
-                            boxShadow: isMobile
-                                ? '0 3px 14px rgba(239,68,68,0.28)'
-                                : '0 1px 6px rgba(239,68,68,0.16)',
-                            '&:hover': {
-                                boxShadow: isMobile
-                                    ? '0 6px 20px rgba(239,68,68,0.38)'
-                                    : '0 2px 10px rgba(239,68,68,0.24)',
-                                transform: isMobile ? 'translateY(-1px)' : 'none',
-                                bgcolor: theme.palette.error.dark,
-                            },
-                            transition: 'all 0.18s ease',
-                            ...(!isMobile && {
-                                background: `linear-gradient(135deg, ${theme.palette.error.main} 20%, ${theme.palette.error.dark} 100%)`,
-                                '&:hover': {
-                                    background: `linear-gradient(135deg, ${theme.palette.error.dark} 20%, ${theme.palette.error.main} 100%)`,
-                                },
-                            }),
-                        }}
                     >
                         {cancelDialog.loading ? t('cancelling') : t('yes_cancel')}
                     </Button>

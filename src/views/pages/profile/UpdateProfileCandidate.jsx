@@ -19,6 +19,7 @@ import {
   Box,
   Button,
   Chip,
+  Card,
   Dialog,
   DialogActions,
   DialogContent,
@@ -642,13 +643,10 @@ export default function CandidateProfileDashboard() {
   return (
     <Box sx={{ width: '100%' }}>
       {/* Profile Header */}
-      <Paper
+      <Card
         sx={{
           p: 3,
           mb: 3,
-          borderRadius: 3,
-          bgcolor: '#fff',
-          boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
         }}
       >
         <Stack
@@ -666,10 +664,8 @@ export default function CandidateProfileDashboard() {
                   sx={{
                     width: 80,
                     height: 80,
-                    bgcolor: '#1976d2',
                     fontSize: 32,
                     fontWeight: 'bold',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                   }}
                   src={profileUrl || undefined}
                   onError={(e) => {
@@ -757,12 +753,6 @@ export default function CandidateProfileDashboard() {
             onClick={() => setEditOpen(true)}
             sx={{
               textTransform: 'none',
-              fontWeight: 600,
-              boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
-              '&:hover': {
-                boxShadow: '0 6px 18px rgba(25, 118, 210, 0.5)',
-              },
-              borderRadius: 2,
               minWidth: { xs: '100%', sm: 140 },
               width: { xs: '100%', sm: 'auto' },
             }}
@@ -787,18 +777,12 @@ export default function CandidateProfileDashboard() {
               elevation={0}
               sx={{
                 p: 2,
-                borderRadius: 2,
-                bgcolor: '#f9f9f9',
+                border: '1px solid var(--mui-palette-primary-main)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 transition: 'all 0.2s ease',
-                '&:hover': {
-                  bgcolor: '#f0f4ff',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                },
               }}
             >
               <Typography variant="subtitle2" color="text.secondary">
@@ -810,10 +794,10 @@ export default function CandidateProfileDashboard() {
             </Paper>
           ))}
         </Box>
-      </Paper>
+      </Card>
 
       {/* CV Upload Section */}
-      <Paper sx={{ borderRadius: 3, bgcolor: '#fff', mb: 3, boxShadow: '0 8px 20px rgba(0,0,0,0.1)', width: '100%', boxSizing: 'border-box', p: 3 }}>
+      <Card sx={{ mb: 3, width: '100%', boxSizing: 'border-box', p: 3 }}>
         <Typography variant="h6" fontWeight={700} mb={2}>{t('resume_cv')}</Typography>
 
         {/* Uploaded CVs with scroll */}
@@ -835,7 +819,7 @@ export default function CandidateProfileDashboard() {
                   spacing={1}
                   alignItems="center"
                   justifyContent="space-between"
-                  sx={{ border: '1px solid #eee', borderRadius: 2, width: '100%', flexWrap: 'nowrap', boxSizing: 'border-box', flexShrink: 0, p: 1 }}
+                  sx={{ border: '1px solid var(--mui-palette-primary-main)', borderRadius: 'var(--mui-shape-borderRadius)', width: '100%', flexWrap: 'nowrap', boxSizing: 'border-box', flexShrink: 0, p: 1 }}
                 >
                   <Stack direction="row" spacing={1} alignItems="center">
                     <DescriptionIcon color="success" />
@@ -1002,18 +986,10 @@ export default function CandidateProfileDashboard() {
                           '& .MuiSpeedDialAction-fab': {
                             width: 40,
                             height: 40,
-                            bgcolor: 'background.paper',
                             color: 'text.primary',
-                            boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                            '&:hover': {
-                              bgcolor: 'action.hover',
-                              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                            },
                           },
                           '& .MuiSpeedDialAction-staticTooltipLabel': {
-                            bgcolor: 'background.paper',
                             color: 'text.primary',
-                            boxShadow: 2,
                             fontSize: '0.875rem',
                           },
                         }}
@@ -1127,7 +1103,7 @@ export default function CandidateProfileDashboard() {
                 spacing={2}
                 alignItems="center"
                 justifyContent="space-between"
-                sx={{ p: 1, border: '1px solid #eee', borderRadius: 2, width: '100%', flexWrap: 'wrap', boxSizing: 'border-box', }}
+                sx={{ p: 1, border: '1px solid var(--mui-palette-primary-main)', borderRadius: 'var(--mui-shape-borderRadius)', width: '100%', flexWrap: 'wrap', boxSizing: 'border-box', }}
               >
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
                   <UploadIcon color="primary" />
@@ -1168,7 +1144,7 @@ export default function CandidateProfileDashboard() {
           {t('upload_cv_button')}
           <input hidden type="file" accept=".pdf,.doc,.docx" multiple onChange={handleCvChange} />
         </Button>
-      </Paper>
+      </Card>
 
       {/* Snackbar */}
       <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={() => setOpenSnackbar(false)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
@@ -1202,11 +1178,12 @@ export default function CandidateProfileDashboard() {
             <Typography>{t('no_ui_defined')}</Typography>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ py: '8px !important' }}>
           <Button onClick={handleCloseSection}>{t('cancel')}</Button>
           <Button variant="contained" onClick={handleSaveSection}>{t('save')}</Button>
         </DialogActions>
       </Dialog>
+
       <style>
         {`
           .quill-editor .ql-container {
@@ -1245,6 +1222,7 @@ export default function CandidateProfileDashboard() {
         imageUrl={profileUrl}
         userName={user_data?.user_data?.user_name}
       />
+
       <DeleteProfileDialog
         open={openDeleteProfile}
         onClose={() => setOpenDeleteProfile(false)}
@@ -1277,50 +1255,50 @@ function EditProfileDialog({ open, onClose, showSnackbar, candidates, setCandida
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSave = async (e) => {
-  e.preventDefault();
-  try {
-    form.password = "123";
-    setLoading(true)
-    const { data } = await api.post('/user', form)
-    showSnackbar(t('profile_updated'), 'success')
-    
-    // CRITICAL FIX: Preserve the existing profile_image if not returned in response
-    const updatedUserData = {
-      ...data,
-      // If the API doesn't return profile_image, keep the existing one
-      profile_image: data.profile_image || form.profile_image || user_data?.user_data?.profile_image,
-      experience_level: form.experience_level || "",
-      min_monthly_salary: form.min_monthly_salary || "",
-      jobCategoryId: form.jobCategoryId || "",
-    };
-    
-    // If profile_image is "null" string, convert to null
-    if (updatedUserData.profile_image === 'null' || updatedUserData.profile_image === 'undefined') {
-      updatedUserData.profile_image = null;
-    }
-    
-    setUserData({
-      ...user_data,
-      user_data: updatedUserData,
-    });
-    
-    setCandidates((prev) => ({
-      ...prev,
-      profile: {
-        ...prev.profile,
+    e.preventDefault();
+    try {
+      form.password = "123";
+      setLoading(true)
+      const { data } = await api.post('/user', form)
+      showSnackbar(t('profile_updated'), 'success')
+      
+      // CRITICAL FIX: Preserve the existing profile_image if not returned in response
+      const updatedUserData = {
+        ...data,
+        // If the API doesn't return profile_image, keep the existing one
+        profile_image: data.profile_image || form.profile_image || user_data?.user_data?.profile_image,
         experience_level: form.experience_level || "",
-        expected_salary: form.min_monthly_salary || "",
-        job_category_id: form.jobCategoryId || "",
-      },
-    }));
-    onClose()
-  } catch (err) {
-    const errorMsg = err.response?.data?.detail || t('profile_update_failed')
-    showSnackbar(errorMsg, 'error')
-  } finally {
-    setLoading(false)
+        min_monthly_salary: form.min_monthly_salary || "",
+        jobCategoryId: form.jobCategoryId || "",
+      };
+      
+      // If profile_image is "null" string, convert to null
+      if (updatedUserData.profile_image === 'null' || updatedUserData.profile_image === 'undefined') {
+        updatedUserData.profile_image = null;
+      }
+      
+      setUserData({
+        ...user_data,
+        user_data: updatedUserData,
+      });
+      
+      setCandidates((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          experience_level: form.experience_level || "",
+          expected_salary: form.min_monthly_salary || "",
+          job_category_id: form.jobCategoryId || "",
+        },
+      }));
+      onClose()
+    } catch (err) {
+      const errorMsg = err.response?.data?.detail || t('profile_update_failed')
+      showSnackbar(errorMsg, 'error')
+    } finally {
+      setLoading(false)
+    }
   }
-}
   useEffect(() => {
     if (open && user_data?.user_data) {
       // Ensure we don't set "null" string in form
@@ -1347,7 +1325,6 @@ function EditProfileDialog({ open, onClose, showSnackbar, candidates, setCandida
               sx={{ 
                 width: 64, 
                 height: 64, 
-                bgcolor: '#3b5998', 
                 fontSize: 24 
               }}
               src={dialogProfileUrl || undefined}
@@ -1409,13 +1386,7 @@ function EditProfileDialog({ open, onClose, showSnackbar, candidates, setCandida
             <TextField size="small" fullWidth label={t('experience_level')} name="experience_level" value={form.experience_level ?? ''} onChange={(e) => setForm(prev => ({ ...prev, experience_level: e.target.value === "" ? null : e.target.value }))} />
             <TextField size="small" fullWidth label={t('min_monthly_salary')} name="min_monthly_salary" type='number' value={form.min_monthly_salary ?? ''} onChange={(e) => setForm(prev => ({ ...prev, min_monthly_salary: e.target.value === "" ? null : e.target.value }))} />
           </Stack>
-          <Paper
-            elevation={0}
-            sx={{
-              borderRadius: 2,
-              bgcolor: '#f9f9f9',
-            }}
-          >
+          <Paper>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Box>
                 <Typography fontWeight={600}>{t('profile_status')}</Typography>
@@ -1424,16 +1395,17 @@ function EditProfileDialog({ open, onClose, showSnackbar, candidates, setCandida
                 </Typography>
               </Box>
 
-              <IOSSwitch
+              <Switch
                 sx={{ m: 1 }}
                 checked={!!form.is_active}
                 onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+                color="primary"
               />
             </Stack>
           </Paper>
         </Stack>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2 }}>
+      <DialogActions sx={{ py: '8px !important' }}>
         <Button onClick={onClose} variant="outlined">{t('cancel')}</Button>
         <Button variant="contained" type="submit" form="edit-form" color="primary" disableElevation loading={loading} loadingPosition="end" disabled={loading}>{t('save')}</Button>
       </DialogActions>
@@ -1445,13 +1417,10 @@ function Section({ title, description, buttonText, onAdd, isEdit, content, hasDa
   const { t } = useTranslation();
 
   return (
-    <Paper
+    <Card
       sx={{
         p: 3,
         mb: 3,
-        borderRadius: 3,
-        bgcolor: '#fff',
-        boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
       }}
     >
       {/* Header */}
@@ -1493,12 +1462,6 @@ function Section({ title, description, buttonText, onAdd, isEdit, content, hasDa
             onClick={onAdd}
             sx={{
               textTransform: 'none',
-              fontWeight: 600,
-              boxShadow: '0 2px 8px rgb(59 89 152 / 0.2)',
-              '&:hover': {
-                boxShadow: '0 4px 12px rgb(59 89 152 / 0.4)',
-              },
-              borderRadius: 2,
               px: 3,
             }}
           >
@@ -1506,66 +1469,6 @@ function Section({ title, description, buttonText, onAdd, isEdit, content, hasDa
           </Button>
         </>
       )}
-    </Paper>
+    </Card>
   );
 }
-
-const IOSSwitch = styled((props) => (
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  '& .MuiSwitch-switchBase': {
-    padding: 0,
-    margin: 2,
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        backgroundColor: '#65C466',
-        opacity: 1,
-        border: 0,
-        ...theme.applyStyles('dark', {
-          backgroundColor: '#2ECA45',
-        }),
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
-    },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
-    '&.Mui-disabled .MuiSwitch-thumb': {
-      color: theme.palette.grey[100],
-      ...theme.applyStyles('dark', {
-        color: theme.palette.grey[600],
-      }),
-    },
-    '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: 0.7,
-      ...theme.applyStyles('dark', {
-        opacity: 0.3,
-      }),
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxSizing: 'border-box',
-    width: 22,
-    height: 22,
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 26 / 2,
-    backgroundColor: '#E9E9EA',
-    opacity: 1,
-    transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-    ...theme.applyStyles('dark', {
-      backgroundColor: '#39393D',
-    }),
-  },
-}));
