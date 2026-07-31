@@ -2608,12 +2608,6 @@ export default function Dashboard() {
                               py: 1,
                               borderRadius: "var(--mui-shape-borderRadius)",
                               borderStyle: coverLetterToDelete ? "dashed" : "solid",
-                              color: coverLetterFile ? "#ef4444" : "#1e3a8a",
-                              borderColor: coverLetterFile ? "rgba(239, 68, 68, 0.3)" : "rgba(59, 130, 246, 0.3)",
-                              "&:hover": {
-                                borderColor: coverLetterFile ? "#ef4444" : "#f97316",
-                                background: coverLetterFile ? "rgba(239, 68, 68, 0.05)" : "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                              },
                             }}
                           >
                             {coverLetterFile
