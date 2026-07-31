@@ -761,7 +761,6 @@ export default function Dashboard() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          borderRadius: 3,
           overflow: "hidden",
         }}
       >
@@ -783,14 +782,9 @@ export default function Dashboard() {
             onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth
             InputProps={{
-              sx: {
-                fontSize: 13,
-                height: 38,
-                borderRadius: 2.5,
-              },
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 20 }} />
+                  <SearchIcon />
                 </InputAdornment>
               ),
               endAdornment: searchTerm && (
@@ -816,7 +810,6 @@ export default function Dashboard() {
                 p: 1,
                 width: 38,
                 height: 38,
-                borderRadius: 2.5,
                 backgroundColor: "var(--mui-palette-primary-main)",
                 transition: "all 0.2s ease",
               }}
@@ -1873,7 +1866,6 @@ export default function Dashboard() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          borderRadius: 3,
           overflow: "hidden",
         }}
       >

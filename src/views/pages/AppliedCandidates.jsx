@@ -503,7 +503,6 @@ export default function AppliedCandidates() {
         height: '100%',
         display: "flex",
         flexDirection: "column",
-        borderRadius: 3,
         overflow: "hidden",
       }}
     >
@@ -636,7 +635,6 @@ export default function AppliedCandidates() {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRadius: 3,
         overflow: "hidden",
       }}
     >
@@ -761,7 +759,6 @@ export default function AppliedCandidates() {
                         setCandidateDetailOpen(true);
                       }}
                       sx={{
-                        borderRadius: 2,
                         transition: "all 0.2s",
                         cursor: "pointer",
                         border: "1px solid var(--mui-palette-primary-main)",
@@ -998,7 +995,6 @@ export default function AppliedCandidates() {
         <Box
           sx={{
             height: "100%",
-            width: { xs: "100%", md: 450 },
             flexShrink: 0,
             display: isMobile && showDetailMobile ? "none" : "block",
           }}
@@ -1027,9 +1023,6 @@ export default function AppliedCandidates() {
           sx: { 
             height: "90vh", 
             overflow: "hidden",
-            background: "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(239, 246, 255, 0.95) 100%)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(59, 130, 246, 0.2)",
           }
         }}
       >
@@ -1043,7 +1036,6 @@ export default function AppliedCandidates() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "#f8f8f8",
                 p: 2,
               }}
             >
@@ -1081,13 +1073,10 @@ export default function AppliedCandidates() {
             </Box>
           )}
         </DialogContent>
-        <DialogActions sx={{ borderTop: "1px solid rgba(59, 130, 246, 0.15)" }}>
+        <DialogActions>
           <Button 
+            variant="contained"
             onClick={() => setViewFileOpen(false)}
-            sx={{
-              color: "#f97316",
-              "&:hover": { color: "#ea580c" },
-            }}
           >
             Close
           </Button>

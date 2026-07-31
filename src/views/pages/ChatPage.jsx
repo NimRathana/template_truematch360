@@ -1,11 +1,12 @@
 import SearchIcon from '@mui/icons-material/Search';
 import {
-    Box, List, ListItemAvatar, Avatar, Typography, TextField,
+    Box, List, ListItemAvatar, Avatar, Typography, TextField, Card,
     InputAdornment, useMediaQuery, useTheme, ListItemText,
     Divider,
     ListItemButton,
     Snackbar,
-    Alert
+    Alert,
+    alpha
 } from "@mui/material";
 import ChatComponent from '../components/chat/ChatComponent';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -18,7 +19,7 @@ import useAuthStore from '@views/store/useAuthStore';
 import { FormatTime } from '../components/chat/FormatTime';
 import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
-const ringtone = '@assets/outgoing_sound.mp3';
+const ringtone = '/sounds/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
 
 function getLastMessagePreview(chat, currentUserId, t) {
@@ -730,20 +731,13 @@ function ChatPage() {
     };
 
     return (
-        <Box
+        <Card
             sx={{
+                height: '100%',
                 display: 'flex',
-                width: '100%',
-                height: '91vh',
-                position: 'relative',
-                border: 1,
-                borderColor: 'rgba(59, 130, 246, 0.2)',
-                borderRadius: 2,
                 overflow: 'hidden',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)',
             }}
         >
-
             {snackbar && (
                 <Snackbar
                     open={snackbar.open}
@@ -774,9 +768,7 @@ function ChatPage() {
                         width: { xs: '100%', md: 400 },
                         display: 'flex',
                         flexDirection: 'column',
-                        borderRight: { sm: '1px solid rgba(59, 130, 246, 0.15)' },
-                        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(239, 246, 255, 0.95) 100%)',
-                        backdropFilter: 'blur(12px)',
+                        borderRight: { sm: '1px solid var(--mui-palette-divider)' },
                         zIndex: 2,
                     }}
                 >
@@ -798,39 +790,17 @@ function ChatPage() {
                                 placeholder={t('search')}
                                 value={chatSearch}
                                 onChange={(e) => setChatSearch(e.target.value)}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        borderRadius: '30px',
-                                        paddingRight: 1,
-                                        '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
-                                    },
-                                }}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <SearchIcon sx={{ color: '#3b82f6' }} />
+                                            <SearchIcon />
                                         </InputAdornment>
                                     ),
                                 }}
                             />
-
                         </Box>
                     </Box>
-                    <Divider sx={{ borderColor: 'rgba(59, 130, 246, 0.15)', py: 1 }} />
-                    <Typography
-                        sx={{
-                            background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            fontWeight: 'bold',
-                            px: 1,
-                            pt: 0.5
-                        }}
-                    >
-                        {t('all_chats')}
-                    </Typography>
-
+                    <Divider sx={{ py: 1 }} />
                     <Box
                         ref={scrollContainerRef}
                         onScroll={handleChatScroll}
@@ -856,40 +826,13 @@ function ChatPage() {
                                             mx: 0.5,
                                             my: 0.3,
                                             cursor: 'pointer',
-                                            borderRadius: 2,
+                                            borderRadius: 'var(--mui-shape-borderRadius)',
                                             position: 'relative',
                                             overflow: 'hidden',
-
-                                            background: isSelected
-                                                ? "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 0%, #f97316 150%)"
-                                                : "#fff", // or your default background
-
-                                            "&::before": {
-                                                content: '""',
-                                                position: "absolute",
-                                                inset: 0,
-                                                borderRadius: "inherit",
-                                                background:
-                                                    "linear-gradient(135deg, #f97316 0%, #3b82f6 50%, #1e3a8a 100%)",
-
-                                                transform: "scaleX(0)",
-                                                transformOrigin: "right",
-                                                transition: "transform .4s ease",
-
-                                                zIndex: 0,
-                                            },
-
-                                            "& > *": {
-                                                position: "relative",
-                                                zIndex: 1,
-                                            },
-
-                                            "&:hover::before": {
-                                                transform: "scaleX(1)",
-                                            },
-
+                                            background: isSelected ? "primary.main" : "transparent", 
                                             "&:hover": {
-                                                color: "#fff",
+                                                transform: "scaleX(1)",
+                                                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
                                             },
                                         }}
                                     >
@@ -1032,8 +975,6 @@ function ChatPage() {
                     sx={{
                         flex: 1,
                         width: '100%',
-                        position: 'relative',
-                        background: 'linear-gradient(135deg, rgba(245, 245, 245, 0.8) 0%, rgba(239, 246, 255, 0.6) 100%)',
                     }}
                 >
                     <ChatComponent
@@ -1076,7 +1017,7 @@ function ChatPage() {
                 />
             )}
 
-        </Box>
+        </Card>
     );
 }
 

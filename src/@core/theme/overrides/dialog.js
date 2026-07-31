@@ -25,7 +25,7 @@ const dialog = skin => ({
       root: ({ theme }) => ({
         padding: theme.spacing(5),
         '& + .MuiDialogActions-root': {
-          paddingTop: 0
+          // paddingTop: 0
         }
       })
     }
@@ -35,7 +35,7 @@ const dialog = skin => ({
       root: ({ theme }) => ({
         padding: theme.spacing(5),
         '& + .MuiDialogContent-root, & + .MuiDialogActions-root': {
-          paddingTop: 0
+          // paddingTop: 0
         }
       })
     }

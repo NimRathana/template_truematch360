@@ -1069,6 +1069,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                     {error}
                 </Alert>
             </Snackbar>
+
             {chat !== null ? (
                 <Box
                     sx={{
@@ -1805,23 +1806,17 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        background: 'linear-gradient(135deg, rgba(239, 246, 255, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%)',
                     }}
                 >
                     <Typography
                         variant='h6'
                         fontWeight={600}
-                        sx={{
-                            background: '#1e3a8a',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                        }}
                     >
                         {t('tab_chat_to_start')}
                     </Typography>
                 </Box>
             )}
+
             {chat != null && (
                 <ChatMenuDialog
                     open={popup}
@@ -1833,6 +1828,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                     blockMessage={blockMessage}
                 />
             )}
+
             <DeleteDialog
                 open={openConfirm}
                 onClose={() => setOpenConfirm(false)}
@@ -1840,6 +1836,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                 onConfirm={confirmDelete}
                 deleting={deleting}
             />
+
             <DeleteDialog
                 open={confirmSelectedDelete}
                 onClose={() => setConfirmSelectedDelete(false)}
@@ -1847,6 +1844,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                 onConfirm={deleteSelectedMessages}
                 deleting={deleting}
             />
+
             <ForwardDialog
                 open={forwardOpen}
                 onClose={() => setForwardOpen(false)}
@@ -1858,6 +1856,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                 hasMore={roomsHasMore}
                 loading={loadingRooms}
             />
+            
             <MediaPreviewDialog
                 open={previewOpen}
                 onClose={handleClosePreview}
