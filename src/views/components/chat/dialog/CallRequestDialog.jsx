@@ -11,8 +11,7 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
                 position: 'fixed',
                 inset: 0,
                 zIndex: 1600,
-                background: 'linear-gradient(180deg, #2c2c2c 0%, #111 100%)',
-                color: 'white',
+                background: 'var(--mui-palette-background-paper)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -36,7 +35,6 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
                             position: 'absolute',
                             inset: -8,
                             borderRadius: '50%',
-                            backgroundColor: 'rgba(255,255,255,0.15)',
                             animation: 'pulse 1.8s infinite',
                         },
                         '@keyframes pulse': {
@@ -58,9 +56,7 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
                         sx={{
                             width: 120,
                             height: 120,
-                            border: '4px solid rgba(255,255,255,0.3)',
                             fontSize: 42,
-                            backgroundColor: '#555',
                             position: 'relative',
                             zIndex: 1,
                         }}
@@ -82,13 +78,8 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
 
                 <Typography
                     variant="body1"
-                    sx={{
-                        color: 'rgba(255,255,255,0.7)',
-                    }}
                 >
-                    {isCallBusy
-                        ? t('user_in_another_call', { username: callRequest.username })
-                        : t('calling_to', { username: callRequest.username })}
+                    {isCallBusy ? t('user_in_another_call', { username: callRequest.username }) : t('calling_to', { username: callRequest.username })}
                 </Typography>
             </Box>
 
@@ -108,11 +99,6 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
                         height: 70,
                         backgroundColor: '#ef4444',
                         color: 'white',
-                        boxShadow: '0 8px 25px rgba(239,68,68,0.4)',
-                        '&:hover': {
-                            backgroundColor: '#dc2626',
-                            transform: 'scale(1.05)',
-                        },
                         transition: '0.2s ease',
                     }}
                 >

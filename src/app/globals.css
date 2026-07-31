@@ -157,3 +157,8 @@ code {
 .pulse {
   animation: pulse 2s infinite;
 }
+
+.ts-layout-content-height-fixed {
+  height: calc(100vh - var(--layout-header-height) - var(--layout-nav-padding-y) - var(--footer-height) - var(--layout-footer-padding-y) - var(--layout-padding-top) - var(--layout-padding-bottom) + 1px);
+  overflow: hidden;
+}

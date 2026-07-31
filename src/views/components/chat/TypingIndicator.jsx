@@ -12,7 +12,7 @@ export default function TypingIndicator({ username }) {
                 gap: 1,
                 mb: 1,
             }}
-            aria-label={t('typing_indicator', { username })}
+            // aria-label={t('typing_indicator', { username })}
             role="status"
         >
             <Box
@@ -22,8 +22,8 @@ export default function TypingIndicator({ username }) {
                     gap: 0.5,
                     px: 2.5,
                     py: 1.5,
-                    bgcolor: 'grey.300',
-                    borderRadius: 2,
+                    bgcolor: 'var(--mui-palette-action-hover)',
+                    borderRadius: 'var(--mui-shape-borderRadius)',
                     minWidth: 50,
                 }}
             >
@@ -38,7 +38,7 @@ export default function TypingIndicator({ username }) {
 const dotStyle = {
     width: 6,
     height: 6,
-    bgcolor: 'grey.600',
+    bgcolor: 'text.secondary',
     borderRadius: '50%',
     animation: 'blink 1.4s infinite both',
     '@keyframes blink': {

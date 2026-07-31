@@ -1323,7 +1323,6 @@ export default function MyJobs() {
             gridColumn="1 / -1"
             textAlign="center"
             py={6}
-            sx={{ color: "#1e3a8a", opacity: 0.7 }}
           >
             {t("no_jobs_posted")}
           </Box>

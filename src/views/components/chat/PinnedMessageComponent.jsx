@@ -13,22 +13,22 @@ function PinnedMessageComponent({ pinMessage, currentUserId, onUnpin, scrollToMe
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: '100%'
+                width: '100%',
+                backgroundColor: 'rgba(59, 130, 246, 0.08)',
             }}
             onClick={() => scrollToMessage?.(pinMessage.message.id)}
         >
             <Box
                 sx={{
-                    fontSize: 14,
-                    borderLeft: 3,
-                    borderColor: 'primary.main',
-                    pl: 1,
-                    borderRadius: 1,
-                    backgroundColor: '#c5e7ff55',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     width: '100%',
-                    '&:hover': {
-                        backgroundColor: '#c5e7ff8e',
-                    }
+                    borderLeft: '4px solid',
+                    borderColor: 'primary.main',
+                    borderRadius: 1,
+                    px: 1,
+                    py: 0.5,
                 }}
             >
                 <Box
@@ -101,10 +101,7 @@ function PinnedMessageComponent({ pinMessage, currentUserId, onUnpin, scrollToMe
             </Box>
             <IconButton
                 size="small"
-                sx={{
-                    position: 'absolute',
-                    right: 10
-                }}
+                color="primary"
                 onClick={(e) => {
                     e.stopPropagation();
                     onUnpin();

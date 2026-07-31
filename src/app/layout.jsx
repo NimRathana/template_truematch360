@@ -3,6 +3,7 @@ import './globals.css'
 import 'remixicon/fonts/remixicon.css';
 
 import Providers from '@components/Providers'
+import LayoutHeightVars from './LayoutHeightVars'
 
 export const metadata = {
   title: 'Rathana Template',
@@ -16,6 +17,7 @@ const RootLayout = ({ children }) => {
     <html id='__next' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         <Providers>
+          <LayoutHeightVars />
           {children}
         </Providers>
       </body>

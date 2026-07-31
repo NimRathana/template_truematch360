@@ -88,6 +88,7 @@ import { useParams } from 'next/navigation';
 import api from "../services/api";
 import useAuthStore from '@views/store/useAuthStore';
 import Draggable from "react-draggable";
+import classnames from 'classnames'
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -3181,7 +3182,6 @@ export default function Dashboard() {
               startIcon={<Home />}
               fullWidth
               sx={{
-                borderRadius: 2.5,
                 textTransform: "none",
                 py: 1,
               }}
@@ -3200,11 +3200,12 @@ export default function Dashboard() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
+        className={classnames('ts-layout-content-height-fixed')}
         sx={{
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          // boxSizing: "border-box",
+          boxSizing: "border-box",
           gap: 0.5,
         }}
       >

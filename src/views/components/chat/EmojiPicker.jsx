@@ -1,7 +1,8 @@
-import { Box, ClickAwayListener, Popper } from '@mui/material';
+import { Card, ClickAwayListener, Popper } from '@mui/material';
 import EmojiPickerReact from 'emoji-picker-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSettings } from '@core/hooks/useSettings'
 
 const EmojiPicker = ({ 
   onSelect, 
@@ -13,6 +14,7 @@ const EmojiPicker = ({
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(true);
+  const { settings } = useSettings();
 
   const handleEmojiClick = (emojiData) => {
     onSelect(emojiData.emoji);
@@ -39,24 +41,23 @@ const EmojiPicker = ({
       ]}
     >
       <ClickAwayListener onClickAway={handleClickAway}>
-        <Box sx={{ 
-          bgcolor: 'background.paper', 
-          borderRadius: '12px',
-          boxShadow: 3,
-          overflow: 'hidden'
-        }}>
+        <Card 
+          sx={{ 
+            overflow: 'hidden'
+          }}
+        >
           <EmojiPickerReact
             onEmojiClick={handleEmojiClick}
             width={width}
             height={height}
-            theme="light"
+            theme={settings.mode === 'dark' ? 'dark' : 'light'}
             previewConfig={{
               showPreview: false
             }}
             searchPlaceholder={t('search_emojis')}
             skinTonesDisabled
           />
-        </Box>
+        </Card>
       </ClickAwayListener>
     </Popper>
   );
