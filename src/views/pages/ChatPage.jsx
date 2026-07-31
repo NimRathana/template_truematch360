@@ -832,7 +832,7 @@ function ChatPage() {
                                             background: isSelected ? "primary.main" : "transparent", 
                                             "&:hover": {
                                                 transform: "scaleX(1)",
-                                                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
+                                                bgcolor: "var(--mui-palette-action-hover)",
                                             },
                                         }}
                                     >
@@ -840,9 +840,8 @@ function ChatPage() {
                                             <Avatar
                                                 src={`${BASE_URL}/uploads/user/profile/${chat?.profile_image}`}
                                                 sx={{
-                                                    borderRadius: 12,
-                                                    border: '2px solid',
-                                                    borderColor: isSelected ? 'rgba(255,255,255,0.5)' : 'rgba(59, 130, 246, 0.3)',
+                                                    border: '1px solid',
+                                                    borderColor: 'primary.main',
                                                 }}
                                             >
                                                 {chat.username?.charAt(0).toUpperCase()}
@@ -852,24 +851,18 @@ function ChatPage() {
                                         <Box sx={{ flex: 1, overflow: 'hidden' }}>
                                             <Typography
                                                 sx={{
-                                                    fontWeight: 'bold',
-                                                    fontSize: 14,
                                                     whiteSpace: 'nowrap',
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
-                                                    color: isSelected ? 'white' : '#1e3a8a'
                                                 }}
                                             >
                                                 {chat.username}
                                             </Typography>
                                             <Typography
                                                 sx={{
-                                                    fontSize: 10,
-                                                    color: isSelected ? "rgba(255,255,255,0.8)" : "#f97316",
                                                     whiteSpace: "nowrap",
                                                     overflow: "hidden",
                                                     textOverflow: "ellipsis",
-                                                    mt: 0.25,
                                                 }}
                                             >
                                                 {getLastMessagePreview(chat, currentUserId, t)}

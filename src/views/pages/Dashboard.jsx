@@ -1960,7 +1960,6 @@ export default function Dashboard() {
                   </Tooltip>
                 </Stack>
                 
-
                 {/* COMPANY INFORMATION DIALOG - Glassmorphism Style */}
 
                 <Dialog
@@ -2262,12 +2261,7 @@ export default function Dashboard() {
                   PaperProps={{
                     sx: {
                       maxHeight: "95vh",
-                      borderRadius: 3,
                       overflow: "hidden",
-                      background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)",
-                      backdropFilter: "blur(20px)",
-                      border: "1px solid rgba(59, 130, 246, 0.25)",
-                      boxShadow: "0 25px 50px -12px rgba(30, 58, 138, 0.3)",
                     },
                   }}
                   PaperComponent={DraggablePaper}
@@ -2276,37 +2270,31 @@ export default function Dashboard() {
                   <DialogTitle
                     id="draggable-dialog-title"
                     sx={{
-                      borderBottom: "2px solid",
-                      borderImage: "linear-gradient(90deg, #3b82f6 0%, #f97316 50%, #3b82f6 100%) 1",
-                      py: 2,
-                      px: 3,
-                      fontSize: 18,
-                      fontWeight: 700,
+                      borderBottom: "1px solid var(--mui-palette-divider)",
                       cursor: "move",
-                      background: "linear-gradient(135deg, rgba(30, 58, 138, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
+                      position: "relative",
+                      pr: 6,
                     }}
                   >
-                    {hasAppliedToThisJob
-                      ? t('update_application')
-                      : t('apply_to_position')}
-                    {/* icon close dialog */}
+                    {hasAppliedToThisJob ? t('update_application') : t('apply_to_position')}
+                    <IconButton
+                      aria-label="close"
+                      size="small"
+                      onClick={() => setApplyDialogOpen(false)}
+                      sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        color: "#f97316",
+                        "&:hover": {
+                          bgcolor: "rgba(249, 115, 22, 0.1)",
+                        },
+                      }}
+                    >
+                      <Cancel />
+                    </IconButton>
                   </DialogTitle>
-                  <IconButton
-                    aria-label="close"
-                    size="small"
-                    onClick={() => setApplyDialogOpen(false)}
-                    sx={{
-                      position: "absolute",
-                      right: 8,
-                      top: 10,
-                      color: "#f97316",
-                      "&:hover": {
-                        bgcolor: "rgba(249, 115, 22, 0.1)",
-                      },
-                    }}
-                  >
-                    <Cancel />
-                  </IconButton>
 
                   <DialogContent sx={{ mt: 0.5, px: 3, pb: 2 }}>
                     {hasAppliedToThisJob && originalResumeId && (
@@ -2314,13 +2302,6 @@ export default function Dashboard() {
                         {selectedResumeId !== originalResumeId ? (
                           <Alert
                             severity="info"
-                            sx={{
-                              borderRadius: 2,
-                              background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                              border: "1px solid rgba(59, 130, 246, 0.2)",
-                              color: "#1e3a8a",
-                              "& .MuiAlert-icon": { color: "#3b82f6" },
-                            }}
                           >
                             {t('changed_resume_notice')}
                           </Alert>
@@ -2330,7 +2311,6 @@ export default function Dashboard() {
                             sx={{ 
                               display: "block", 
                               mb: 1, 
-                              color: "#1e3a8a",
                               fontStyle: "italic",
                             }}
                           >
@@ -2344,13 +2324,11 @@ export default function Dashboard() {
                     <Box
                       sx={{
                         position: "relative",
-                        borderImage: "linear-gradient(135deg, #3b82f6 0%, #f97316 100%) 1",
-                        borderRadius: 2,
+                        border: "1px solid var(--mui-palette-primary-main)",
+                        borderRadius: "var(--mui-shape-borderRadius)",
                         p: 2.5,
                         pt: 3,
                         mt: 2,
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(239, 246, 255, 0.4) 100%)",
-                        backdropFilter: "blur(8px)",
                       }}
                     >
                       {resumes.length > 0 ? (
@@ -2364,12 +2342,7 @@ export default function Dashboard() {
                               px: 1.5,
                               fontSize: 13,
                               fontWeight: 600,
-                              background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-                              backgroundClip: "text",
-                              WebkitBackgroundClip: "text",
-                              WebkitTextFillColor: "transparent",
-                              bgcolor: "background.paper",
-                              borderRadius: 1,
+                              bgcolor: 'background.paper'
                             }}
                           >
                             {t('select_resume')}
@@ -2403,8 +2376,6 @@ export default function Dashboard() {
                                         size="small" 
                                         sx={{ 
                                           p: 0.5,
-                                          color: "#3b82f6",
-                                          "&.Mui-checked": { color: "#f97316" },
                                         }} 
                                       />
                                     }
@@ -2413,18 +2384,9 @@ export default function Dashboard() {
                                       mb: 0.8,
                                       px: 1.5,
                                       py: 0.8,
-                                      borderRadius: 2,
+                                      borderRadius: "var(--mui-shape-borderRadius)",
                                       border: "1px solid",
-                                      borderColor: selected
-                                        ? "#f97316"
-                                        : "rgba(59, 130, 246, 0.2)",
-                                      background: selected
-                                        ? "linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(249, 115, 22, 0.08) 100%)"
-                                        : "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 100%)",
-                                      "&:hover": {
-                                        borderColor: "#f97316",
-                                        background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                                      },
+                                      borderColor: selected ? "primary.main" : "divider",
                                       "& .MuiFormControlLabel-label": {
                                         width: "100%",
                                       },
@@ -2444,7 +2406,7 @@ export default function Dashboard() {
                                             sx={{
                                               fontWeight: 500,
                                               fontSize: 12,
-                                              color: selected ? "#1e3a8a" : "text.primary",
+                                              color: selected ? "primary.main" : "text.primary",
                                             }}
                                           >
                                             {r.resume_file || t('text_resume')}
@@ -2458,8 +2420,6 @@ export default function Dashboard() {
                                                 fontSize: 9,
                                                 height: 16,
                                                 mt: 0.3,
-                                                background: "linear-gradient(135deg, #3b82f6 0%, #f97316 100%)",
-                                                color: "#fff",
                                               }}
                                             />
                                           )}
@@ -2469,7 +2429,7 @@ export default function Dashboard() {
                                           variant="caption"
                                           sx={{
                                             fontSize: 10,
-                                            color: "#f97316",
+                                            color: selected ? "primary.main" : "text.primary",
                                             whiteSpace: "nowrap",
                                           }}
                                         >
@@ -2509,22 +2469,14 @@ export default function Dashboard() {
                         size="small"
                         fullWidth
                         sx={{
-                          borderRadius: 2,
+                          borderRadius: "var(--mui-shape-borderRadius)",
                           textTransform: "none",
                           py: 0.8,
                           fontWeight: 500,
-                          color: "#1e3a8a",
-                          borderColor: "rgba(59, 130, 246, 0.3)",
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(239, 246, 255, 0.5) 100%)",
-                          "&:hover": {
-                            borderColor: "#f97316",
-                            color: "#f97316",
-                            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                          },
                         }}
                       >
                         {uploadLoading ? (
-                          <CircularProgress size={16} sx={{ color: "#3b82f6", mr: 1 }} />
+                          <CircularProgress size={16} />
                         ) : (
                           <UploadFile sx={{ fontSize: 16, mr: 1, color: "#3b82f6" }} />
                         )}
@@ -2543,15 +2495,11 @@ export default function Dashboard() {
                     <Box
                       sx={{
                         position: "relative",
-                        borderImage: coverLetterToDelete
-                          ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%) 1"
-                          : "linear-gradient(135deg, #3b82f6 0%, #f97316 100%) 1",
-                        borderRadius: 2,
+                        border: "1px solid var(--mui-palette-primary-main)",
+                        borderRadius: "var(--mui-shape-borderRadius)",
                         p: 2.5,
                         mt: 3,
                         transition: "all 0.2s",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(239, 246, 255, 0.4) 100%)",
-                        backdropFilter: "blur(8px)",
                       }}
                     >
                       <Typography
@@ -2563,14 +2511,8 @@ export default function Dashboard() {
                           fontSize: 13,
                           fontWeight: 600,
                           bgcolor: "background.paper",
-                          borderRadius: 1,
-                          color: coverLetterToDelete ? "#ef4444" : "#1e3a8a",
-                          background: coverLetterToDelete
-                            ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)"
-                            : "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-                          backgroundClip: "text",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
+                          borderRadius: "var(--mui-shape-borderRadius)",
+                          bgcolor: 'background.paper'
                         }}
                       >
                         {t('cover_letter_optional')}
@@ -2596,9 +2538,7 @@ export default function Dashboard() {
                                 sx={{
                                   fontWeight: 500,
                                   color: coverLetterToDelete ? "#ef4444" : "#3b82f6",
-                                  textDecoration: coverLetterToDelete
-                                    ? "line-through"
-                                    : "none",
+                                  textDecoration: coverLetterToDelete ? "line-through" : "none",
                                   wordBreak: "break-all",
                                 }}
                               >
@@ -2607,29 +2547,14 @@ export default function Dashboard() {
                             </Box>
 
                             <Tooltip
-                              title={
-                                coverLetterToDelete
-                                  ? t('undo_remove')
-                                  : t('remove_cover_letter')
-                              }
+                              title={coverLetterToDelete ? t('undo_remove') : t('remove_cover_letter')}
                             >
                               <IconButton
                                 size="small"
                                 color={
                                   coverLetterToDelete ? "success" : "error"
                                 }
-                                onClick={
-                                  coverLetterToDelete
-                                    ? handleUndoDeleteCoverLetter
-                                    : handleStageDeleteCoverLetter
-                                }
-                                sx={{
-                                  "&:hover": {
-                                    bgcolor: coverLetterToDelete
-                                      ? "rgba(16, 185, 129, 0.1)"
-                                      : "rgba(239, 68, 68, 0.1)",
-                                  },
-                                }}
+                                onClick={coverLetterToDelete ? handleUndoDeleteCoverLetter : handleStageDeleteCoverLetter}
                               >
                                 {coverLetterToDelete ? (
                                   <CheckCircle fontSize="small" sx={{ color: "#10b981" }}/>
@@ -2681,18 +2606,13 @@ export default function Dashboard() {
                               justifyContent: "flex-start",
                               textTransform: "none",
                               py: 1,
-                              borderRadius: 2,
+                              borderRadius: "var(--mui-shape-borderRadius)",
                               borderStyle: coverLetterToDelete ? "dashed" : "solid",
                               color: coverLetterFile ? "#ef4444" : "#1e3a8a",
-                              borderColor: coverLetterFile
-                                ? "rgba(239, 68, 68, 0.3)"
-                                : "rgba(59, 130, 246, 0.3)",
-                              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 100%)",
+                              borderColor: coverLetterFile ? "rgba(239, 68, 68, 0.3)" : "rgba(59, 130, 246, 0.3)",
                               "&:hover": {
                                 borderColor: coverLetterFile ? "#ef4444" : "#f97316",
-                                background: coverLetterFile
-                                  ? "rgba(239, 68, 68, 0.05)"
-                                  : "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
+                                background: coverLetterFile ? "rgba(239, 68, 68, 0.05)" : "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
                               },
                             }}
                           >
@@ -2731,7 +2651,7 @@ export default function Dashboard() {
                       {coverLetterFile && (
                         <Typography
                           variant="caption"
-                          sx={{ mt: 1, display: "block", color: "#1e3a8a" }}
+                          sx={{ mt: 1, display: "block" }}
                         >
                           {(coverLetterFile.size / (1024 * 1024)).toFixed(2)} MB
                         </Typography>
@@ -2743,11 +2663,9 @@ export default function Dashboard() {
                       sx={{
                         mt: 3,
                         p: 2.5,
-                        borderImage: "linear-gradient(135deg, #3b82f6 0%, #f97316 100%) 1",
-                        borderRadius: 2,
+                        border: "1px solid var(--mui-palette-primary-main)",
+                        borderRadius: "var(--mui-shape-borderRadius)",
                         position: "relative",
-                        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(239, 246, 255, 0.4) 100%)",
-                        backdropFilter: "blur(8px)",
                       }}
                     >
                       <Typography
@@ -2758,12 +2676,9 @@ export default function Dashboard() {
                           px: 1.5,
                           fontSize: 13,
                           fontWeight: 600,
-                          background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-                          backgroundClip: "text",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
                           bgcolor: "background.paper",
-                          borderRadius: 1,
+                          borderRadius: "var(--mui-shape-borderRadius)",
+                          bgcolor: 'background.paper'
                         }}
                       >
                         {t('attached_files_optional')}
@@ -2788,39 +2703,17 @@ export default function Dashboard() {
                                   key={att.id}
                                   label={att.original_name || att.filename}
                                   size="small"
-                                  onDelete={
-                                    willBeDeleted
-                                      ? () => handleUndoDeleteAttachment(att.id) // Undo
-                                      : () => handleStageDeleteAttachment(att.id) // Stage delete
-                                  }
+                                  onDelete={willBeDeleted ? () => handleUndoDeleteAttachment(att.id) : () => handleStageDeleteAttachment(att.id)}
                                   color={willBeDeleted ? "error" : "default"}
-                                  variant={
-                                    willBeDeleted ? "filled" : "outlined"
-                                  }
-                                  deleteIcon={
-                                    willBeDeleted ? (
-                                      <CheckCircle fontSize="small" />
-                                    ) : undefined
-                                  }
+                                  variant={willBeDeleted ? "filled" : "outlined"}
+                                  deleteIcon={willBeDeleted ? (<CheckCircle fontSize="small" />) : undefined}
                                   sx={{
                                     maxWidth: 220,
                                     opacity: willBeDeleted ? 0.6 : 1,
-                                    textDecoration: willBeDeleted
-                                      ? "line-through"
-                                      : "none",
-                                    bgcolor: willBeDeleted
-                                      ? "rgba(239, 68, 68, 0.1)"
-                                      : undefined,
-                                    borderColor: willBeDeleted
-                                      ? "#ef4444"
-                                      : "#3b82f6",
-                                    color: willBeDeleted ? "#ef4444" : "#1e3a8a",
+                                    textDecoration: willBeDeleted ? "line-through" : "none",
+                                    bgcolor: willBeDeleted ? "rgba(239, 68, 68, 0.1)" : undefined,
                                   }}
-                                  icon={
-                                    willBeDeleted ? (
-                                      <Cancel fontSize="small" sx={{ color: "#ef4444" }} />
-                                    ) : undefined
-                                  }
+                                  icon={willBeDeleted ? (<Cancel fontSize="small" sx={{ color: "#ef4444" }} />) : undefined}
                                 />
                               );
                             })}
@@ -2846,15 +2739,8 @@ export default function Dashboard() {
                         sx={{
                           mb: attachmentFiles.length > 0 ? 1.5 : 0,
                           textTransform: "none",
-                          borderRadius: 2,
-                          color: "#1e3a8a",
-                          borderColor: "rgba(59, 130, 246, 0.3)",
-                          background: "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 100%)",
-                          "&:hover": {
-                            borderColor: "#f97316",
-                            color: "#f97316",
-                            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%)",
-                          },
+                          borderRadius: "var(--mui-shape-borderRadius)",
+                          borderColor: "var(--mui-palette-primary-main)",
                         }}
                       >
                         {t('add_more_files')}
@@ -2872,7 +2758,7 @@ export default function Dashboard() {
 
                       {attachmentFiles.length > 0 && (
                         <Box>
-                          <Typography variant="caption" sx={{ color: "#1e3a8a" }}> 
+                          <Typography variant="caption"> 
                             {t('new_files_selected')}: {attachmentFiles.length}
                           </Typography>
                           <Stack
@@ -2888,16 +2774,6 @@ export default function Dashboard() {
                                 onDelete={() =>
                                   setAttachmentFiles((prev) => prev.filter((_, idx) => idx !== i))
                                 }
-                                variant="outlined"
-                                sx={{
-                                  bgcolor: "rgba(59, 130, 246, 0.1)",
-                                  borderColor: "#3b82f6",
-                                  color: "#1e3a8a",
-                                  "& .MuiChip-deleteIcon": {
-                                    color: "#f97316",
-                                    "&:hover": { color: "#ea580c" },
-                                  },
-                                }}  
                               />
                             ))}
                           </Stack>
@@ -2909,11 +2785,9 @@ export default function Dashboard() {
                   {/* Footer */}
                   <DialogActions
                     sx={{
-                      borderTop: "2px solid",
-                      borderImage: "linear-gradient(90deg, #3b82f6 0%, #f97316 50%, #3b82f6 100%) 1",
+                      borderTop: "1px solid var(--mui-palette-divider)",
                       px: 3,
                       py: 2,
-                      background: "linear-gradient(135deg, rgba(30, 58, 138, 0.05) 0%, rgba(249, 115, 22, 0.03) 100%)",
                     }}
                   >
                     <Button
@@ -2921,15 +2795,6 @@ export default function Dashboard() {
                       onClick={() => setApplyDialogOpen(false)}
                       sx={{
                         textTransform: "none",
-                        borderRadius: 2,
-                        px: 3,
-                        color: "#1e3a8a",
-                        borderColor: "rgba(59, 130, 246, 0.3)",
-                        "&:hover": {
-                          borderColor: "#f97316",
-                          color: "#f97316",
-                          bgcolor: "rgba(249, 115, 22, 0.05)",
-                        },
                       }}
                     >
                       {t('cancel')}
@@ -2939,21 +2804,6 @@ export default function Dashboard() {
                       onClick={handleApplyWithResume}
                       disabled={applying[jobToApply?.pk_id]}
                       size="small"
-                      sx={{
-                        textTransform: "none",
-                        fontWeight: 600,
-                        borderRadius: 2,
-                        px: 4,
-                        background: "#1e3a8a",
-                        boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)",
-                        "&:hover": {
-                          background: "#1e3a8a",
-                          boxShadow: "0 6px 20px rgba(249, 115, 22, 0.4)",
-                        },
-                        "&:disabled": {
-                          background: "linear-gradient(135deg, #9ca3af 0%, #a1a1aa 100%)",
-                        },
-                      }}
                     >
                       {applying[jobToApply?.pk_id]
                         ? t('submitting')
@@ -3360,7 +3210,7 @@ export default function Dashboard() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          boxSizing: "border-box",
+          // boxSizing: "border-box",
           gap: 0.5,
         }}
       >
