@@ -832,6 +832,7 @@ function ChatPage() {
                                             paddingBlock: 2,
                                             mx: { xs: 2, sm: 3 },   
                                             my: 1, 
+                                            bgcolor: isSelected ? 'primary.main' : 'transparent',
                                             cursor: 'pointer',
                                             borderRadius: 'var(--mui-shape-borderRadius)',
                                             position: 'relative',
@@ -861,6 +862,7 @@ function ChatPage() {
                                                     whiteSpace: 'nowrap',
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
+                                                    color: 'var(--mui--palette-primary-contrastText)',
                                                 }}
                                             >
                                                 {chat.username}
@@ -870,6 +872,7 @@ function ChatPage() {
                                                     whiteSpace: "nowrap",
                                                     overflow: "hidden",
                                                     textOverflow: "ellipsis",
+                                                    color: 'var(--mui--palette-primary-contrastText)',
                                                 }}
                                             >
                                                 {getLastMessagePreview(chat, currentUserId, t)}
