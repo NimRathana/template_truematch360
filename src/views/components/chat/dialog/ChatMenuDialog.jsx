@@ -313,7 +313,7 @@ function ChatMenuDialog({ open, onClose, user, roomId, currentUserId, onBlockUse
                                         messages.map(msg => {
                                             const isOwn = currentUserId === msg.sender_id;
                                             return (
-                                                <Box key={msg.id} sx={{ px: 2, py: 1, bgcolor: isOwn ? 'primary.main' : 'grey.100', boxShadow: 2, color: isOwn ? 'white' : 'text.primary', borderRadius: 2, mb: 1 }}>
+                                                <Box key={msg.id} sx={{ px: 2, py: 1, bgcolor: isOwn ? 'primary.main' : 'grey.100', boxShadow: 2, color: isOwn ? 'white' : 'text.primary', borderRadius: 'var(--mui-shape-borderRadius)', mb: 1 }}>
                                                     <ChatFile fileUrl={`${BASE_URL}${msg.file_url}`} isOwn={isOwn} />
                                                 </Box>
                                             )

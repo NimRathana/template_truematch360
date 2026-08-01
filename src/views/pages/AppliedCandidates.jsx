@@ -50,6 +50,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "../services/api";
 import { alpha } from "@mui/material/styles";
+import classnames from 'classnames'
 
 // ────────────────────────────────────────────────
 //      Draggable Paper
@@ -975,6 +976,7 @@ export default function AppliedCandidates() {
 
   return (
     <Box
+      className={classnames('ts-layout-content-height-fixed')}
       sx={{
         height: "100%",
         display: "flex",

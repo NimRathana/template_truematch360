@@ -19,7 +19,7 @@ function ViewProfileDialog({open, onClose, imageUrl}) {
                         sx={{
                             maxWidth: "100%",
                             maxHeight: 400,
-                            borderRadius: 2,
+                            borderRadius: 'var(--mui-shape-borderRadius)',
                         }}
                     />
                 )}

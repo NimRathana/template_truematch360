@@ -21,7 +21,7 @@ export default function ChatFile({ fileUrl, isOwn, maxWidth = 300 }) {
       <Box
         sx={{
           p: 1,
-          backgroundColor: 'rgba(128,128,128,0.5)',
+          backgroundColor: 'action.selected',
           borderRadius: '50%',
           height: { sm: 45 },
           width: { sm: 50 },
@@ -48,7 +48,7 @@ export default function ChatFile({ fileUrl, isOwn, maxWidth = 300 }) {
             target="_blank"
             rel="noopener noreferrer"
             sx={{
-              color: isOwn ? 'white' : 'black',
+              color: 'text.primary',
               textDecoration: 'none',
               '&:hover': { textDecoration: 'underline' }
             }}

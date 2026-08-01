@@ -1,4 +1,4 @@
-import { Card, ClickAwayListener, Popper } from '@mui/material';
+import { Card, ClickAwayListener, Popper, useMediaQuery } from '@mui/material';
 import EmojiPickerReact from 'emoji-picker-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,9 @@ const EmojiPicker = ({
   const { t } = useTranslation();
   const [open, setOpen] = useState(true);
   const { settings } = useSettings();
-
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const emojiTheme = settings.mode === 'system' ? (prefersDarkMode ? 'dark' : 'light') : settings.mode;
+  
   const handleEmojiClick = (emojiData) => {
     onSelect(emojiData.emoji);
   };
@@ -50,7 +52,7 @@ const EmojiPicker = ({
             onEmojiClick={handleEmojiClick}
             width={width}
             height={height}
-            theme={settings.mode === 'dark' ? 'dark' : 'light'}
+            theme={emojiTheme}
             previewConfig={{
               showPreview: false
             }}

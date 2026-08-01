@@ -49,13 +49,11 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
   return (
     <Box
       sx={{
-        color: isOwn ? "white" : "black",
-        borderRadius: 3,
         width: '100%',
       }}
     >
       {error ? (
-        <Typography variant="body2" sx={{ color: isOwn ? "white" : "black", textAlign: "center" }}>
+        <Typography variant="body2" sx={{ color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary", textAlign: "center" }}>
           {t('voice_message_not_found')}
         </Typography>
       ) : (
@@ -70,14 +68,13 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
           <IconButton
             onClick={togglePlay}
             sx={{
-              bgcolor: isOwn ? "rgba(255,255,255,0.25)" : "white",
-              "&:hover": { bgcolor: isOwn ? "rgba(255,255,255,0.4)" : "#eee" },
+              bgcolor: "action.active",
             }}
           >
             {playing ? (
-              <PauseIcon sx={{ color: isOwn ? "white" : "#333" }} />
+              <PauseIcon />
             ) : (
-              <PlayArrowIcon sx={{ color: isOwn ? "white" : "#333" }} />
+              <PlayArrowIcon />
             )}
           </IconButton>
 
@@ -91,9 +88,8 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
                 borderRadius: 3,
                 mt:1,
                 cursor: "pointer",
-                bgcolor: isOwn ? "rgba(255,255,255,0.3)" : "#ddd",
+                bgcolor: "action.active",
                 overflow: "hidden",
-                "&:hover": { bgcolor: isOwn ? "rgba(255,255,255,0.4)" : "#ccc" },
               }}
             >
               <Box
@@ -103,7 +99,7 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
                   left: 0,
                   height: "100%",
                   width: `${progress}%`,
-                  bgcolor: isOwn ? "white" : "#1976d2",
+                  bgcolor: "action.active",
                   transition: "width 0.1s linear",
                 }}
               />
@@ -111,7 +107,7 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
 
             <Typography
               variant="caption"
-              sx={{ opacity: 0.8, mt: 0.5, display: "block", textAlign: "right" }}
+              sx={{ opacity: 0.8, mt: 0.5, display: "block", textAlign: "right", color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary" }}
             >
               {currentTime} / {duration}
             </Typography>

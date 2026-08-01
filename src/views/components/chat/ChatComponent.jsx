@@ -1277,6 +1277,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                         }}
                     >
                         <Box
+                            id='chat-messages-container'
                             ref={messagesRef}
                             onScroll={onScroll}
                             sx={{
@@ -1399,10 +1400,9 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                             <Paper
                                 elevation={0}
                                 sx={{
-                                    position: 'absolute',
-                                    bottom: replyingTo ? 120 : 60,
                                     width: '100%',
                                     p: 1,
+                                    px: 2,
                                     display: 'flex',
                                     alignItems: 'center',
                                     overflowX: 'hidden',
@@ -1420,13 +1420,8 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                 >
                                     {selectedFiles.map((item) => {
                                         const file = item.file;
-
                                         const isImage = file.type.startsWith("image/");
-
-                                        const uploadingFile = uploadingFiles.find(
-                                            f => f.id === item.id
-                                        );
-
+                                        const uploadingFile = uploadingFiles.find(f => f.id === item.id);
                                         const progress = uploadingFile?.progress || 0;
                                         const isUploading = uploadingFile?.isUploading;
 
@@ -1489,10 +1484,11 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                                         position: 'absolute',
                                                         top: 4,
                                                         right: 4,
-                                                        backgroundColor: 'white',
-                                                        boxShadow: 1,
-                                                        color: '#f97316',
-                                                        '&:hover': { color: '#ef4444' },
+                                                        bgcolor: (theme) => `${theme.palette.error.main} !important`,
+                                                        color: "white",
+                                                        "&:hover": {
+                                                            transform: "scale(1.1)",
+                                                        },
                                                     }}
                                                 >
                                                     <CloseIcon sx={{ fontSize: 14 }} />
@@ -1506,19 +1502,14 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
 
                         {editingMessage && (
                             <Box sx={{
-                                position: 'absolute',
-                                bottom: 60,
                                 width: '100%',
                                 p: 1,
+                                px: 2,
                                 display: 'flex',
                                 alignItems: 'center',
-                                borderTop: 1,
-                                borderColor: 'rgba(59, 130, 246, 0.2)',
-                                bgcolor: 'rgba(239, 246, 255, 0.95)',
-                                backdropFilter: 'blur(8px)',
                                 justifyContent: 'space-between'
                             }}>
-                                <Typography sx={{ color: '#3b82f6', fontWeight: 600 }}>
+                                <Typography sx={{ fontWeight: 600 }}>
                                     {t('editing_message')}
                                 </Typography>
                                 <IconButton
@@ -1527,7 +1518,6 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                         setEditingMessage(null);
                                         setNewMessage('');
                                     }}
-                                    sx={{ color: '#f97316' }}
                                 >
                                     <CloseIcon fontSize="small" />
                                 </IconButton>
@@ -1537,24 +1527,19 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                         {replyingTo && (
                             <Box
                                 sx={{
-                                    position: 'absolute',
-                                    bottom: 60,
                                     width: '100%',
                                     p: 1,
+                                    px: 2,
                                     display: 'flex',
                                     alignItems: 'center',
-                                    borderTop: 1,
-                                    borderColor: 'rgba(59, 130, 246, 0.2)',
-                                    bgcolor: 'rgba(239, 246, 255, 0.95)',
-                                    backdropFilter: 'blur(8px)',
                                     justifyContent: 'space-between'
                                 }}
                             >
                                 <Box sx={{ maxWidth: '80%' }}>
-                                    <Typography variant="caption" sx={{ opacity: 0.7, color: '#1e3a8a' }}>
+                                    <Typography variant="caption">
                                         {t('replying_to')}
                                     </Typography>
-                                    <Typography variant="body2" noWrap sx={{ color: '#f97316' }}>
+                                    <Typography variant="body2" noWrap>
                                         {replyingTo.content || replyingTo.type}
                                     </Typography>
                                 </Box>
@@ -1562,7 +1547,6 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                 <IconButton
                                     size="small"
                                     onClick={() => setReplyingTo(null)}
-                                    sx={{ color: '#f97316' }}
                                 >
                                     <CloseIcon fontSize="small" />
                                 </IconButton>

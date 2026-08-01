@@ -17,11 +17,10 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
         position: 'relative',
         width,
         height,
-        borderRadius: 2,
         overflow: 'hidden',
         transition: 'transform 0.2s ease',
         '&:hover': { transform: 'scale(1.025)' },
-        bgcolor: hasError ? 'grey' : 'transparent',
+        bgcolor: hasError ? 'text.secondary' : 'transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -51,7 +50,6 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
             alignItems: 'center',
             justifyContent: 'center',
             px: 1,
-            color: 'white'
           }}
         >
           <BrokenImageIcon sx={{ fontSize: 48, mb: 1, color: 'grey.500' }} />
@@ -77,7 +75,6 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
           backgroundColor: 'grey',
           borderRadius: 5,
           pl: 0.5,
-          color: 'white',
         }}
       >
         {!isDeleting && (
@@ -92,9 +89,11 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
                 gap: 0.5
               }}
             >
-              <Box sx={{
-                color: isOwn ? 'white' : 'black',
-              }}>
+              <Box 
+                sx={{
+                  color: isOwn ? 'white' : 'black',
+                }}
+              >
                 <ReactionComponent
                   messageId={messageId}
                   reactionsData={reactionsData}

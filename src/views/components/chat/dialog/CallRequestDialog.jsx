@@ -97,9 +97,12 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
                     sx={{
                         width: 70,
                         height: 70,
-                        backgroundColor: '#ef4444',
+                        bgcolor: (theme) => `${theme.palette.error.main} !important`,
                         color: 'white',
                         transition: '0.2s ease',
+                        "&:hover": {
+                            transform: "scale(1.1)",
+                        },
                     }}
                 >
                     <CallEndIcon sx={{ fontSize: 34 }} />

@@ -29,8 +29,8 @@ function ReplyComponent({ reply, isOwn, isImage, onScroll }) {
         <Box
             sx={{
                 borderLeft: 2,
-                borderColor: isImage ? (isOwn ? 'primary.main' : 'black') : isOwn ? 'white' : 'grey',
-                backgroundColor: isImage ? '#ffffff97' : isOwn ? '#ffffff3c' : '#bab6b63c',
+                borderColor: isOwn ? 'text.primary' : 'primary.main',
+                backgroundColor: 'action.hover',
                 px: 1,
                 py: 0.5,
                 mb: reply.type === 'voice' ? 1 : 0.5,
@@ -45,7 +45,7 @@ function ReplyComponent({ reply, isOwn, isImage, onScroll }) {
         >
             <Typography
                 variant="caption"
-                sx={{ opacity: 0.7, color: isImage ? 'grey' : isOwn ? 'white' : 'grey' }}
+                sx={{ opacity: 0.7, color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary" }}
             >
                 {t('replying_to')}
             </Typography>
@@ -53,7 +53,7 @@ function ReplyComponent({ reply, isOwn, isImage, onScroll }) {
             <Typography
                 variant="body2"
                 noWrap
-                sx={{ fontWeight: 500, color: isImage ? 'grey' : isOwn ? 'white' : 'grey' }}
+                sx={{ fontWeight: 500, color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary" }}
             >
                 {getPreviewText()}
             </Typography>

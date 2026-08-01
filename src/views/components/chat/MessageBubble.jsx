@@ -13,7 +13,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import PreviewIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import { FormatTime } from './FormatTime';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
@@ -38,7 +38,25 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
     const [reactionOpen, setReactionOpen] = React.useState(false);
     const [reactionAnchorEl, setReactionAnchorEl] = React.useState(null);
     const [isHovered, setIsHovered] = React.useState(false);
+    const [menuHeight, setMenuHeight] = useState(0);
+    const menuPaperRef = useRef(null);
+    const getMenuPosition = () => {
+        if (!anchorEl) return false;
 
+        const anchorRect = anchorEl.getBoundingClientRect();
+        const container = document.getElementById("chat-messages-container");
+        const containerRect = container?.getBoundingClientRect();
+
+        if (!containerRect) return false;
+
+        const spaceAbove = anchorRect.top - containerRect.top;
+        const spaceBelow = containerRect.bottom - anchorRect.bottom;
+
+        return spaceBelow < menuHeight && spaceAbove > menuHeight;
+    };
+
+    const openAbove = getMenuPosition();
+    
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -131,10 +149,13 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [reactionAnchorEl]);
 
-    const isInline =
-        message.type === 'text' &&
-        message.content.length < 40 &&
-        !message.content.includes('\n');
+    useEffect(() => {
+        if (menuPaperRef.current) {
+            setMenuHeight(menuPaperRef.current.clientHeight);
+        }
+    }, [open]);
+
+    const isInline = message.type === 'text' && message.content.length < 40 && !message.content.includes('\n');
 
     const renderMessageContent = (content) => {
         if (!content) return null;
@@ -145,9 +166,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                     const urlRegex = /^(https?:\/\/[^\s]+|www\.[^\s]+)/i;
 
                     if (urlRegex.test(word)) {
-                        const href = /^https?:\/\//i.test(word)
-                            ? word
-                            : `https://${word}`;
+                        const href = /^https?:\/\//i.test(word) ? word : `https://${word}`;
 
                         return (
                             <Link
@@ -181,9 +200,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 mb: 0.75,
                 gap: 1,
             }}
-
         >
-
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={2000}
@@ -199,7 +216,6 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                     variant="filled"
                     sx={{
                         width: "100%",
-                        borderRadius: 2,
                     }}
                 >
                     {snackbar.message}
@@ -277,24 +293,8 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         px: message.type === 'image' || message.type === 'video' ? 0 : 2,
                         py: message.type === 'image' || message.type === 'video' ? 0 : 1,
                         transition: 'box-shadow 0.3s ease',
-                        bgcolor:
-                            message.type === 'image' || message.type === 'video'
-                                ? 'transparent'
-                                : isOwn
-                                    ? 'primary.main'
-                                    : 'grey.100',
-                        boxShadow: highlightedMessageId === message.id
-                            ? '0 0 0 3px rgba(255, 193, 7, 0.6)' :
-                            message.type === 'image' || message.type === 'video' ? 0 : 2,
-                        color: isOwn ? 'white' : 'text.primary',
-                        borderRadius: 2,
+                        bgcolor: message.type === 'image' || message.type === 'video' ? 'transparent' : isOwn ? 'primary.main' : 'var(--mui-palette-background-paper)',
                         '&:hover': {
-                            bgcolor:
-                                message.type === 'image' || message.type === 'video'
-                                    ? 'transparent'
-                                    : isOwn
-                                        ? '#1f62a5ff'
-                                        : 'grey.200',
                             transition: 'transform 0.2s ease',
                         },
                         position: 'relative',
@@ -324,9 +324,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             sx={{
                                 position: 'absolute',
                                 inset: 0,
-                                bgcolor: isOwn
-                                    ? 'rgba(0,0,0,0.45)'
-                                    : 'rgba(0,0,0,0.25)',
+                                bgcolor: isOwn ? 'primary.main' : 'grey.100',
                                 backdropFilter: 'blur(2px)',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -338,7 +336,6 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             }}
                         >
                             <Button
-                                color="#fff"
                                 variant="outlined"
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -356,9 +353,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             sx={{
                                 position: 'absolute',
                                 inset: 0,
-                                bgcolor: isOwn
-                                    ? 'rgba(0,0,0,0.45)'
-                                    : 'rgba(0,0,0,0.25)',
+                                bgcolor: isOwn ? 'primary.main' : 'grey.100',
                                 backdropFilter: 'blur(2px)',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -373,15 +368,11 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                 value={message.progress || 0}
                                 size={42}
                                 thickness={4}
-                                sx={{
-                                    color: '#fff'
-                                }}
                             />
 
                             <Typography
                                 variant="caption"
                                 sx={{
-                                    color: '#fff',
                                     fontWeight: 600
                                 }}
                             >
@@ -395,7 +386,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             <Typography
                                 variant="caption"
                                 sx={{
-                                    color: isOwn ? "white" : "gray",
+                                    color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                                     whiteSpace: "pre-line",
                                     lineHeight: 1.2,
                                     display: "flex",
@@ -463,7 +454,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                 <Typography
                                     variant="caption"
                                     sx={{
-                                        color: isOwn ? "white" : "gray",
+                                        color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                                         whiteSpace: "pre-line",
                                         lineHeight: 1.2,
                                     }}
@@ -532,7 +523,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             variant="caption"
                             sx={{
                                 fontStyle: 'italic',
-                                color: isOwn ? 'white' : 'gray',
+                                color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                                 whiteSpace: 'pre-line',
                                 lineHeight: 1.2,
                                 textAlign: isOwn ? 'end' : 'start',
@@ -599,7 +590,6 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                     {message.type === 'call' && (
                         <Box
                             sx={{
-                                color: isOwn ? 'white' : 'text.primary',
                                 wordBreak: 'break-word',
                                 transition: 'all 0.2s',
                                 textOverflow: 'ellipsis',
@@ -607,22 +597,24 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         >
                             <Typography
                                 variant="body2"
+                                sx={{
+                                    color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
+                                }}
                             >
                                 {message.content}
                             </Typography>
 
                             <Button
                                 variant="outlined"
-                                color={isOwn ? 'white' : 'black'}
                                 size='small'
                                 sx={{
                                     width: '100%',
-                                    borderRadius: 2,
-                                    boxShadow: 1,
                                     wordBreak: 'break-word',
                                     transition: 'all 0.2s',
                                     my: 1,
-                                    textTransform: "none"
+                                    textTransform: "none",
+                                    color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
+                                    borderColor: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                                 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -655,11 +647,11 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                             position: 'absolute',
                             top: 4,
                             right: 4,
-                            color: isOwn ? '#fff' : 'grey',
+                            color: isOwn ? 'text.primary' : 'text.secondary',
                             opacity: isHovered ? 1 : 0,
                             pointerEvents: isHovered ? 'auto' : 'none',
                             transition: 'opacity 0.2s',
-                            '&:hover': { color: '#ffcc00ff', transform: 'scale(1.2)' },
+                            '&:hover': { color: 'primary.main', transform: 'scale(1.2)' },
                         }}
                         onClick={(e) => {
                             e.stopPropagation();
@@ -730,7 +722,8 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                     >
                                         {message.is_read && isOwn && <DoneAllIcon sx={{ fontSize: 16 }} />}
                                     </Box>
-                                </>)}
+                                </>
+                            )}
 
                             {message.is_deleting && (
                                 <>
@@ -752,33 +745,36 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleMenuClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{
+                    vertical: openAbove ? "top" : "bottom",
+                    horizontal: isOwn ? "right" : "left",
+                }}
+                transformOrigin={{
+                    vertical: openAbove ? "bottom" : "top",
+                    horizontal: isOwn ? "right" : "left",
+                }}
                 PaperProps={{
+                    ref: menuPaperRef,
                     sx: {
-                        borderRadius: "12px",
                         overflow: "visible",
-                        mt: -10,
+                        mt: 1,
                         position: "relative",
-                        width: 200
+                        width: "max-content",
                     },
                 }}
             >
                 <Box
                     sx={{
-                        position: "absolute",
-                        top: -55,
-                        left: "50%",
-                        transform: "translateX(-50%)",
+                        ...(openAbove ? { bottom: -8 } : { top: -8 }),
+                        ...(isOwn ? { right: 0 } : { left: 0 }),
                         bgcolor: "background.paper",
-                        borderRadius: "999px",
+                        borderRadius: "var(--mui-shape-borderRadius)",
                         px: 1,
                         py: 0.5,
                         display: "flex",
                         gap: 0.5,
-                        boxShadow: 3,
-                        zIndex: 1,
                         whiteSpace: "nowrap",
+                        zIndex: 2,
                     }}
                 >
                     {reactions.map((reaction) => (
@@ -789,22 +785,17 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                 handleMenuClose();
                             }}
                             sx={{
-                                width: 38,
-                                height: 38,
+                                width: 40,
+                                height: 40,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 fontSize: 24,
-                                borderRadius: "50%",
                                 cursor: "pointer",
                                 transition: "all .18s ease",
-
                                 "&:hover": {
-                                    bgcolor: "background.paper",
                                     transform: "translateY(-5px) scale(1.2)",
-                                    boxShadow: 2,
                                 },
-
                                 "&:active": {
                                     transform: "scale(.95)",
                                 },
@@ -926,7 +917,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
             <Popper
                 open={reactionOpen}
                 anchorEl={reactionAnchorEl}
-                placement="top"
+                placement={isOwn ? 'top-end' : 'top-start'}
                 transition
                 disablePortal={false}
                 modifiers={[
@@ -935,31 +926,22 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 ]}
                 sx={{
                     zIndex: 1600,
-                    position: 'absolute',
+                    position: 'relative',
                     '&::before': {
                         content: '""',
                         position: 'absolute',
-                        right: -6,
-                        top: '20px',
-                        width: '2px',
                         height: '20px',
-                        bgcolor: 'divider',
                     },
                 }}
             >
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={150}>
                         <Paper
-                            elevation={4}
                             sx={{
                                 display: 'flex',
                                 gap: 1,
                                 px: 1.5,
                                 py: 0.8,
-                                borderRadius: 5,
-                                bgcolor: 'background.paper',
-                                boxShadow: 3,
-                                position: 'relative',
                             }}
                         >
                             {reactions.map((reaction) => (

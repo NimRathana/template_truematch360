@@ -55,15 +55,16 @@ function ReactionComponent({ messageId, reactionsData, onRemoveReact }) {
                                     borderRadius: 5,
                                     fontSize: 13,
                                     cursor: isMine ? 'pointer' : 'default',
-                                    bgcolor: isMine
-                                        ? 'green'
-                                        : 'grey.200',
-                                    color: isMine ? '#fff' : 'text.primary',
+                                    bgcolor: 'action.selected',
+                                    border: 1,
+                                    borderColor: 'divider',
+                                    color: 'text.primary',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 0.5,
                                     transition: '0.2s',
                                     '&:hover': {
+                                        bgcolor: 'action.hover',
                                         opacity: isMine ? 0.85 : 1
                                     }
                                 }}

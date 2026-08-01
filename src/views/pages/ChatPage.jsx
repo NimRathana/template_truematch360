@@ -629,6 +629,7 @@ function ChatPage() {
     });
 
     const startCall = (roomId, mode = 'video') => {
+        debugger
         if (!globalConnected && selectedChat) {
             console.warn("WS not connected yet");
             return;

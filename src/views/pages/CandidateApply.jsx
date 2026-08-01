@@ -615,7 +615,8 @@ export default function MyApplicationsToCompanies() {
                     flex: 1,               
                     minHeight: 0,          
                     overflow: "auto",
-                    alignContent: "flex-start",      
+                    alignContent: "flex-start",
+                    justifyContent: 'center !important'   
                 }}
             >
                 {filteredApplications.length === 0 && !loading ? (
@@ -682,8 +683,6 @@ export default function MyApplicationsToCompanies() {
                                     overflow: 'hidden',
                                     border: `1px solid ${accent}`,
                                     transition: 'all 0.36s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                                    '&:hover': {
-                                    },
                                 }}
                             >
                                 <Box sx={{ height: 6, background: `${accent}` }} />

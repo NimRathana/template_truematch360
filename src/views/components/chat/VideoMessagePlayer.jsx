@@ -39,12 +39,11 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
         width: 200,
         height: '100%',
         overflow: 'hidden',
-        borderRadius: 2,
         transition: 'transform 0.2s ease',
         '&:hover': {
           transform: error ? 'none' : 'scale(1.025)',
         },
-        bgcolor: error ? (isOwn ? 'primary.main' : 'grey.200') : 'black',
+        bgcolor: error ? (isOwn ? 'primary.main' : 'grey.200') : 'transparent',
       }}
     >
       {error ? (
@@ -55,7 +54,7 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
             maxWidth: 200,
             height: 150,
             bgcolor: 'grey',
-            borderRadius: 2,
+            borderRadius: 'var(--mui-shape-borderRadius)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -74,7 +73,6 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
           <Typography
             variant="body2"
             sx={{
-              color: 'white',
               textAlign: 'center',
               px: 1,
               wordBreak: 'break-word',
@@ -91,7 +89,6 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
               display: 'flex',
               alignItems: 'center',
               gap: 0.5,
-              color: 'white',
             }}
           >
             <Typography
@@ -134,7 +131,6 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
             </Box>
           </Box>
         </Box>
-
       ) : (
         <>
           <Box
@@ -151,7 +147,6 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
               objectFit: 'cover',
             }}
           />
-
           {/* Centered Play/Pause Button */}
           {isHovered && (
             <IconButton
@@ -187,7 +182,6 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
               backgroundColor: 'grey',
               borderRadius: 5,
               pl: 0.5,
-              color: 'white',
             }}
           >
             {!isDeleting && (
@@ -246,8 +240,7 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
             )}
           </Box>
         </>
-      )
-      }
-    </Box >
+      )}
+    </Box>
   );
 }
