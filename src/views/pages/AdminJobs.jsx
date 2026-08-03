@@ -80,15 +80,11 @@ const AdminJobs = () => {
             key={idx}
             sx={{
               p: 1.2,
-              borderRadius: 2,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
               transition: "0.2s",
               "&:hover": {
                 transform: "translateY(-2px)",
                 boxShadow: "0 8px 20px rgba(0,0,0,0.07)",
               },
-              border: "3px solid",
-              borderColor: "divider"
             }}
           >
             <Typography variant="caption" color="text.secondary">
@@ -124,15 +120,11 @@ const AdminJobs = () => {
             <Card
               key={job.pk_id}
               sx={{
-                borderRadius: 2.5,
-                boxShadow: "0 6px 18px rgba(0,0,0,0.05)",
                 transition: "0.2s",
                 "&:hover": {
                   transform: "translateY(-3px)",
                   boxShadow: "0 10px 28px rgba(0,0,0,0.08)",
                 },
-                border: "3px solid",
-                borderColor: "divider"
               }}
             >
               <CardContent sx={{ p: 1.5 }}>
@@ -140,12 +132,8 @@ const AdminJobs = () => {
                 <Box display="flex" justifyContent="space-between" mb={1}>
                   <Box display="flex" gap={1}>
                     <Avatar
-                      src={
-                        job.company_logo
-                          ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${job.company_logo}`
-                          : "/default-company.png"
-                      }
-                      sx={{ width: 32, height: 32, borderRadius: 1.5 }}
+                      src={job.company_logo ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${job.company_logo}` : "/default-company.png"}
+                      sx={{ width: 32, height: 32 }}
                     />
                     <Box minWidth={0}>
                       <Typography fontWeight={600} fontSize={13} noWrap>
