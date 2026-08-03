@@ -9,6 +9,7 @@ import Link from '@/components/Link'
 import { useRouter } from 'next/navigation'
 
 // MUI Imports
+import Alert from '@mui/material/Alert'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
@@ -19,7 +20,11 @@ import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Divider from '@mui/material/Divider'
-import { Box } from '@mui/material'
+import Chip from '@mui/material/Chip'
+import Collapse from '@mui/material/Collapse'
+import Stack from '@mui/material/Stack'
+import Snackbar from '@mui/material/Snackbar'
+import { Alert as MuiAlert, Box } from '@mui/material'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
@@ -47,19 +52,136 @@ const Login = ({ mode }) => {
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showRobotCheck, setShowRobotCheck] = useState(false)
+  const [isHuman, setIsHuman] = useState(false)
+  const [robotAnswer, setRobotAnswer] = useState([])
+  const [robotError, setRobotError] = useState(false)
+  const [robotOptions, setRobotOptions] = useState([])
+  const [robotType, setRobotType] = useState('')
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [snackbarSeverity, setSnackbarSeverity] = useState('error')
 
   // Vars
   const darkImg = '/images/pages/auth-v1-mask-dark.png'
   const lightImg = '/images/pages/auth-v1-mask-light.png'
+  const ROBOT_POOL = [
+    { label: '🍎 Apple', type: 'fruit' },
+    { label: '🍌 Banana', type: 'fruit' },
+    { label: '🍇 Grape', type: 'fruit' },
+    { label: '🍊 Orange', type: 'fruit' },
+    { label: '🍓 Strawberry', type: 'fruit' },
+    { label: '🍍 Pineapple', type: 'fruit' },
+    { label: '🥭 Mango', type: 'fruit' },
+    { label: '🍉 Watermelon', type: 'fruit' },
+    { label: '🍒 Cherry', type: 'fruit' },
+    { label: '🥝 Kiwi', type: 'fruit' },
+    { label: '🐶 Dog', type: 'animal' },
+    { label: '🐱 Cat', type: 'animal' },
+    { label: '🐭 Mouse', type: 'animal' },
+    { label: '🐰 Rabbit', type: 'animal' },
+    { label: '🐼 Panda', type: 'animal' },
+    { label: '🦁 Lion', type: 'animal' },
+    { label: '🐯 Tiger', type: 'animal' },
+    { label: '🐵 Monkey', type: 'animal' },
+    { label: '🚗 Car', type: 'vehicle' },
+    { label: '🚕 Taxi', type: 'vehicle' },
+    { label: '🚙 SUV', type: 'vehicle' },
+    { label: '🚌 Bus', type: 'vehicle' },
+    { label: '🏍️ Motorcycle', type: 'vehicle' },
+    { label: '🚲 Bicycle', type: 'vehicle' },
+    { label: '✈️ Plane', type: 'vehicle' },
+    { label: '🚀 Rocket', type: 'vehicle' },
+    { label: '📱 Phone', type: 'electronics' },
+    { label: '💻 Laptop', type: 'electronics' },
+    { label: '⌚ Watch', type: 'electronics' },
+    { label: '📺 TV', type: 'electronics' },
+  ]
 
   // Hooks
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
+  const TYPE_MAP = {
+    [t('fruits')]: 'fruit',
+    [t('animals')]: 'animal',
+    [t('vehicles')]: 'vehicle',
+    [t('electronics')]: 'electronics',
+  }
+
+  const generateRobotOptions = () => {
+    const readableTypes = Object.keys(TYPE_MAP)
+    const randomReadableType = readableTypes[Math.floor(Math.random() * readableTypes.length)]
+    const poolType = TYPE_MAP[randomReadableType]
+
+    setRobotType(randomReadableType)
+
+    const correctItems = ROBOT_POOL.filter(item => item.type === poolType)
+    const wrongItems = ROBOT_POOL.filter(item => item.type !== poolType)
+
+    const selectedCorrect = correctItems
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 2)
+
+    const selectedWrong = wrongItems
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 2)
+
+    const mixedOptions = [...selectedCorrect, ...selectedWrong]
+      .sort(() => 0.5 - Math.random())
+      .map((item, index) => ({
+        id: index + 1,
+        label: item.label,
+        isCorrect: item.type === poolType,
+      }))
+
+    setRobotOptions(mixedOptions)
+  }
+
+  const toggleRobotOption = id => {
+    setRobotError(false)
+    setRobotAnswer(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    )
+  }
+
+  const showSnackbar = (message, severity = 'error') => {
+    setSnackbarMessage(message)
+    setSnackbarSeverity(severity)
+    setSnackbarOpen(true)
+  }
+
+  const verifyHuman = () => {
+    const correct = robotOptions
+      .filter(option => option.isCorrect)
+      .map(option => option.id)
+      .sort()
+
+    const selected = [...robotAnswer].sort()
+
+    if (JSON.stringify(correct) !== JSON.stringify(selected)) {
+      setRobotError(true)
+      return
+    }
+
+    setIsHuman(true)
+    setShowRobotCheck(false)
+    setRobotAnswer([])
+    setRobotError(false)
+  }
+
   // Submit handler
   const handleSubmit = async e => {
     e.preventDefault()
     setError(null)
+
+    if (showRobotCheck && !isHuman) {
+      const message = t ? t('complete_security_check') : 'Please complete the security check'
+      setError(message)
+      showSnackbar(message, 'warning')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -77,6 +199,12 @@ const Login = ({ mode }) => {
       setUserType(data?.userType || data?.user_type)
       setUserData(data)
 
+      setShowRobotCheck(false)
+      setIsHuman(false)
+      setRobotAnswer([])
+      setRobotError(false)
+      setRobotOptions([])
+      setRobotType('')
       setEmail('')
       setPassword('')
       setRemember(false)
@@ -96,13 +224,24 @@ const Login = ({ mode }) => {
       }
     } catch (err) {
       if (err.response?.status === 429) {
-        setError(err.response.data.detail || (t ? t('complete_security_check') : 'Please complete the security check'))
+        setShowRobotCheck(true)
+        generateRobotOptions()
+        setIsHuman(false)
+        const message = err.response.data.detail || (t ? t('complete_security_check') : 'Please complete the security check')
+        setError(message)
+        showSnackbar(message, 'warning')
       } else if (err.response?.status === 404 && err.response.data?.detail === 'Email not found') {
-        setError(t ? t('email_not_found') : 'Email not found')
+        const message = t ? t('email_not_found') : 'Email not found'
+        setError(message)
+        showSnackbar(message, 'error')
       } else if (err.response?.status === 400 && err.response.data?.detail === 'Invalid password') {
-        setError(t ? t('invalid_password') : 'Invalid password')
+        const message = t ? t('invalid_password') : 'Invalid password'
+        setError(message)
+        showSnackbar(message, 'error')
       } else {
-        setError(err.response?.data?.detail || err.message || (t ? t('login_failed') : 'Login failed'))
+        const message = err.response?.data?.detail || err.message || (t ? t('login_failed') : 'Login failed')
+        setError(message)
+        showSnackbar(message, 'error')
       }
     } finally {
       setLoading(false)
@@ -165,6 +304,52 @@ const Login = ({ mode }) => {
                 required
               />
 
+              <Collapse in={showRobotCheck} sx={{ border: '2px solid var(--mui-palette-primary-main)', borderRadius: "var(--mui-shape-borderRadius)" }}>
+                <Box sx={{ p: 1 }}>
+                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    {t('security_check')}
+                  </Typography>
+
+                  <Typography variant="body2" color="primary.main" sx={{ mb: 2 }}>
+                    {t('select')} {robotType}
+                  </Typography>
+
+                  <Stack direction="row" flexWrap="wrap" gap={1} sx={{ mb: 2 }}>
+                    {robotOptions.map(option => {
+                      const selected = robotAnswer.includes(option.id)
+
+                      return (
+                        <Chip
+                          key={option.id}
+                          label={option.label}
+                          clickable
+                          size="small"
+                          color={selected ? 'primary' : 'default'}
+                          variant={selected ? 'filled' : 'outlined'}
+                          onClick={() => toggleRobotOption(option.id)}
+                        />
+                      )
+                    })}
+                  </Stack>
+
+                  {robotError && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                      {t('incorrect_selection')}
+                    </Alert>
+                  )}
+
+                  <Button
+                    variant="contained"
+                    size="small"
+                    fullWidth
+                    onClick={verifyHuman}
+                    disabled={robotAnswer.length === 0}
+                  >
+                    {t('verify')}
+                  </Button>
+                </Box>
+              </Collapse>
+
               <Box
                 sx={{
                   display: 'flex',
@@ -184,15 +369,25 @@ const Login = ({ mode }) => {
                 </Typography>
               </Box>
 
-              {error && (
-                <Typography color="error" sx={{ textAlign: 'center' }}>
-                  {error}
-                </Typography>
-              )}
-
-              <Button fullWidth variant="contained" type="submit" disabled={loading}>
+              <Button fullWidth variant="contained" type="submit" disabled={loading || (showRobotCheck && !isHuman)}>
                 {loading ? t('login')+'...' || 'Signing in...' : t('login') || 'Log In'}
               </Button>
+
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={4000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <MuiAlert
+                  onClose={() => setSnackbarOpen(false)}
+                  severity={snackbarSeverity}
+                  variant="filled"
+                  sx={{ width: '100%' }}
+                >
+                  {snackbarMessage}
+                </MuiAlert>
+              </Snackbar>
 
               <Box
                 sx={{

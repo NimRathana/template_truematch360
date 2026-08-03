@@ -11,8 +11,8 @@ const LayoutWrapper = ({ verticalLayout, horizontalLayout }) => {
   const horizontalNav = useHorizontalNav()
   const isHorizontalLayout = settings.layout === 'horizontal'
   const activeLayout = isHorizontalLayout ? horizontalLayout : verticalLayout
-  const isBreakpointReached = isHorizontalLayout ? horizontalNav.isBreakpointReached : verticalNav.isBreakpointReached
-
+  const isBreakpointReached = horizontalNav.isBreakpointReached || verticalNav.isBreakpointReached
+  
   return (
     <div className='flex flex-col flex-auto'>
       {activeLayout}
