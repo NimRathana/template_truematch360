@@ -51,3 +51,24 @@ khawin_web/
 ├── postcss.config.mjs                   -> Configuration for PostCSS.
 ├── tailwind.config.ts                  -> Configuration for Tailwind CSS
 └── tsconfig.json                       -> TypeScript configuration file
+
+Docker support
+--------------
+
+Build the production image:
+
+    docker build -t khawin_web .
+
+Run the container locally:
+
+    docker run --rm -p 3000:3000 khawin_web
+
+Use docker compose for a simpler local deployment:
+
+    docker compose up --build
+
+To stop and remove containers:
+
+    docker compose down
+
+The application will be available at http://localhost:3000.
