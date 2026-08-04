@@ -24,6 +24,7 @@ import {
   Switch,
   Snackbar,
   Alert,
+  DialogActions
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import BusinessIcon from "@mui/icons-material/Business";
@@ -140,87 +141,76 @@ const AdminEmployers = () => {
     <Box sx={{ maxWidth: 1600, mx: "auto" }}>
       <Box sx={{ mb: 3 }}>
         {/* Tabs */}
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          variant="fullWidth"
-          allowScrollButtonsMobile
-          sx={{
-            mb: 3,
-            borderRadius: 3,
-            overflow: "hidden",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
-            border: "1px solid",
-            borderColor: "divider",
-            "& .MuiTabs-flexContainer": {
-              padding: "4px 8px",
-            },
-            "& .MuiTabs-indicator": {
-              height: 4,
-              borderRadius: 4,
-              bottom: 0,
-            },
-            "& .MuiTab-root": {
-              textTransform: "none",
-              fontWeight: 600,
-              fontSize: { xs: "0.95rem", sm: "1.05rem" },
+        <Card elevation={0} sx={{ mb: 3 }}>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            variant="fullWidth"
+            allowScrollButtonsMobile
+            sx={{
               minHeight: 56,
-              color: "text.primary",
-              opacity: 0.75,
-              transition: "all 0.25s ease",
-              borderRadius: 2,
-              margin: "0 4px",
-              padding: "0 20px",
-
-              "&:hover": {
-                opacity: 1,
+              bgcolor: "background.paper",
+              "& .MuiTabs-indicator": {
+                height: 3,
+                borderRadius: "3px 3px 0 0",
+                backgroundColor: "primary.main",
               },
-
-              "&.Mui-selected": {
-                color: "#1e40af",
-                fontWeight: 700,
-                opacity: 1,
+              "& .MuiTab-root": {
+                textTransform: "none",
+                fontWeight: 500,
+                fontSize: "0.95rem",
+                minHeight: 56,
+                color: "text.secondary",
+                transition: "all 0.2s ease",
+                "&.Mui-selected": {
+                  color: "primary.main",
+                  fontWeight: 600,
+                },
+                "&:hover": {
+                  color: "primary.main",
+                  bgcolor: "rgba(145, 85, 253, 0.04)",
+                },
               },
-            },
-          }}
-        >
-          <Tab
-            label={
-              <Badge
-                badgeContent={counts.Pending}
-                color="warning"
-                sx={{
-                  "& .MuiBadge-badge": {
-                    fontSize: "0.75rem",
-                    minWidth: 20,
-                    height: 20,
-                    borderRadius: "10px",
-                  },
-                }}
-              >
-                {t('pending')}
-              </Badge>
-            }
-          />
-          <Tab
-            label={
-              <Badge
-                badgeContent={counts.Approved}
-                color="success"
-                sx={{
-                  "& .MuiBadge-badge": {
-                    fontSize: "0.75rem",
-                    minWidth: 20,
-                    height: 20,
-                    borderRadius: "10px",
-                  },
-                }}
-              >
-                {t('approved')}
-              </Badge>
-            }
-          />
-        </Tabs>
+            }}
+          >
+            <Tab
+              label={
+                <Badge
+                  badgeContent={counts.Pending}
+                  color="warning"
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      fontSize: "0.75rem",
+                      minWidth: 20,
+                      height: 20,
+                      borderRadius: "10px",
+                    },
+                  }}
+                >
+                  {t('pending')}
+                </Badge>
+              }
+            />
+            <Tab
+              label={
+                <Badge
+                  badgeContent={counts.Approved}
+                  color="success"
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      fontSize: "0.75rem",
+                      minWidth: 20,
+                      height: 20,
+                      borderRadius: "10px",
+                    },
+                  }}
+                >
+                  {t('approved')}
+                </Badge>
+              }
+            />
+          </Tabs>
+        </Card>
 
         {/* Search field */}
         <TextField
@@ -236,11 +226,7 @@ const AdminEmployers = () => {
             ),
           }}
           sx={{
-            width: { xs: "100%", sm: 360 },
-            "& .MuiOutlinedInput-root": {
-              borderRadius: 12,
-              transition: "all 0.2s",
-            },
+            width: { xs: "100%", sm: 360 }
           }}
         />
 
@@ -283,33 +269,24 @@ const AdminEmployers = () => {
               elevation={1}
               sx={{
                 position: "relative",
-                borderRadius: 4,
                 overflow: "hidden",
                 transition: "all 0.22s ease",
                 cursor: "pointer",
                 "&:hover": {
-                  transform: "translateY(-8px)",
-                  boxShadow: "0 16px 40px rgba(0,0,0,0.11)",
-                  "& .view-btn": { opacity: 1, transform: "translateY(0)" },
+                  transform: "translateY(-2px)",
                 },
               }}
             >
-              <Box sx={{ height: 50, bgcolor: "primary.light", position: "relative" }}>
+              <Box sx={{ height: 50, bgcolor: "primary.main", position: "relative" }}>
                 <Avatar
-                  src={
-                    emp.company_logo
-                      ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${emp.company_logo}`
-                      : "/default-company.png"
-                  }
+                  src={emp.company_logo ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${emp.company_logo}` : "/default-company.png"}
                   sx={{
                     width: 72,
                     height: 72,
-                    border: "4px solid white",
+                    border: "2px solid var(--mui-palette-primary-main)",
                     position: "absolute",
-                    bottom: -36,
                     left: "50%",
                     transform: "translateX(-50%)",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                   }}
                 />
               </Box>
@@ -317,27 +294,25 @@ const AdminEmployers = () => {
               <Chip
                 label={emp.status === "Approved" ? t('approved') : t('pending')}
                 size="small"
-                variant="outlined"
                 sx={{
                   position: "absolute",
                   top: 12,
                   right: 12,
                   height: 26,
-                  borderRadius: "12px",
                   fontSize: 11,
                   fontWeight: 700,
                   px: 1.5,
                   letterSpacing: "0.4px",
                   textTransform: "uppercase",
                   ...(emp.status === "Approved" && {
+                    border:  1,
                     borderColor: "#10b981",
-                    color: "#10b981",
-                    bgcolor: "rgba(16,185,129,0.08)",
+                    bgcolor: "#10b981"
                   }),
                   ...(emp.status === "Pending" && {
+                    border:  1,
                     borderColor: "#f59e0b",
-                    color: "#f59e0b",
-                    bgcolor: "rgba(245,158,11,0.08)",
+                    bgcolor: "#f59e0b"
                   }),
                 }}
               />
@@ -369,15 +344,6 @@ const AdminEmployers = () => {
                 <Button
                   size="small"
                   variant="outlined"
-                  className="view-btn"
-                  sx={{
-                    borderRadius: 20,
-                    textTransform: "none",
-                    px: 1,
-                    opacity: 0.7,
-                    transform: "translateY(6px)",
-                    transition: "all 0.25s ease",
-                  }}
                 >
                   {t('view_details')}
                 </Button>
@@ -410,12 +376,6 @@ const AdminEmployers = () => {
         onClose={handleCloseDetail}
         maxWidth="sm"
         fullWidth
-        sx={{
-          "& .MuiDialog-paper": {
-            borderRadius: 4,
-            boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
-          },
-        }}
       >
         {selectedEmployer && (
           <>
@@ -436,17 +396,6 @@ const AdminEmployers = () => {
                     variant="contained"
                     size="small"
                     onClick={() => setOpenConfirm(true)}
-                    sx={{
-                      textTransform: "none",
-                      fontWeight: 600,
-                      borderRadius: 20,
-                      px: 2.5,
-                      // background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
-                      boxShadow: "0 4px 12px rgba(16,185,129,0.4)",
-                      "&:hover": {
-                        background: "linear-gradient(135deg, #059669 0%, #10b981 100%)",
-                      },
-                    }}
                   >
                     {t('approve_now')}
                   </Button>
@@ -461,16 +410,11 @@ const AdminEmployers = () => {
             <DialogContent dividers sx={{ pt: 2 }}>
               <Stack direction="row" spacing={2.5} alignItems="center" sx={{ mb: 3 }}>
                 <Avatar
-                  src={
-                    selectedEmployer.company_logo
-                      ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${selectedEmployer.company_logo}`
-                      : "/default-company.png"
-                  }
+                  src={selectedEmployer.company_logo ? `${(process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/uploads/employers/${selectedEmployer.company_logo}` : "/default-company.png"}
                   sx={{
                     width: 80,
                     height: 80,
-                    boxShadow: 3,
-                    border: "2px solid #f0f0f0",
+                    border: "2px solid var(--mui-palette-primary-main)",
                   }}
                 />
 
@@ -484,23 +428,11 @@ const AdminEmployers = () => {
                       label={selectedEmployer.status === "Approved" ? t('approved') : t('pending')}
                       size="small"
                       sx={{
-                        background: selectedEmployer.status === "Approved"
-                          ? "linear-gradient(135deg, #43a047 0%, #66bb6a 100%)"
-                          : selectedEmployer.status === "Pending"
-                            ? "linear-gradient(135deg, #fb8c00 0%, #ffa726 100%)"
-                            : "linear-gradient(135deg, #e53935 0%, #ef5350 100%)",
-                        color: "white",
+                        background: selectedEmployer.status === "Approved" ? "linear-gradient(135deg, #43a047 0%, #66bb6a 100%)" : selectedEmployer.status === "Pending" ? "linear-gradient(135deg, #fb8c00 0%, #ffa726 100%)" : "linear-gradient(135deg, #e53935 0%, #ef5350 100%)",
                         fontWeight: 600,
                         fontSize: 11,
                         height: 26,
-                        borderRadius: 14,
                         px: 1.5,
-                        boxShadow:
-                          selectedEmployer.status === "Approved"
-                            ? "0 3px 6px rgba(76,175,80,0.4)"
-                            : selectedEmployer.status === "Pending"
-                              ? "0 3px 6px rgba(251,140,0,0.4)"
-                              : "0 3px 6px rgba(229,57,53,0.4)",
                         textTransform: "uppercase",
                         letterSpacing: 0.5,
                       }}
@@ -594,12 +526,12 @@ const AdminEmployers = () => {
         fullWidth
       >
         <DialogTitle>{t('confirm_approval')}</DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <Typography variant="body2" sx={{ mb: 3 }}>
             {t('confirm_approval_message', { company: selectedEmployer?.company_name })}
           </Typography>
-
-          <Stack direction="row" justifyContent="flex-end" spacing={2}>
+        </DialogContent>
+        <DialogActions>
             <Button
               variant="outlined"
               size="small"
@@ -621,8 +553,7 @@ const AdminEmployers = () => {
             >
               {t('yes_approve')}
             </Button>
-          </Stack>
-        </DialogContent>
+        </DialogActions>
       </Dialog>
 
       {/* Snackbar feedback */}

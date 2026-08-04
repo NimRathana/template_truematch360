@@ -27,15 +27,15 @@ const themeConfig = {
   layout: 'vertical',
   navbar: {
     type: 'fixed',
-    contentWidth: 'wide',
+    contentWidth: 'compact',
     floating: true, // Navbar overlays content slightly (like a floating card) and may have increased border-radius for a more modern look
     detached: true, 
     blur: true
   },
-  contentWidth: 'wide',
+  contentWidth: 'compact',
   footer: {
     type: 'static',
-    contentWidth: 'wide',
+    contentWidth: 'compact',
     detached: true
   },
   toastPosition: 'top-right',

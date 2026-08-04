@@ -13,67 +13,92 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/navigation';
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 import api from "../services/api";
 
 /* ================= STAT CARD ================= */
-const StatCard = ({ icon, label, value, color, loading }) => (
+const StatCard = ({ icon, label, value, loading, onClick }) => (
   <Card
+    onClick={onClick}
     sx={{
       p: 2.5,
-      borderRadius: 3,
-      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)',
-      backdropFilter: 'blur(12px)',
-      border: '1px solid rgba(59, 130, 246, 0.15)',
-      boxShadow: "0 6px 20px rgba(30, 58, 138, 0.08)",
-      transition: "all 0.3s ease",
-      "&:hover": {
-        transform: "translateY(-4px)",
-        boxShadow: "0 12px 28px rgba(30, 58, 138, 0.15)",
-        borderColor: '#f97316',
-      },
+      height: "100%",
+      cursor: onClick ? "pointer" : "default",
+      transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+      "&:hover": onClick
+        ? {
+            border: "1px solid var(--mui-palette-primary-main)"
+          }
+        : {},
     }}
   >
     <Stack direction="row" spacing={2} alignItems="center">
       <Box
         sx={{
-          width: 46,
-          height: 46,
-          borderRadius: 2.5,
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #f97316 100%)',
+          width: 48,
+          height: 48,
+          borderRadius: "var(--mui-shape-borderRadius)",
+          background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 55%, #f97316 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "#fff",
-          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+          flexShrink: 0,
         }}
       >
         {icon}
       </Box>
 
-      <Box>
-        <Typography fontSize={12} sx={{ color: '#3b82f6', fontWeight: 500 }}>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          fontSize={12.5}
+          fontWeight={500}
+        >
           {label}
         </Typography>
+
         {loading ? (
-          <Skeleton width={60} />
+          <Skeleton width={56} height={28} sx={{ mt: 0.5 }} />
         ) : (
-          <Typography 
-            fontSize={22} 
+          <Typography
+            fontSize={24}
             fontWeight={800}
-            sx={{
-              background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            lineHeight={1.2}
+            color="primary.main"
           >
-            {value}
+            {value ?? 0}
           </Typography>
         )}
       </Box>
     </Stack>
+  </Card>
+);
+
+/* ================= STATUS CARD ================= */
+const StatusCard = ({ title, children, loading }) => (
+  <Card
+    sx={{
+      p: 2.5,
+      height: "100%",
+    }}
+  >
+    <Typography
+      fontSize={13.5}
+      fontWeight={700}
+      mb={1.5}
+      sx={{
+        background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+    >
+      {title}
+    </Typography>
+
+    <Divider sx={{ mb: 2 }} />
+
+    {loading ? <Skeleton height={32} /> : children}
   </Card>
 );
 
@@ -101,291 +126,169 @@ const AdminDashboard = () => {
 
   return (
     <Box>
-      
-      {/* TOP STATS */}
+      {/* ================= TOP STATS ================= */}
       <Box
         display="grid"
         gridTemplateColumns={{
           xs: "1fr",
           sm: "repeat(2, 1fr)",
-          md: "repeat(5, 1fr)", // add 2 more cards
+          md: "repeat(3, 1fr)",
+          lg: "repeat(5, 1fr)",
         }}
         gap={2.5}
-        mb={3}
+        mb={3.5}
       >
-        <Card
+        <StatCard
+          icon={<PeopleIcon />}
+          label={t("total_users")}
+          value={stats?.users?.total}
+          loading={loading}
           onClick={() => router.push("/admin/user")}
-          sx={{
-            cursor: "pointer",
-            "&:hover": { boxShadow: 6 },
-          }}
-        >
-          <StatCard
-            icon={<PeopleIcon />}
-            label={t('total_users')}
-            value={stats?.users.total}
-            color="primary"
-            loading={loading}
-          />
-        </Card>
-
-        <Card
+        />
+        <StatCard
+          icon={<BusinessIcon />}
+          label={t("total_companies")}
+          value={stats?.employers?.total}
+          loading={loading}
           onClick={() => router.push("/admin/employer")}
-          sx={{
-            cursor: "pointer",
-            "&:hover": { boxShadow: 6 },
-          }}
-        >
-          <StatCard
-            icon={<BusinessIcon />}
-            label={t('total_companies')}
-            value={stats?.employers.total}
-            color="secondary"
-            loading={loading}
-          />
-        </Card>
-
-        <Card
+        />
+        <StatCard
+          icon={<WorkIcon />}
+          label={t("total_jobs")}
+          value={stats?.jobs?.total}
+          loading={loading}
           onClick={() => router.push("/admin/jobs")}
-          sx={{
-            cursor: "pointer",
-            "&:hover": { boxShadow: 6 },
-          }}
-        >
-          <StatCard
-            icon={<WorkIcon />}
-            label={t('total_jobs')}
-            value={stats?.jobs.total}
-            color="success"
-            loading={loading}
-          />
-        </Card>
-
-        <Card
+        />
+        <StatCard
+          icon={<PersonIcon />}
+          label={t("total_candidates")}
+          value={stats?.candidates?.total}
+          loading={loading}
           onClick={() => router.push("/admin/candidate")}
-          sx={{
-            cursor: "pointer",
-            "&:hover": { boxShadow: 6 },
-          }}
-        >
-          <StatCard
-            icon={<PersonIcon />}
-            label={t('total_candidates')}
-            value={stats?.candidates.total}
-            color="info"
-            loading={loading}
-          />
-        </Card>
-
-        <Card>
-          <StatCard
-            icon={<AssignmentIcon />}
-            label={t('applications_applied')}
-            value={stats?.applications.total}
-            color="warning"
-            loading={loading}
-          />
-        </Card>
+        />
+        <StatCard
+          icon={<AssignmentIcon />}
+          label={t("applications_applied")}
+          value={stats?.applications?.total}
+          loading={loading}
+        />
       </Box>
 
-      {/* STATUS CARDS */}
+      {/* ================= STATUS SECTION ================= */}
       <Box
         display="grid"
-        gridTemplateColumns={{ xs: "1fr", md: "repeat(3, 1fr)" }} // 3 columns on md+
+        gridTemplateColumns={{ xs: "1fr", md: "repeat(3, 1fr)" }}
         gap={2.5}
       >
-        {/* USER STATUS */}
-        <Card 
-          sx={{ 
-            p: 2.5, 
-            borderRadius: 3,
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(59, 130, 246, 0.15)',
-            boxShadow: '0 6px 20px rgba(30, 58, 138, 0.08)',
-          }}
-        >
-          <Typography 
-            fontSize={13} 
-            fontWeight={700} 
-            mb={1}
-            sx={{
-              background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+        {/* Users Status */}
+        <StatusCard title={t("users_status")} loading={loading}>
+          <Stack direction="row" spacing={1.2} flexWrap="wrap" useFlexGap>
+            <Chip
+              label={`${t("active")}: ${stats?.users?.active ?? 0}`}
+              sx={{
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#10b981",
+                color: "#fff",
+                "& .MuiChip-label": { px: 1.5 },
+              }}
+            />
+            <Chip
+              label={`${t("inactive")}: ${stats?.users?.inactive ?? 0}`}
+              sx={{
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#f97316",
+                color: "#fff",
+                "& .MuiChip-label": { px: 1.5 },
+              }}
+            />
+          </Stack>
+        </StatusCard>
+
+        {/* Jobs Status */}
+        <StatusCard title={t("jobs_status")} loading={loading}>
+          <Stack direction="row" spacing={1.2} flexWrap="wrap" useFlexGap>
+            <Chip
+              label={`${t("open")}: ${stats?.jobs?.open ?? 0}`}
+              sx={{
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#10b981",
+                color: "#fff",
+                "& .MuiChip-label": { px: 1.5 },
+              }}
+            />
+            <Chip
+              label={`${t("closed")}: ${stats?.jobs?.closed ?? 0}`}
+              sx={{
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#ef4444",
+                color: "#fff",
+                "& .MuiChip-label": { px: 1.5 },
+              }}
+            />
+          </Stack>
+        </StatusCard>
+
+        {/* Applications Status */}
+        <StatusCard title={t("applications_status")} loading={loading}>
+          <Box
+            display="grid"
+            gridTemplateColumns={{ xs: "1fr 1fr", sm: "repeat(2, 1fr)" }}
+            gap={1.2}
           >
-            {t('users_status')}
-          </Typography>
-          <Divider sx={{ mb: 2, borderColor: 'rgba(59, 130, 246, 0.15)' }} />
-
-          {loading ? (
-            <Skeleton height={28} />
-          ) : (
-            <Stack direction="row" spacing={1.5}>
-              <Chip
-                color="success"
-                label={`${t('active')}: ${stats.users.active}`}
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                  bgcolor: '#10b981',
-                  color: '#fff',
-                }}
-              />
-              <Chip
-                label={`${t('inactive')}: ${stats.users.inactive}`}
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                  bgcolor: '#f97316',
-                  color: '#fff',
-                }}
-              />
-            </Stack>
-          )}
-        </Card>
-
-        {/* JOB STATUS */}
-        <Card 
-          sx={{ 
-            p: 2.5, 
-            borderRadius: 3,
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(59, 130, 246, 0.15)',
-            boxShadow: '0 6px 20px rgba(30, 58, 138, 0.08)',
-          }}
-        >
-          <Typography 
-            fontSize={13} 
-            fontWeight={700} 
-            mb={1}
-            sx={{
-              background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            {t('jobs_status')}
-          </Typography>
-          <Divider sx={{ mb: 2, borderColor: 'rgba(59, 130, 246, 0.15)' }} />
-
-          {loading ? (
-            <Skeleton height={28} />
-          ) : (
-            <Stack direction="row" spacing={1.5} flexWrap="wrap">
-              <Chip
-                color="success"
-                label={`${t('open')}: ${stats.jobs.open}`}
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                  bgcolor: '#10b981',
-                  color: '#fff',
-                }}
-              />
-              <Chip
-                color="error"
-                label={`${t('closed')}: ${stats.jobs.closed}`}
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                  bgcolor: '#ef4444',
-                  color: '#fff',
-                }}
-              />
-            </Stack>
-          )}
-        </Card>
-
-        {/* APPLICATION STATUS - Compact Version */}
-        <Card 
-          sx={{ 
-            p: 2.5, 
-            borderRadius: 3,
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(239, 246, 255, 0.9) 100%)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(59, 130, 246, 0.15)',
-            boxShadow: '0 6px 20px rgba(30, 58, 138, 0.08)',
-          }}
-        >
-          <Typography 
-            fontSize={13} 
-            fontWeight={700} 
-            mb={1}
-            sx={{
-              background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            {t('applications_status')}
-          </Typography>
-          <Divider sx={{ mb: 2, borderColor: 'rgba(59, 130, 246, 0.15)' }} />
-
-          {loading ? (
-            <Skeleton height={24} />
-          ) : (
-            <Box
-              display="grid"
-              gridTemplateColumns={{ xs: "1fr 1fr", sm: "repeat(4, 1fr)" }}
-              gap={1}
-            >
-              <Chip
-                label={`${t('pending')}: ${stats.applications.pending}`}
-                sx={{
-                  width: '100%',
-                  bgcolor: '#f97316',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                }}
-              />
-              <Chip
-                label={`${t('shortlisted')}: ${stats.applications.shortlisted}`}
-                sx={{
-                  width: '100%',
-                  bgcolor: '#3b82f6',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                }}
-              />
-              <Chip
-                label={`${t('rejected')}: ${stats.applications.rejected}`}
-                sx={{
-                  width: '100%',
-                  bgcolor: '#ef4444',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                }}
-              />
-              <Chip
-                label={`${t('accepted')}: ${stats.applications.accepted}`}
-                sx={{
-                  width: '100%',
-                  bgcolor: '#10b981',
-                  color: '#fff',
-                  fontWeight: 600,
-                  fontSize: 11,
-                  py: 0.3,
-                }}
-              />
-            </Box>
-          )}
-        </Card>
+            <Chip
+              label={`${t("pending")}: ${stats?.applications?.pending ?? 0}`}
+              sx={{
+                width: "100%",
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#f97316",
+                color: "#fff",
+              }}
+            />
+            <Chip
+              label={`${t("shortlisted")}: ${stats?.applications?.shortlisted ?? 0}`}
+              sx={{
+                width: "100%",
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#3b82f6",
+                color: "#fff",
+              }}
+            />
+            <Chip
+              label={`${t("rejected")}: ${stats?.applications?.rejected ?? 0}`}
+              sx={{
+                width: "100%",
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#ef4444",
+                color: "#fff",
+              }}
+            />
+            <Chip
+              label={`${t("accepted")}: ${stats?.applications?.accepted ?? 0}`}
+              sx={{
+                width: "100%",
+                fontWeight: 600,
+                fontSize: 12,
+                height: 28,
+                bgcolor: "#10b981",
+                color: "#fff",
+              }}
+            />
+          </Box>
+        </StatusCard>
       </Box>
     </Box>
   );

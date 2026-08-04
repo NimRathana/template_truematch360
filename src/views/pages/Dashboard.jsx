@@ -756,6 +756,7 @@ export default function Dashboard() {
       
       return { date: formattedDate, daysAgo: daysAgoText };
     };
+    
     return (
       <Card
         sx={{
@@ -768,7 +769,7 @@ export default function Dashboard() {
         <Stack
           direction="row"
           spacing={1}
-          p={1}
+          p={2}
           justifyContent="space-between"
           alignItems="center"
           sx={{
@@ -1514,6 +1515,7 @@ export default function Dashboard() {
             flex: 1,
             overflowY: "auto",
             minHeight: 0,
+            p: 2
           }}
         >
           {/* ... rest of the job list code remains unchanged ... */}
@@ -1575,21 +1577,21 @@ export default function Dashboard() {
                     key={job.pk_id}
                     onClick={() => handleSelectJob(job)}
                     sx={{
-                      px: 2,
-                      py: { xs: 1, sm: 1.15 },
+                      px: 2.5,
+                      py: 2,
+                      mb: 1.5,
                       cursor: "pointer",
                       position: "relative",
-                      backgroundColor: (theme) => active ? alpha(theme.palette.primary.main, 0.15) : "transparent",
-                      borderLeft: active ? "4px solid var(--mui-palette-primary-main)" : "0px solid transparent",
-                      borderBottom: active ? "1px solid var(--mui-palette-primary-main)" : "none",
+                      backgroundColor: (theme) => active ? alpha(theme.palette.primary.main, 0.15) : "action.hover",
+                      borderLeft: active ? "5px solid var(--mui-palette-primary-main)" : "0px solid transparent",
                       transition: "all 0.2s ease",
+                      borderRadius: "var(--mui-shape-borderRadius)",
                       "&:hover": {
                         bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
-                        transform: "translateY(2px)",
                       },
                     }}
                   >
-                    <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
                         src={logoFilename ? `${baseURL}/uploads/employers/${logoFilename}` : undefined}
                         alt={`${companyName} logo`}
@@ -1603,122 +1605,126 @@ export default function Dashboard() {
                       >
                         {companyName?.charAt(0).toUpperCase()}
                       </Avatar>
+                      {/* Content */}
                       <Box minWidth={0} flex={1}>
+                        {/* Title + Days */}
                         <Stack
                           direction="row"
                           justifyContent="space-between"
                           alignItems="flex-start"
-                          width="100%"
+                          spacing={1}
+                          mb={0.5}
                         >
                           <Typography
-                            variant="body1"
-                            fontWeight={600}
-                            noWrap
+                            variant="subtitle1"
+                            fontWeight={700}
                             sx={{
                               fontSize: "0.95rem",
-                              lineHeight: 1.3,
-                              color: active ? "primary.main" : "text.primary",
+                              lineHeight: 1.4,
+                              color: "text.primary",
+                              pr: 1,
+                              flex: 1,
+                              minWidth: 0,
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
                             }}
                           >
                             {job.job_title}
                           </Typography>
+
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            title={postedInfo.date}
+                            sx={{
+                              fontSize: "0.75rem",
+                              whiteSpace: "nowrap",
+                              flexShrink: 0,
+                              maxWidth: 70,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              mt: 0.3,
+                              textAlign: "right",
+                            }}
+                          >
+                            {postedInfo.daysAgo || postedInfo.date}
+                          </Typography>
+                        </Stack>
+
+                        {/* Company */}
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          title={companyName}
+                          sx={{
+                            fontSize: "0.82rem",
+                            mt: 0.25,
+                            mb: 0.25,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            maxWidth: "100%",
+                          }}
+                        >
+                          {companyName}
+                        </Typography>
+
+                        {/* Categories + Applied */}
+                        <Stack
+                          direction="row"
+                          spacing={0.75}
+                          mt={1.5}
+                          flexWrap="wrap"
+                          useFlexGap
+                          alignItems="center"
+                        >
                           {alreadyApplied && (
                             <Chip
                               label={t("applied")}
                               size="small"
-                              color="success"
-                              variant="filled"
                               icon={<CheckCircle />}
                               sx={{
-                                fontSize: "0.60rem",
-                                fontWeight: 600,
                                 height: 24,
-                                ml: 1,
-                                bgcolor: "rgba(16, 185, 129, 0.15)",
+                                fontSize: "0.7rem",
+                                fontWeight: 600,
+                                borderRadius: 1,
+                                bgcolor: "rgba(16, 185, 129, 0.12)",
                                 color: "#10b981",
-                                border: "1px solid #10b981",
                               }}
                             />
                           )}
-                        </Stack>
-                        {job.categories?.length > 0 && (
-                          <Stack
-                            direction="row"
-                            spacing={0.3}
-                            mt={0.75}
-                            flexWrap="wrap"
-                            alignItems="center"
-                          >
-                            <CategoryRoundedIcon
+
+                          {job.categories?.slice(0, 2).map((cat) => (
+                            <Chip
+                              key={cat.pk_id}
+                              label={cat.name}
+                              size="small"
+                              variant="outlined"
                               sx={{
-                                fontSize: 16,
-                                color: "#3b82f6",
-                                mr: 0.5,
+                                height: 24,
+                                fontSize: "0.7rem",
+                                fontWeight: 500,
+                                borderRadius: 1,
+                                borderColor: "divider",
+                                color: "text.secondary",
                               }}
                             />
-                            <Typography
-                              variant="caption"
-                              fontWeight={600}
-                              color="text.secondary"
-                            >
-                              {t("categories")}:
-                            </Typography>
-                            {job.categories.slice(0, 2).map((cat) => (
-                              <Chip
-                                key={cat.pk_id}
-                                label={cat.name}
-                                size="small"
-                                sx={{
-                                  fontSize: "0.68rem",
-                                  height: 20,
-                                }}
-                              />
-                            ))}
-                            {job.categories.length > 2 && (
-                              <Chip
-                                label={`+${job.categories.length - 2}`}
-                                size="small"
-                                sx={{
-                                  fontSize: "0.68rem",
-                                  height: 20,
-                                  bgcolor: "rgba(249, 115, 22, 0.1)",
-                                  color: "#f97316",
-                                }}
-                              />
-                            )}
-                          </Stack>
-                        )}
-                        <Stack direction="row" spacing={0.3} mt={0.5} alignItems="center" justifyContent="space-between" flexWrap="wrap">
-                          <Chip
-                            icon={<EventIcon />}
-                            label={`${t("posted")}: ${postedInfo.date}`}
-                            size="small"
-                            color="primary"
-                            sx={{
-                              fontSize: "0.72rem",
-                              height: 22,
-                            }}
-                          />
-                          {/* Days Count Chip - New addition */}
-                          {postedInfo.daysAgo && (
-                            <Tooltip title={postedInfo.date} arrow placement="top">
-                              <Chip
-                                label={postedInfo.daysAgo}
-                                size="small"
-                                sx={{
-                                  fontSize: "0.68rem",
-                                  height: 22,
-                                  fontWeight: 500,
-                                  background: "linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%)",
-                                  color: "#f97316",
-                                  border: "1px solid rgba(249, 115, 22, 0.3)",
-                                  cursor: "help",
-                                  "& .MuiChip-label": {
-                                    px: 1,
-                                  },
-                                }}
-                              />
-                            </Tooltip>
+                          ))}
+
+                          {job.categories?.length > 2 && (
+                            <Chip
+                              label={`+${job.categories.length - 2}`}
+                              size="small"
+                              sx={{
+                                height: 24,
+                                fontSize: "0.7rem",
+                                fontWeight: 500,
+                                borderRadius: 1,
+                                bgcolor: "primary.main",
+                              }}
+                            />
                           )}
                         </Stack>
                       </Box>
