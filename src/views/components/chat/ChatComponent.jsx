@@ -1103,9 +1103,6 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                         >
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <IconButton
-                                    sx={{
-                                        display: { xs: 'flex', md: 'none' }
-                                    }}
                                     onClick={onBack}
                                 >
                                     <ArrowBackIcon />

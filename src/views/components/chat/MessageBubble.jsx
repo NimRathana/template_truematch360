@@ -197,7 +197,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
             sx={{
                 display: 'flex',
                 justifyContent: isOwn ? 'flex-end' : 'flex-start',
-                mb: 0.75,
+                mb: 1,
                 gap: 1,
             }}
         >
@@ -671,7 +671,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                 gap: 0.5
                             }}
                         >
-                            {message.is_deleting && (
+                            {!message.is_deleting && (
                                 <>
                                     <Typography
                                         variant="caption"

@@ -51,6 +51,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import api from "../services/api";
 import { alpha } from "@mui/material/styles";
 import classnames from 'classnames'
+import ChatDialog from "../components/chat/ChatDialog";
 
 // ────────────────────────────────────────────────
 //      Draggable Paper
@@ -142,6 +143,9 @@ export default function AppliedCandidates() {
 
   const [candidateImages, setCandidateImages] = useState([]); // ← new
   const [loadingImages, setLoadingImages] = useState(false);
+
+  const [initialChat, setInitialChat] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     loadMyJobsWithApplicationCounts();
@@ -444,7 +448,10 @@ export default function AppliedCandidates() {
         other_user_id: userId,
       });
       const room = res.data;
-      router.push(`/chat?roomId=${encodeURIComponent(room.room_id)}`);
+
+      setCandidateDetailOpen(false);
+      setInitialChat(room);
+      setDialogOpen(true);
     } catch (err) {
       console.error("Chat room creation failed:", err);
       setSnackbar({
@@ -471,8 +478,8 @@ export default function AppliedCandidates() {
     tabValue === 0
       ? applications
       : applications.filter(
-          (app) => app.application_status === STATUS_FILTER[tabValue],
-        );
+        (app) => app.application_status === STATUS_FILTER[tabValue],
+      );
 
   if (loadingJobs) {
     return (
@@ -508,9 +515,9 @@ export default function AppliedCandidates() {
       }}
     >
       <Box sx={{ p: 2 }}>
-        <Typography 
-          variant="h7" 
-          fontWeight={700} 
+        <Typography
+          variant="h7"
+          fontWeight={700}
           sx={{
             background: (theme) => `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
             backgroundClip: "text",
@@ -558,7 +565,7 @@ export default function AppliedCandidates() {
                   borderBottom: "1px solid var(--mui-palette-primary-main)",
                   borderBottomColor: "rgba(59, 130, 246, 0.1)",
                   transition: "all 0.2s ease",
-                  "&:hover": { 
+                  "&:hover": {
                     bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
                     transform: "translateY(2px)",
                   },
@@ -659,8 +666,8 @@ export default function AppliedCandidates() {
                 {selectedJob?.employer?.company_name?.[0]?.toUpperCase() || "?"}
               </Avatar>
               <Box flex={1}>
-                <Typography 
-                  variant="h6" 
+                <Typography
+                  variant="h6"
                   fontWeight={700}
                   sx={{
                     background: "var(--mui-palette-primary-main)",
@@ -705,13 +712,12 @@ export default function AppliedCandidates() {
               {TAB_KEYS.map((key, i) => (
                 <Tab
                   key={key}
-                  label={`${t(key)} (${
-                    i === 0
-                      ? applications.length
-                      : applications.filter(
-                          (a) => a.application_status === STATUS_FILTER[i],
-                        ).length
-                  })`}
+                  label={`${t(key)} (${i === 0
+                    ? applications.length
+                    : applications.filter(
+                      (a) => a.application_status === STATUS_FILTER[i],
+                    ).length
+                    })`}
                   sx={{ textTransform: "none" }}
                 />
               ))}
@@ -741,8 +747,8 @@ export default function AppliedCandidates() {
                   {tabValue === 0
                     ? t("applications.no_applications_yet")
                     : t("applications.no_status_applications", {
-                        status: t(TAB_KEYS[tabValue]).toLowerCase(),
-                      })}
+                      status: t(TAB_KEYS[tabValue]).toLowerCase(),
+                    })}
                 </Typography>
               </Box>
             ) : (
@@ -763,7 +769,7 @@ export default function AppliedCandidates() {
                         transition: "all 0.2s",
                         cursor: "pointer",
                         border: "1px solid var(--mui-palette-primary-main)",
-                        "&:hover": { 
+                        "&:hover": {
                           transform: "translateY(-2px)",
                         },
                       }}
@@ -822,7 +828,7 @@ export default function AppliedCandidates() {
                           >
                             <FormControl
                               size="small"
-                              sx={{ 
+                              sx={{
                                 minWidth: { xs: "100%", sm: 140 },
                               }}
                             >
@@ -958,7 +964,7 @@ export default function AppliedCandidates() {
           justifyContent="center"
           color="text.secondary"
         >
-          <Typography 
+          <Typography
             variant="h7"
             sx={{
               background: (theme) => `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
@@ -1021,9 +1027,9 @@ export default function AppliedCandidates() {
         }}
         fullWidth
         maxWidth="md"
-        PaperProps={{ 
-          sx: { 
-            height: "90vh", 
+        PaperProps={{
+          sx: {
+            height: "90vh",
             overflow: "hidden",
           }
         }}
@@ -1076,7 +1082,7 @@ export default function AppliedCandidates() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button 
+          <Button
             variant="contained"
             onClick={() => setViewFileOpen(false)}
           >
@@ -1143,7 +1149,7 @@ export default function AppliedCandidates() {
                     candidateName,
                   ),
               });
-            } 
+            }
 
             // 3. Attached Images / Files
             (candidateImages || []).forEach((img, index) => {
@@ -1208,15 +1214,15 @@ export default function AppliedCandidates() {
                 headerName: t("applications.documents"),
                 width: 160,
                 renderCell: (params) => (
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     fontWeight={500}
-                    sx={{ 
+                    sx={{
                       display: "flex",
                       alignItems: "center",
                       gap: 1,
                       width: "100%",
-                      height: "100%", 
+                      height: "100%",
                     }}
                   >
                     {params.value}
@@ -1326,8 +1332,8 @@ export default function AppliedCandidates() {
                     borderBottom: "1px solid var(--mui-palette-divider)"
                   }}
                 >
-                  <Typography 
-                    variant="subtitle1" 
+                  <Typography
+                    variant="subtitle1"
                     fontWeight={600}
                   >
                     {t('applications.candidate_details')}
@@ -1414,11 +1420,11 @@ export default function AppliedCandidates() {
                           value={
                             selectedCandidateApp.candidate?.user?.gender
                               ? selectedCandidateApp.candidate.user.gender
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                selectedCandidateApp.candidate.user.gender
-                                  .slice(1)
-                                  .toLowerCase()
+                                .charAt(0)
+                                .toUpperCase() +
+                              selectedCandidateApp.candidate.user.gender
+                                .slice(1)
+                                .toLowerCase()
                               : "—"
                           }
                         />
@@ -1427,13 +1433,13 @@ export default function AppliedCandidates() {
                           value={
                             selectedCandidateApp.candidate?.user?.date_of_birth
                               ? new Date(
-                                  selectedCandidateApp.candidate.user
-                                    .date_of_birth,
-                                ).toLocaleDateString("en-GB", {
-                                  day: "numeric",
-                                  month: "short",
-                                  year: "numeric",
-                                })
+                                selectedCandidateApp.candidate.user
+                                  .date_of_birth,
+                              ).toLocaleDateString("en-GB", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              })
                               : "—"
                           }
                         />
@@ -1444,7 +1450,7 @@ export default function AppliedCandidates() {
                           }
                         />
                       </Stack>
-                      <Divider sx={{ mb: 1, mt: 1}} />
+                      <Divider sx={{ mb: 1, mt: 1 }} />
                       <Box>
                         <Stack direction="row" alignItems="center" spacing={1}>
                           <DescriptionOutlined
@@ -1484,7 +1490,7 @@ export default function AppliedCandidates() {
                         spacing={2}
                         alignItems="center"
                         justifyContent="center"
-                        sx={{mt: 2 }}
+                        sx={{ mt: 2 }}
                       >
                         <FormControl
                           sx={{
@@ -1506,7 +1512,7 @@ export default function AppliedCandidates() {
                               if (
                                 !newLabel ||
                                 newKey ===
-                                  selectedCandidateApp.application_status
+                                selectedCandidateApp.application_status
                               ) {
                                 return;
                               }
@@ -1541,8 +1547,8 @@ export default function AppliedCandidates() {
                               ?.color || "warning"
                           }
                           size="small"
-                          sx={{ 
-                            fontWeight: 600, 
+                          sx={{
+                            fontWeight: 600,
                             minWidth: 100,
                             ...(selectedCandidateApp.application_status === "ACCEPTED" && {
                               bgcolor: "#10b981",
@@ -1656,7 +1662,7 @@ export default function AppliedCandidates() {
         <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
-          sx={{ 
+          sx={{
             width: "100%",
             ...(snackbar.severity === "success" && {
               bgcolor: "#10b981",
@@ -1679,6 +1685,14 @@ export default function AppliedCandidates() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      {dialogOpen && (
+        <ChatDialog
+          open={initialChat}
+          initialChat={initialChat}
+          onClose={() => { setDialogOpen(false); setInitialChat(null); }}
+        />
+      )}
     </Box>
   );
 }

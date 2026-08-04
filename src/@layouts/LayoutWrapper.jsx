@@ -4,6 +4,7 @@ import LayoutCustomizerButton from '@components/layout/shared/LayoutCustomizerBu
 import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 import useVerticalNav from '@menu/hooks/useVerticalNav'
 import { useSettings } from '@core/hooks/useSettings'
+import CallManagerComponent from '../views/components/call/CallManagerComponent'
 
 const LayoutWrapper = ({ verticalLayout, horizontalLayout }) => {
   const { settings } = useSettings()
@@ -12,12 +13,15 @@ const LayoutWrapper = ({ verticalLayout, horizontalLayout }) => {
   const isHorizontalLayout = settings.layout === 'horizontal'
   const activeLayout = isHorizontalLayout ? horizontalLayout : verticalLayout
   const isBreakpointReached = horizontalNav.isBreakpointReached || verticalNav.isBreakpointReached
-  
+
   return (
-    <div className='flex flex-col flex-auto'>
-      {activeLayout}
-      <LayoutCustomizerButton isVisible={!isBreakpointReached} />
-    </div>
+    <>
+      <div className='flex flex-col flex-auto'>
+        <CallManagerComponent/>
+        {activeLayout}
+        <LayoutCustomizerButton isVisible={!isBreakpointReached} />
+      </div>
+    </>
   )
 }
 

@@ -59,13 +59,6 @@ const baseMenuData = [
     href: '/admin/dashboard',
     allowedUserTypes: [1],
   },
-  {
-    type: 'item',
-    label: 'chat',
-    icon: <i className='ri-message-3-line' />,
-    href: '/chat',
-    allowedUserTypes: [1, 2, 3],
-  },
 
   // ── Admin: Management ──
   {

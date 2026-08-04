@@ -69,8 +69,8 @@ const Navigation = () => {
   return (
     // eslint-disable-next-line lines-around-comment
     // Sidebar Vertical Menu
-    <VerticalNav 
-      customBreakpoint='800px' 
+    <VerticalNav
+      customBreakpoint='800px'
       width={effectiveCollapsed ? 64 : 260}
       customStyles={navigationCustomStyles(theme, settings.skin, effectiveCollapsed)}
       onMouseEnter={() => setHovered(isCollapsed)}

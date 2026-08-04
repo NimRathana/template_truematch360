@@ -3,8 +3,10 @@ import { menuClasses, verticalNavClasses } from '@menu/utils/menuClasses'
 
 const navigationCustomStyles = (theme, skin = 'default', isCollapsed = false) => {
   return {
+    position: 'relative',
+    zIndex: 1000,
     color: 'var(--mui-palette-text-primary)',
-    zIndex: 'var(--drawer-z-index) !important',
+    // zIndex: 'var(--drawer-z-index) !important',
     [`& .${verticalNavClasses.bgColorContainer}`]: {
       backgroundColor: 'var(--mui-palette-background-default)'
     },

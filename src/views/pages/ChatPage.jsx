@@ -6,7 +6,7 @@ import {
     ListItemButton,
     Snackbar,
     Alert,
-    alpha
+    IconButton,
 } from "@mui/material";
 import ChatComponent from '../components/chat/ChatComponent';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -22,6 +22,7 @@ import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
 const ringtone = '/sounds/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
 import classnames from 'classnames'
+import CloseIcon from '@mui/icons-material/Close';
 
 function getLastMessagePreview(chat, currentUserId, t) {
     const msg = chat.last_message;
@@ -41,7 +42,7 @@ function getLastMessagePreview(chat, currentUserId, t) {
     }
 }
 
-function ChatPage() {
+function ChatPage({ onClose, initialChat = null }) {
     const { t } = useTranslation();
     const searchParams = useSearchParams();
     const initialRoomId = searchParams.get('roomId');
@@ -52,7 +53,7 @@ function ChatPage() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const [selectedChat, setSelectedChat] = useState(null);
+    const [selectedChat, setSelectedChat] = useState(initialChat);
     const [open, setOpen] = useState(false);
 
     const [chats, setChats] = useState([]);
@@ -107,6 +108,10 @@ function ChatPage() {
         if (reason === "clickaway") return;
         setSnackbar(prev => ({ ...prev, open: false }));
     };
+
+    useEffect(() => {
+        setSelectedChat(initialChat);
+    }, [initialChat]);
 
     useEffect(() => {
         const search = chatSearch.trim();
@@ -629,7 +634,6 @@ function ChatPage() {
     });
 
     const startCall = (roomId, mode = 'video') => {
-        debugger
         if (!globalConnected && selectedChat) {
             console.warn("WS not connected yet");
             return;
@@ -734,11 +738,13 @@ function ChatPage() {
 
     return (
         <Card
-            className={classnames('ts-layout-content-height-fixed')}
             sx={{
-                height: '100%',
+                width: { xs: '100%', md: 400 },
+                height: '75vh',
                 display: 'flex',
                 overflow: 'hidden',
+                border: 1,
+                borderColor: 'divider'
             }}
         >
             {snackbar && (
@@ -764,11 +770,11 @@ function ChatPage() {
                 </Snackbar>
             )}
 
-            {(!isMobile || !selectedChat) && (
+            {(!selectedChat) && (
                 <Box
                     sx={{
                         position: 'relative',
-                        width: { xs: '100%', md: 400 },
+                        width: '100%',
                         display: 'flex',
                         flexDirection: 'column',
                         borderRight: { sm: '1px solid var(--mui-palette-divider)' },
@@ -779,9 +785,9 @@ function ChatPage() {
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            px: { xs: 2, sm: 3 },   
-                            py: 1,                 
-                            height: 72,           
+                            px: { xs: 2, sm: 3 },
+                            py: 1,
+                            height: 72,
                             minHeight: 72,
                             width: '100%',
                             gap: 1,
@@ -789,7 +795,7 @@ function ChatPage() {
                         }}
 
                     >
-                        <Box sx={{ width: '100%' }}>
+                        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
                             <TextField
                                 fullWidth
                                 size="small"
@@ -804,6 +810,11 @@ function ChatPage() {
                                     ),
                                 }}
                             />
+                            <IconButton
+                                onClick={onClose}
+                            >
+                                <CloseIcon />
+                            </IconButton>
                         </Box>
                     </Box>
                     <Divider />
@@ -828,16 +839,16 @@ function ChatPage() {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'space-between',
-                                            paddingInline: 2.5,       
+                                            paddingInline: 2.5,
                                             paddingBlock: 2,
-                                            mx: { xs: 2, sm: 3 },   
-                                            my: 1, 
+                                            mx: { xs: 2, sm: 3 },
+                                            my: 1,
                                             bgcolor: isSelected ? 'primary.main' : 'transparent',
                                             cursor: 'pointer',
                                             borderRadius: 'var(--mui-shape-borderRadius)',
                                             position: 'relative',
                                             overflow: 'hidden',
-                                            background: isSelected ? "primary.main" : "transparent", 
+                                            background: isSelected ? "primary.main" : "transparent",
                                             "&:hover": {
                                                 transform: "scaleX(1)",
                                                 bgcolor: "var(--mui-palette-action-hover)",
@@ -879,7 +890,7 @@ function ChatPage() {
                                             </Typography>
                                         </Box>
 
-                                        <Box 
+                                        <Box
                                             sx={{
                                                 display: 'flex',
                                                 justifyContent: 'center',
@@ -927,8 +938,8 @@ function ChatPage() {
                                             onClick={() => handleStartChat(user)}
                                             sx={{
                                                 borderRadius: "var(--mui-shape-borderRadius)",
-                                                mx: { xs: 2, sm: 3 },   
-                                                my: 1, 
+                                                mx: { xs: 2, sm: 3 },
+                                                my: 1,
                                             }}
                                         >
                                             <ListItemAvatar>
@@ -966,7 +977,7 @@ function ChatPage() {
                 </Box>
             )}
 
-            {(!isMobile || selectedChat) && (
+            {(selectedChat) && (
                 <Box
                     sx={{
                         flex: 1,

@@ -10,7 +10,7 @@ function CallRequestDialog({ callRequest, onDeclinedCall, isCallBusy, BASE_URL }
             sx={{
                 position: 'fixed',
                 inset: 0,
-                zIndex: 1600,
+                zIndex: '3000 !important',
                 background: 'var(--mui-palette-background-paper)',
                 display: 'flex',
                 flexDirection: 'column',
