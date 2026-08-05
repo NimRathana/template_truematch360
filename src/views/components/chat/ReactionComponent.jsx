@@ -1,7 +1,7 @@
 import { Box, Tooltip } from "@mui/material";
 import { useTranslation } from 'react-i18next';
 
-function ReactionComponent({ messageId, reactionsData, onRemoveReact }) {
+function ReactionComponent({ messageId, reactionsData, onRemoveReact, isOwn }) {
     const { t } = useTranslation();
 
     const reactionMap = {
@@ -70,7 +70,7 @@ function ReactionComponent({ messageId, reactionsData, onRemoveReact }) {
                                 }}
                             >
                                 <Box>{reactionMap[reactionType]}</Box>
-                                <span>{data.count}</span>
+                                <span style={{ color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary", }}>{data.count}</span>
                             </Box>
                         </Tooltip>
                     );

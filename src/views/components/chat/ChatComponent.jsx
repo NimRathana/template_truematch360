@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { Alert, alpha, AppBar, Avatar, Box, CircularProgress, IconButton, Paper, Snackbar, TextField, Toolbar, Typography, Button } from "@mui/material";
+import { Alert, alpha, AppBar, Avatar, Box, CircularProgress, IconButton, Paper, Snackbar, TextField, Toolbar, Typography, Button, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
@@ -23,7 +23,12 @@ import MediaPreviewDialog from './dialog/MediaPreviewDialog';
 import PinnedMessageComponent from './PinnedMessageComponent';
 import imageCompression from "browser-image-compression";
 import { saveUpload, getUploads, removeUpload } from '../../hooks/saveUpload'
-import { styled, useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
+import DescriptionIcon from '@mui/icons-material/Description';
+import AudioFileIcon from '@mui/icons-material/AudioFile';
+import VideoFileIcon from '@mui/icons-material/VideoFile';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const FILE_RULES = {
     image: { extensions: new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']) },
@@ -42,6 +47,8 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
     const audioChunksRef = useRef([]);
     const timerRef = useRef(null);
     const fileInputRef = useRef(null);
+    const resumingRef = useRef(false);
+    const resumeTokenRef = useRef(0);
 
     const [isRecording, setIsRecording] = useState(false);
     const [audioBlob, setAudioBlob] = useState(null);
@@ -300,9 +307,13 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
     };
 
     async function resumeUploads() {
+        const token = ++resumeTokenRef.current;
+
         const uploads = (await getUploads()).filter(
             u => u.roomId === chat.room_id
         );
+
+        if (token !== resumeTokenRef.current) return;
 
         setMessages(prev => {
             const ids = new Set(prev.map(m => m.id));
@@ -326,6 +337,8 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
 
         // Upload each file
         for (const item of uploads) {
+            if (token !== resumeTokenRef.current) break;
+
             try {
                 const res = await uploadFileMessage({
                     file: item.file,
@@ -375,9 +388,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
 
     useEffect(() => {
         if (!chat?.room_id) return;
-
         resumeUploads();
-
     }, [chat?.room_id]);
 
     const compressImage = async (file) => {
@@ -449,9 +460,17 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
             return;
         }
 
-        const uploads = [];
+        // const existingUploads = await getUploads();
+        const newUploads = [];
 
         for (const file of processedFiles) {
+            // const isDuplicate = existingUploads.some(
+            //     u =>
+            //         u.file.name === file.name &&
+            //         u.file.size === file.size &&
+            //         u.file.lastModified === file.lastModified
+            // );
+            // if (!isDuplicate) {
             const upload = {
                 id: crypto.randomUUID(),
                 roomId: chat.room_id,
@@ -464,11 +483,12 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                 status: "pending",
             };
 
-            await saveUpload(upload);
-            uploads.push(upload);
+            // await saveUpload(upload);
+            newUploads.push(upload);
+            // }
         }
 
-        setSelectedFiles(prev => [...prev, ...uploads]);
+        setSelectedFiles(prev => [...prev, ...newUploads]);
 
         e.target.value = '';
     };
@@ -583,6 +603,10 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
 
             if (selectedFiles.length > 0) {
                 const filesToUpload = [...selectedFiles];
+
+                for (const item of filesToUpload) {
+                    await saveUpload(item);
+                }
 
                 setSelectedFiles([]);
                 setNewMessage('');
@@ -1096,7 +1120,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                 display: 'flex',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
-                                gap: { xs: 1.5},
+                                gap: { xs: 1.5 },
                                 height: 72,
                                 minHeight: 72,
                                 px: { xs: 2, sm: 3 },
@@ -1409,7 +1433,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                     borderColor: 'rgba(59, 130, 246, 0.2)',
                                     bgcolor: alpha(theme.palette.error.main, 0.08),
                                     backdropFilter: 'blur(8px)',
-                                    overflowX: 'hidden',
+                                    overflowX: 'auto',
                                 }}
                             >
                                 <Box
@@ -1417,96 +1441,145 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                         display: 'flex',
                                         gap: 1,
                                         flexGrow: 1,
-                                        overflowX: 'auto',
-                                        py: 1,
+                                        // overflowX: 'auto',
+                                        py: 0.5,
                                         scrollSnapType: 'x mandatory',
                                     }}
                                 >
                                     {selectedFiles.map((item) => {
                                         const file = item.file;
-
-                                        const isImage = file.type.startsWith("image/");
-
-                                        const uploadingFile = uploadingFiles.find(
-                                            f => f.id === item.id
-                                        );
-
+                                        const isImage = file.type.startsWith('image/');
+                                        const uploadingFile = uploadingFiles.find((f) => f.id === item.id);
                                         const progress = uploadingFile?.progress || 0;
                                         const isUploading = uploadingFile?.isUploading;
 
+                                        // Map file type to a specific icon (fallback to generic)
+                                        const getFileIcon = () => {
+                                            if (file.type.includes('pdf')) return <PictureAsPdfIcon />;
+                                            if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx'))
+                                                return <DescriptionIcon />;
+                                            if (file.type.includes('sheet') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))
+                                                return <TableChartIcon />;
+                                            if (file.type.includes('presentation') || file.name.endsWith('.ppt') || file.name.endsWith('.pptx'))
+                                                return <SlideshowIcon />;
+                                            if (file.type.startsWith('audio/')) return <AudioFileIcon />;
+                                            if (file.type.startsWith('video/')) return <VideoFileIcon />;
+                                            return <InsertDriveFileIcon />;
+                                        };
+
                                         return (
-                                            <Paper
-                                                key={item.id}
-                                                variant="outlined"
-                                                sx={{
-                                                    flex: '0 0 auto',
-                                                    p: 1,
-                                                    minWidth: 120,
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                    gap: 1,
-                                                    position: 'relative',
-                                                    borderColor: 'rgba(59, 130, 246, 0.3)',
-                                                }}
-                                            >
-                                                {isImage ? (
-                                                    <Box
-                                                        component="img"
-                                                        src={item.preview}
-                                                        alt={file.name}
-                                                        sx={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 1 }}
-                                                    />
-                                                ) : (
-                                                    <Typography
-                                                        variant="body2"
-                                                        noWrap
-                                                        sx={{ maxWidth: 100, textAlign: 'center', color: '#1e3a8a' }}
-                                                    >
-                                                        {file.name}
-                                                    </Typography>
-                                                )}
-
-                                                {isUploading && (
-                                                    <Box
-                                                        sx={{
-                                                            position: 'absolute',
-                                                            top: '50%',
-                                                            left: '50%',
-                                                            transform: 'translate(-50%, -50%)',
-                                                        }}
-                                                    >
-                                                        <CircularProgress
-                                                            variant={progress ? 'determinate' : 'indeterminate'}
-                                                            value={progress}
-                                                            size={40}
-                                                            thickness={4}
-                                                            sx={{ color: '#3b82f6' }}
-                                                        />
-                                                    </Box>
-                                                )}
-
-                                                <IconButton
-                                                    size="small"
-                                                    color="error"
-                                                    onClick={() => removeFile(item.id)}
+                                            <Tooltip title={file.name} arrow key={item.id}>
+                                                <Paper
+                                                    variant="outlined"
                                                     sx={{
-                                                        position: 'absolute',
-                                                        top: 4,
-                                                        right: 4,
-                                                        backgroundColor: 'white',
-                                                        boxShadow: 1,
-                                                        color: '#f97316',
-                                                        '&:hover': { color: '#ef4444' },
+                                                        flex: '0 0 auto',
+                                                        width: 72,
+                                                        height: 72,
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        position: 'relative',
+                                                        borderColor: 'rgba(59, 130, 246, 0.3)',
+                                                        borderRadius: 2,
+                                                        p: 0.5,
+                                                        cursor: 'default',
                                                     }}
                                                 >
-                                                    <CloseIcon sx={{ fontSize: 14 }} />
-                                                </IconButton>
-                                            </Paper>
+                                                    {isImage ? (
+                                                        <Box
+                                                            component="img"
+                                                            src={item.preview}
+                                                            alt={file.name}
+                                                            sx={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                objectFit: 'cover',
+                                                                borderRadius: 1,
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                gap: 0.5,
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                overflow: 'hidden',
+                                                            }}
+                                                        >
+                                                            <Box sx={{ color: '#3b82f6', fontSize: 28, lineHeight: 1 }}>
+                                                                {getFileIcon()}
+                                                            </Box>
+                                                            <Typography
+                                                                variant="caption"
+                                                                noWrap
+                                                                sx={{
+                                                                    maxWidth: '100%',
+                                                                    textAlign: 'center',
+                                                                    color: '#1e3a8a',
+                                                                    fontSize: '0.6rem',
+                                                                    lineHeight: 1.2,
+                                                                }}
+                                                            >
+                                                                {file.name.split('.').slice(0, -1).join('.') || file.name}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+
+                                                    {isUploading && (
+                                                        <Box
+                                                            sx={{
+                                                                position: 'absolute',
+                                                                top: '50%',
+                                                                left: '50%',
+                                                                transform: 'translate(-50%, -50%)',
+                                                            }}
+                                                        >
+                                                            <CircularProgress
+                                                                variant={progress ? 'determinate' : 'indeterminate'}
+                                                                value={progress}
+                                                                size={36}
+                                                                thickness={4}
+                                                                sx={{ color: '#3b82f6' }}
+                                                            />
+                                                        </Box>
+                                                    )}
+
+                                                    <IconButton
+                                                        variant="contained"
+                                                        size="small"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            removeFile(item.id);
+                                                        }}
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            width: 18,
+                                                            height: 18,
+                                                            top: -6,
+                                                            right: -6,
+                                                            backgroundColor: 'white',
+                                                            boxShadow: 1,
+                                                            color: '#f97316',
+                                                            '&:hover': {
+                                                                color: '#ef4444',
+                                                                backgroundColor: 'white'
+                                                            },
+                                                            p: 0,
+                                                            fontSize: 12,
+                                                        }}
+                                                    >
+                                                        <CloseIcon size="small" />
+                                                    </IconButton>
+                                                </Paper>
+                                            </Tooltip>
                                         );
                                     })}
                                 </Box>
-
                             </Paper>
                         )}
 

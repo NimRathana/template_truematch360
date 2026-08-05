@@ -75,6 +75,7 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
           backgroundColor: 'grey',
           borderRadius: 5,
           pl: 0.5,
+          color: "var(--mui-palette-primary-contrastText)",
         }}
       >
         {!isDeleting && (
@@ -86,7 +87,8 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
                 alignItems: 'center',
                 textAlign: 'right',
                 flexDirection: isOwn ? 'row' : 'row-reverse',
-                gap: 0.5
+                gap: 0.5,
+                color: "var(--mui-palette-primary-contrastText)",
               }}
             >
               <Box 
@@ -98,6 +100,7 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
                   messageId={messageId}
                   reactionsData={reactionsData}
                   onRemoveReact={onRemoveReact}
+                  isOwn={isOwn}
                 />
               </Box>
               {isPin && (
@@ -106,6 +109,7 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
                     fontSize: 16,
                     mr: 0.5,
                     transform: 'rotate(30deg)',
+                    color: "var(--mui-palette-primary-contrastText)",
                   }}
                 />
               )}
@@ -114,14 +118,14 @@ export default function ChatImage({ src, isOwn, created_at, edited_at, is_read, 
               {edited_at && (
                 <Typography
                   variant="caption"
-                  sx={{ ml: 0.5, opacity: 0.7 }}
+                  sx={{ ml: 0.5, opacity: 0.7, color: "var(--mui-palette-primary-contrastText)", }}
                 >
                   · {t('edited')}
                 </Typography>
               )}
             </Typography>
             <Box sx={{ opacity: 0.7 }}>
-              {is_read && isOwn && <DoneAllIcon sx={{ fontSize: 16 }} />}
+              {is_read && isOwn && <DoneAllIcon sx={{ fontSize: 16, mt: 1 }} />}
             </Box>
           </>
         )}

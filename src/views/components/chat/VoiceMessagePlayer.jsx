@@ -68,7 +68,7 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
           <IconButton
             onClick={togglePlay}
             sx={{
-              bgcolor: "action.active",
+              bgcolor: isOwn ? "text.secondary" : "grey.100",
             }}
           >
             {playing ? (
@@ -86,7 +86,7 @@ export const VoiceMessagePlayer = ({ url, isOwn }) => {
                 position: "relative",
                 height: 6,
                 borderRadius: 3,
-                mt:1,
+                mt: 1,
                 cursor: "pointer",
                 bgcolor: "action.active",
                 overflow: "hidden",

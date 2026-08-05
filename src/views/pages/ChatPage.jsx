@@ -19,7 +19,6 @@ import useAuthStore from '@views/store/useAuthStore';
 import { FormatTime } from '../components/chat/FormatTime';
 import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
-const ringtone = '/sounds/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -89,6 +88,8 @@ function ChatPage({ onClose, initialChat = null }) {
     const [isCallBusy, setIsCallBusy] = useState(false);
     const scrollContainerRef = useRef(null);
     const audioRef = useRef(null);
+
+    const ringtone = '/sounds/outgoing_sound.mp3';
 
     const [snackbar, setSnackbar] = useState({
         open: false,

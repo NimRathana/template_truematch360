@@ -6,7 +6,6 @@ import CallEndIcon from '@mui/icons-material/CallEnd'
 import CallRoom from '../chat/CallRoom'
 import useAuthStore from '@views/store/useAuthStore'
 import { useGlobalWebSocket } from '@views/hooks/useGlobalWebSocket'
-const ringtone = '/sounds/ringing1.mp3';
 
 export default function CallManagerComponent() {
     const [incomingCall, setIncomingCall] = useState(null)
@@ -18,6 +17,7 @@ export default function CallManagerComponent() {
     const ringtoneRef = useRef(null)
     const userId = useAuthStore((s) => s.user_data?.pk_id)
     const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || ''
+    const ringtone = '/sounds/ringing1.mp3';
 
     const handleGlobalEvent = useCallback((data) => {
         switch (data.type) {

@@ -411,6 +411,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                                 messageId={message.id}
                                                 reactionsData={reactionsData}
                                                 onRemoveReact={onRemoveReact}
+                                                isOwn={isOwn}
                                             />
 
                                             {isPin && (
@@ -478,6 +479,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                                 messageId={message.id}
                                                 reactionsData={reactionsData}
                                                 onRemoveReact={onRemoveReact}
+                                                isOwn={isOwn}
                                             />
 
                                             {isPin && (
@@ -668,7 +670,8 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: isOwn ? 'end' : 'start',
-                                gap: 0.5
+                                gap: 0.5,
+                                color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                             }}
                         >
                             {!message.is_deleting && (
@@ -687,6 +690,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                             messageId={message.id}
                                             reactionsData={reactionsData}
                                             onRemoveReact={onRemoveReact}
+                                            isOwn={isOwn}
                                         />
                                         {isPin && (
                                             <PushPinIcon
@@ -701,7 +705,8 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                                         <Box
                                             sx={{
                                                 display: 'flex',
-                                                alignItems: 'center'
+                                                alignItems: 'center',
+                                                color: isOwn ? "var(--mui-palette-primary-contrastText)" : "text.secondary",
                                             }}
                                         >
                                             <FormatTime time={message.created_at} />

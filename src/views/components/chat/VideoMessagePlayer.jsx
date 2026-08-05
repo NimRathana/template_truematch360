@@ -89,6 +89,7 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
               display: 'flex',
               alignItems: 'center',
               gap: 0.5,
+              color: "var(--mui-palette-primary-contrastText)",
             }}
           >
             <Typography
@@ -98,12 +99,14 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
                 alignItems: 'center',
                 textAlign: 'right',
                 flexDirection: isOwn ? 'row' : 'row-reverse',
+                color: "var(--mui-palette-primary-contrastText)",
               }}
             >
               <ReactionComponent
                 messageId={message.id}
                 reactionsData={reactionsData}
                 onRemoveReact={onRemoveReact}
+                isOwn={isOwn}
               />
               {isPin && (
                 <PushPinIcon
@@ -112,6 +115,7 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
                     mr: 0.5,
                     transform: 'rotate(30deg)',
                     opacity: 0.7,
+                    color: "var(--mui-palette-primary-contrastText)",
                   }}
                 />
               )}
@@ -120,13 +124,13 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
               {message.edited_at && (
                 <Typography
                   variant="caption"
-                  sx={{ ml: 0.5, opacity: 0.7 }}
+                  sx={{ ml: 0.5, opacity: 0.7, color: "var(--mui-palette-primary-contrastText)", }}
                 >
                   · {t('edited')}
                 </Typography>
               )}
             </Typography>
-            <Box sx={{ opacity: 0.7 }}>
+            <Box sx={{ opacity: 0.7, color: "var(--mui-palette-primary-contrastText)", }}>
               {message.is_read && isOwn && <DoneAllIcon sx={{ fontSize: 16 }} />}
             </Box>
           </Box>
@@ -193,13 +197,15 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
                     alignItems: 'center',
                     textAlign: 'right',
                     flexDirection: isOwn ? 'row' : 'row-reverse',
-                    gap: 0.5
+                    gap: 0.5,
+                    color: "var(--mui-palette-primary-contrastText)",
                   }}
                 >
                   <ReactionComponent
                     messageId={message.id}
                     reactionsData={reactionsData}
                     onRemoveReact={onRemoveReact}
+                    isOwn={isOwn}
                   />
                   {isPin && (
                     <PushPinIcon
@@ -208,6 +214,7 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
                         mr: 0.5,
                         transform: 'rotate(30deg)',
                         opacity: 0.7,
+                        color: "var(--mui-palette-primary-contrastText)",
                       }}
                     />
                   )}
@@ -216,13 +223,13 @@ export default function VideoMessage({ message, isOwn, BASE_URL, isPin, reaction
                   {message.edited_at && (
                     <Typography
                       variant="caption"
-                      sx={{ ml: 0.5, opacity: 0.6 }}
+                      sx={{ ml: 0.5, opacity: 0.6, color: "var(--mui-palette-primary-contrastText)", }}
                     >
                       · {t('edited')}
                     </Typography>
                   )}
                 </Typography>
-                <Box sx={{ opacity: 0.7 }}>
+                <Box sx={{ opacity: 0.7, color: "var(--mui-palette-primary-contrastText)", }}>
                   {message.is_read && isOwn && <DoneAllIcon sx={{ fontSize: 16 }} />}
                 </Box>
               </>
