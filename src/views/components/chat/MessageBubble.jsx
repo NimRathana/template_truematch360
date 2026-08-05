@@ -56,7 +56,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
     };
 
     const openAbove = getMenuPosition();
-    
+
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
@@ -222,7 +222,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 </Alert>
             </Snackbar>
 
-            {selectable && selectedMessages.length > 0 && (
+            {selectable && selectedMessages.length > 0 && isOwn && (
                 <Box
                     sx={{
                         display: 'flex',
@@ -745,36 +745,33 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleMenuClose}
-                anchorOrigin={{
-                    vertical: openAbove ? "top" : "bottom",
-                    horizontal: isOwn ? "right" : "left",
-                }}
-                transformOrigin={{
-                    vertical: openAbove ? "bottom" : "top",
-                    horizontal: isOwn ? "right" : "left",
-                }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 PaperProps={{
-                    ref: menuPaperRef,
                     sx: {
+                        borderRadius: "12px",
                         overflow: "visible",
-                        mt: 1,
+                        mt: -10,
                         position: "relative",
-                        width: "max-content",
+                        width: 200
                     },
                 }}
             >
                 <Box
                     sx={{
-                        ...(openAbove ? { bottom: -8 } : { top: -8 }),
-                        ...(isOwn ? { right: 0 } : { left: 0 }),
+                        position: "absolute",
+                        top: -55,
+                        left: "50%",
+                        transform: "translateX(-50%)",
                         bgcolor: "background.paper",
-                        borderRadius: "var(--mui-shape-borderRadius)",
+                        borderRadius: "999px",
                         px: 1,
                         py: 0.5,
                         display: "flex",
                         gap: 0.5,
+                        boxShadow: 3,
+                        zIndex: 1,
                         whiteSpace: "nowrap",
-                        zIndex: 2,
                     }}
                 >
                     {reactions.map((reaction) => (
@@ -824,7 +821,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                     handleMenuClose();
                     onReply?.(message);
                 }}>
-                    <ListItemIcon><ReplyIcon fontSize="small" /></ListItemIcon>
+                    <ListItemIcon><ReplyIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                     <ListItemText>{t('reply')}</ListItemText>
                 </MenuItem>
 
@@ -833,7 +830,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         handleMenuClose();
                         onForward?.(message);
                     }}>
-                        <ListItemIcon><ReplyAllIcon fontSize="small" /></ListItemIcon>
+                        <ListItemIcon><ReplyAllIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                         <ListItemText>{t('forward')}</ListItemText>
                     </MenuItem>
                 )}
@@ -843,7 +840,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         handleMenuClose();
                         onReplace?.(message);
                     }}>
-                        <ListItemIcon><AutorenewIcon fontSize="small" /></ListItemIcon>
+                        <ListItemIcon><AutorenewIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                         <ListItemText>{t('replace')}</ListItemText>
                     </MenuItem>
                 )}
@@ -853,14 +850,14 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         handleMenuClose();
                         onPreview?.(message);
                     }}>
-                        <ListItemIcon><PreviewIcon fontSize="small" /></ListItemIcon>
+                        <ListItemIcon><PreviewIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                         <ListItemText>{t('preview')}</ListItemText>
                     </MenuItem>
                 )}
 
                 {(message.type === 'image' || message.type === 'video' || message.type === 'file' || message.type === 'voice') && (
                     <MenuItem onClick={handleSave}>
-                        <ListItemIcon><DownloadIcon fontSize="small" /></ListItemIcon>
+                        <ListItemIcon><DownloadIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                         <ListItemText>{t('save')}</ListItemText>
                     </MenuItem>
                 )}
@@ -868,7 +865,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                 {message.type === "text" && (
                     <MenuItem onClick={handleCopy}>
                         <ListItemIcon>
-                            <ContentCopyIcon fontSize="small" />
+                            <ContentCopyIcon fontSize="small" sx={{ mr: 1 }} />
                         </ListItemIcon>
                         <ListItemText>{t("copy")}</ListItemText>
                     </MenuItem>
@@ -879,7 +876,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         handleMenuClose();
                         onEdit?.(message);
                     }}>
-                        <ListItemIcon><EditIcon fontSize="small" /></ListItemIcon>
+                        <ListItemIcon><EditIcon fontSize="small" sx={{ mr: 1 }} /></ListItemIcon>
                         <ListItemText>{t('edit')}</ListItemText>
                     </MenuItem>
                 )}
@@ -893,9 +890,9 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         sx={{ color: 'error.main' }}
                     >
                         <ListItemIcon sx={{ color: 'error.main' }}>
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
                         </ListItemIcon>
-                        <ListItemText>{t('delete')}</ListItemText>
+                        <ListItemText color="error.main" sx={{ color: 'red' }} className='color-red'>{t('delete')}</ListItemText>
                     </MenuItem>
                 )}
 
@@ -907,7 +904,7 @@ function MessageBubble({ message, selectable, selected, onSelect, onStartSelect,
                         }}
                     >
                         <ListItemIcon>
-                            <CheckCircleOutlinedIcon fontSize="small" />
+                            <CheckCircleOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
                         </ListItemIcon>
                         <ListItemText>{t('select')}</ListItemText>
                     </MenuItem>

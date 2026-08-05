@@ -6,6 +6,7 @@ import CallEndIcon from '@mui/icons-material/CallEnd'
 import CallRoom from '../chat/CallRoom'
 import useAuthStore from '@views/store/useAuthStore'
 import { useGlobalWebSocket } from '@views/hooks/useGlobalWebSocket'
+const ringtone = '/sounds/ringing1.mp3';
 
 export default function CallManagerComponent() {
     const [incomingCall, setIncomingCall] = useState(null)
@@ -17,11 +18,8 @@ export default function CallManagerComponent() {
     const ringtoneRef = useRef(null)
     const userId = useAuthStore((s) => s.user_data?.pk_id)
     const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || ''
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
-    const ringtoneUrl = `${basePath}/ringing.mp3`
 
     const handleGlobalEvent = useCallback((data) => {
-        console.log("Ws recieved", data);
         switch (data.type) {
             case "call.incoming":
                 setIncomingCall({
@@ -140,11 +138,15 @@ export default function CallManagerComponent() {
 
     // Ringtone setup
     useEffect(() => {
-        ringtoneRef.current = new Audio(ringtoneUrl)
+        if (incomingCall === null) return;
+
+        ringtoneRef.current = new Audio(ringtone)
         ringtoneRef.current.loop = true
     }, [])
 
     useEffect(() => {
+        if (incomingCall === null) return;
+
         const unlockAudio = () => {
             if (ringtoneRef.current) {
                 ringtoneRef.current.play().then(() => {
@@ -159,6 +161,8 @@ export default function CallManagerComponent() {
     }, [])
 
     useEffect(() => {
+        if (incomingCall === null) return;
+
         if (!ringtoneRef.current) return
         if (incomingCall && !activeCallRoom) {
             ringtoneRef.current.play().catch(() => { })

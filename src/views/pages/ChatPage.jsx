@@ -21,7 +21,6 @@ import { useSearchParams } from 'next/navigation';
 import CallRequestDialog from '../components/chat/dialog/CallRequestDialog';
 const ringtone = '/sounds/outgoing_sound.mp3';
 import { useTranslation } from 'react-i18next';
-import classnames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close';
 
 function getLastMessagePreview(chat, currentUserId, t) {
@@ -657,7 +656,7 @@ function ChatPage({ onClose, initialChat = null }) {
 
     useEffect(() => {
         audioRef.current = new Audio(ringtone);
-        audioRef.current.loop = true; // Keep ringing until stopped
+        audioRef.current.loop = true;
 
         return () => {
             if (audioRef.current) {
@@ -739,7 +738,7 @@ function ChatPage({ onClose, initialChat = null }) {
     return (
         <Card
             sx={{
-                width: { xs: '100%', md: 400 },
+                width: { xs: 350, sm: 400 },
                 height: '75vh',
                 display: 'flex',
                 overflow: 'hidden',

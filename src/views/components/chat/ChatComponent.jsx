@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MicIcon from '@mui/icons-material/Mic';
 import SendIcon from '@mui/icons-material/Send';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { Alert, AppBar, Avatar, Box, CircularProgress, IconButton, Paper, Snackbar, TextField, Toolbar, Typography, Button } from "@mui/material";
+import { Alert, alpha, AppBar, Avatar, Box, CircularProgress, IconButton, Paper, Snackbar, TextField, Toolbar, Typography, Button } from "@mui/material";
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
@@ -22,7 +22,8 @@ import ForwardDialog from './dialog/ForwardDialog';
 import MediaPreviewDialog from './dialog/MediaPreviewDialog';
 import PinnedMessageComponent from './PinnedMessageComponent';
 import imageCompression from "browser-image-compression";
-import { saveUpload, getUploads, removeUpload } from '../../hooks/saveUpload';
+import { saveUpload, getUploads, removeUpload } from '../../hooks/saveUpload'
+import { styled, useTheme } from '@mui/material/styles'
 
 const FILE_RULES = {
     image: { extensions: new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']) },
@@ -34,6 +35,7 @@ const FILE_RULES = {
 const MAX_SIZE = 500 * 1024 * 1024; // 500MB
 
 function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserId, isOnline, typingUsers, messagesRef, onScroll, loadingOlderRef, loadingOlder, hasMore, messagesEndRef, pinMessage, reactionsData, onStartCall, blockMessage, scrollToMessage, highlightedMessageId }) {
+    const theme = useTheme()
     const { t } = useTranslation();
     const BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''));
     const mediaRecorderRef = useRef(null);
@@ -1094,14 +1096,14 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                 display: 'flex',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
-                                gap: { xs: 1.5, sm: 2.5 },
-                                height: 72,           
+                                gap: { xs: 1.5},
+                                height: 72,
                                 minHeight: 72,
-                                px: { xs: 2, sm: 3 },            
+                                px: { xs: 2, sm: 3 },
                                 py: 1,
                             }}
                         >
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
                                 <IconButton
                                     onClick={onBack}
                                 >
@@ -1121,7 +1123,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                     {chat?.username?.charAt(0).toUpperCase() || 'P'}
                                 </Avatar>
 
-                                <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
+                                <Box sx={{ flexGrow: 1, overflow: 'hidden', ml: 1 }}>
                                     <Typography variant="h6" fontWeight={600} noWrap>
                                         {chat?.username || t('unknown_user')}
                                     </Typography>
@@ -1397,11 +1399,16 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                             <Paper
                                 elevation={0}
                                 sx={{
+                                    position: 'absolute',
+                                    bottom: replyingTo ? 120 : 60,
                                     width: '100%',
                                     p: 1,
-                                    px: 2,
                                     display: 'flex',
                                     alignItems: 'center',
+                                    borderTop: 1,
+                                    borderColor: 'rgba(59, 130, 246, 0.2)',
+                                    bgcolor: alpha(theme.palette.error.main, 0.08),
+                                    backdropFilter: 'blur(8px)',
                                     overflowX: 'hidden',
                                 }}
                             >
@@ -1417,8 +1424,13 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                 >
                                     {selectedFiles.map((item) => {
                                         const file = item.file;
+
                                         const isImage = file.type.startsWith("image/");
-                                        const uploadingFile = uploadingFiles.find(f => f.id === item.id);
+
+                                        const uploadingFile = uploadingFiles.find(
+                                            f => f.id === item.id
+                                        );
+
                                         const progress = uploadingFile?.progress || 0;
                                         const isUploading = uploadingFile?.isUploading;
 
@@ -1435,7 +1447,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                                     alignItems: 'center',
                                                     gap: 1,
                                                     position: 'relative',
-                                                    borderColor: 'var(--mui-palette-primary-main)',
+                                                    borderColor: 'rgba(59, 130, 246, 0.3)',
                                                 }}
                                             >
                                                 {isImage ? (
@@ -1443,13 +1455,13 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                                         component="img"
                                                         src={item.preview}
                                                         alt={file.name}
-                                                        sx={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 'var(--mui-shape-borderRadius)' }}
+                                                        sx={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 1 }}
                                                     />
                                                 ) : (
                                                     <Typography
                                                         variant="body2"
                                                         noWrap
-                                                        sx={{ maxWidth: 100, textAlign: 'center' }}
+                                                        sx={{ maxWidth: 100, textAlign: 'center', color: '#1e3a8a' }}
                                                     >
                                                         {file.name}
                                                     </Typography>
@@ -1469,6 +1481,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                                             value={progress}
                                                             size={40}
                                                             thickness={4}
+                                                            sx={{ color: '#3b82f6' }}
                                                         />
                                                     </Box>
                                                 )}
@@ -1481,11 +1494,10 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                                         position: 'absolute',
                                                         top: 4,
                                                         right: 4,
-                                                        bgcolor: (theme) => `${theme.palette.error.main} !important`,
-                                                        color: "white",
-                                                        "&:hover": {
-                                                            transform: "scale(1.1)",
-                                                        },
+                                                        backgroundColor: 'white',
+                                                        boxShadow: 1,
+                                                        color: '#f97316',
+                                                        '&:hover': { color: '#ef4444' },
                                                     }}
                                                 >
                                                     <CloseIcon sx={{ fontSize: 14 }} />
@@ -1494,6 +1506,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                                         );
                                     })}
                                 </Box>
+
                             </Paper>
                         )}
 
@@ -1739,7 +1752,7 @@ function ChatComponent({ chat, onBack, messages, setMessages, send, currentUserI
                 hasMore={roomsHasMore}
                 loading={loadingRooms}
             />
-            
+
             <MediaPreviewDialog
                 open={previewOpen}
                 onClose={handleClosePreview}
